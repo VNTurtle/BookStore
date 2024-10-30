@@ -44,7 +44,7 @@ class User{
                 ];
     
                 $jwt = JWT::encode($payload, $key, 'HS256');
-    
+                
                 // Trả về JWT thay vì session
                 return $jwt;
             } else {
@@ -100,7 +100,99 @@ class User{
             return "Lỗi: " . $e->getMessage();
         }
     }
-    
-    
+    public static function Pay($enteredOTP,$invoice,$invoiceDetails){
+        session_start();
+
+        $otpFromSession = $_SESSION["OTP"];
+        if ($enteredOTP == $otpFromSession) {
+
+            unset($_SESSION["OTP"]);
+            $queryInvoice = "INSERT INTO `invoice` (`Code`, `Username`, `IssuedDate`, `ShippingAddress`, `ShippingPhone`, `ShippingEmail`, `UserId`, `Total`, `PaymethodId`, `Quantity`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $parameters = [$invoice['code'], $invoice['username'], $invoice['date'], $invoice['address'], $invoice['phone'], $invoice['email'], $invoice['userId'], $invoice['total'], $invoice['paymethodId'], $invoice['quantity'], $invoice['status']];
+            $ISInvoice = DP::run_query($queryInvoice, $parameters, 1);
+
+
+            if ($ISInvoice > 0) {
+                $queryInvoiceDetail = "INSERT INTO `invoicedetail` (`Parent_code`, `BookId`, `UserId`, `UnitPrice`, `Quantity`, `OrderStatusId`) VALUES (?, ?, ?, ?, ?, ?)";
+
+                foreach ($invoiceDetails as $invoiceDetail) {
+                    $parameters = [$invoiceDetail['parent_code'], $invoiceDetail['bookId'], $invoiceDetail['userId'], $invoiceDetail['price'], $invoiceDetail['quantity'], $invoiceDetail['orderStatusId']];
+                    $ISInvoiceDetail = DP::run_query($queryInvoiceDetail, $parameters, 1);
+
+                    if ($ISInvoiceDetail <= 0) {
+                        echo json_encode(["status" => "error", "message" => "Failed to insert invoice detail."]);
+                        exit;
+                    } else {
+                        $queryDeleteCart = "DELETE c FROM `cart` AS c WHERE c.`UserId` = ? AND c.`BookId` = ?";
+                        $parameters = [$invoiceDetail['userId'], $invoiceDetail['bookId']];
+                        DP::run_query($queryDeleteCart, $parameters, 1);
+                    }
+                }
+            }
+            $response['status'] = 'success';
+        } else {
+            // Xác minh thất bại
+            $response['status'] = 'error';
+            $response['message'] = 'Invalid OTP. Please try again.';
+        }
+        return $response;
+    }
+    public static function Send_otp($email,)
+    {
+        // Đường dẫn đến các file của PHPMailer
+        require '../assets/PHPMailer-master/src/Exception.php';
+        require '../assets/PHPMailer-master/src/PHPMailer.php';
+        require '../assets/PHPMailer-master/src/SMTP.php';
+
+        // Bắt đầu phiên làm việc
+        session_start();
+
+        // Đặt kiểu dữ liệu là JSON
+        header('Content-Type: application/json');
+
+        // Khởi tạo một mảng phản hồi
+        $response = array();
+
+        // Kiểm tra xem có dữ liệu email được gửi từ form POST hay không
+            $otp = rand(1000, 9999);
+
+            try {
+                // Tạo một đối tượng PHPMailer
+                $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+
+                // Thiết lập các thông số máy chủ SMTP
+                $mail->isSMTP(); // Sử dụng SMTP
+                $mail->Host = 'smtp.gmail.com'; // Địa chỉ máy chủ SMTP của bạn
+                $mail->SMTPAuth = true; // Bật xác thực SMTP
+                $mail->Username = 'phamtrikhai2003@gmail.com'; // Tài khoản email của bạn
+                $mail->Password = 'bjkuqcbzpnfaluxb'; // Mật khẩu ứng dụng của bạn
+                $mail->SMTPSecure = 'ssl'; // Bật mã hóa SSL
+                $mail->Port = 465; // Cổng SMTP - 465 cho SSL, 587 cho TLS
+
+                // Thiết lập các thông tin email
+                $mail->setFrom('phamtrikhai2003@gmail.com', 'Helllo'); // Đặt email người gửi
+                $mail->addAddress($email); // Thêm địa chỉ email người nhận
+                $mail->isHTML(true); // Đặt định dạng email là HTML
+                $mail->Subject = 'Test Email'; // Đặt tiêu đề email
+                $mail->Body = 'Mã OTP của bạn là:' . $otp; // Đặt nội dung email
+
+                // Gửi email
+                if ($mail->send()) {
+                    $_SESSION["OTP"] = $otp;
+                    $response['status'] = 'success';
+                    $response['message'] = 'Email sent successfully.';
+                } else {
+                    $response['status'] = 'error';
+                    $response['message'] = 'Mailer Error: ' . $mail->ErrorInfo;
+                }
+            } catch (Exception $e) {
+                $response['status'] = 'error';
+                $response['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+            }
+
+            // Trả về kết quả dưới dạng JSON
+            echo json_encode($response);
+            exit;  
+    }
 }
 ?>

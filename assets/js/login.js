@@ -18,7 +18,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
       if (data.status === 'success') {
         // Lưu JWT vào localStorage
         localStorage.setItem('jwt_token', data.token);
-        console.log('Đăng nhập thành công, token:', data.token);
+        window.location.href = 'index.php';
       } else {
         var mms= document.querySelector('.mms');
         mms.textContent = data.message;

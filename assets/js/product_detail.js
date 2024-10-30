@@ -275,13 +275,11 @@ if(binName!=null){
                 quantity: Quantityvalue,
             });
             console.log(selectedProducts);
-            // Chuyển đổi selectedProducts thành chuỗi JSON
-            var selectedProductsJSON = JSON.stringify(selectedProducts);
-            console.log(selectedProductsJSON);
-            // Lưu danh sách sản phẩm đã chọn vào Local Storage
-            localStorage.setItem('selectedProducts', selectedProductsJSON);
-            // Chuyển hướng đến trang thanh toán và truyền danh sách sản phẩm đã chọn qua tham số URL
-            window.location.href = 'index.php?template=checkout/checkout&selectedProducts=' + encodeURIComponent(selectedProductsJSON);
+           // Chuyển đổi selectedProducts thành chuỗi JSON và lưu vào Local Storage
+             localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+
+            // Chuyển hướng đến trang thanh toán mà không cần truyền dữ liệu qua URL
+            window.location.href = 'index.php?src=checkout/checkout';
         }
     });
 
