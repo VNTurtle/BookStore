@@ -1,26 +1,13 @@
 <?php
-
-// Kiểm tra xem session 'Id' có giá trị hay không
-if (isset($_SESSION['Id'])) {
-    $userId = $_SESSION['Id'];
-    $query = "SELECT c.UserId, b.*, c.Quantity, i.Path
-            FROM Cart c 
-            JOIN Account a ON c.UserId = a.Id 
-            JOIN Book b ON c.BookId = b.Id 
-            LEFT JOIN `image` i ON b.Id = i.BookId 
-            WHERE c.UserId = $userId AND i.Id = (
-                SELECT MIN(i2.Id)
-                FROM `image` i2
-                WHERE i2.BookId = b.Id
-            );";
-    $Lst_Cart = DP::run_query($query, $parameters, $resultType);
-}
-
 require 'src/layout/header.php';
-
 ?>
 
 <link rel="stylesheet" href="assets/css/cart.css">
+
+<?php
+    require_once('API/Cart.php');
+    $Lst_Cart= Cart::getCartbyUserId($userId)
+?>
 <div class="bodywrap" style="margin-top: 30px;">
     <div class="cart container">
         <div class="page-title">
@@ -123,7 +110,7 @@ require 'src/layout/header.php';
         </div>
     </div>
 </div>
-
+<script></script>
 <?php
     require 'src/layout/footer.php';
 ?>

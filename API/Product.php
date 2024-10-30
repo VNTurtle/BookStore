@@ -6,7 +6,7 @@ class Product{
         FROM book b";
         $parameters = []; 
         $resultType = 2; 
-        DP::run_query($query, $parameters, $resultType);
+        return DP::run_query($query, $parameters, $resultType);
     }
     public static function getProductById($id){
         $query = "SELECT b.*, m.Model, m.ModelBin,m.Alpha,m.Beta,m.Radius,m.Target_x,m.Target_y,m.Target_z, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName

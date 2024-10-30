@@ -16,7 +16,17 @@ foreach ($bookTypeIds as $bookType) {
     // Hợp nhất kết quả truy vấn vào danh sách
     $typedetailList = array_merge($typedetailList, $typeDetails);
 }
+session_start();
+$userId= $_SESSION['Id'];
 
+if (isset($_GET['logout'])) {
+    // Hủy toàn bộ phiên
+    session_destroy();
+
+    // Chuyển hướng người dùng đến trang đăng nhập hoặc trang khác
+    header("Location: index.php");
+    exit;
+}
 ?>
 <div class="opacity-menu" onclick="CLoseMenu()"></div>
 <header class="header">
@@ -68,28 +78,29 @@ foreach ($bookTypeIds as $bookType) {
                         <i style="width: 25px; height: 25px; color: #000;" class="fa-regular fa-user"></i>
                         <ul class="Show-account" id="auth-links">
                             <script>
-                                var token=localStorage.jwt_token;
-                                const base64Url = token.split('.')[1];
-                                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                                const jsonPayload = decodeURIComponent(
-                                    atob(base64)
-                                    .split('')
-                                    .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                                    .join('')
-                                );
-
-                                const decoded = JSON.parse(jsonPayload);
-                                const role =decoded.data.role;
+                                var token = localStorage.jwt_token;
                                 const authLinks = document.getElementById('auth-links');
-                                if (localStorage.jwt_token == null) {
+                                if (token == null) {
                                     authLinks.innerHTML = `<li>
                                                 <a href="index.php?src=user/login">Login</a>
                                             </li>
                                             <li>
                                                 <a href="index.php?src=user/register">Register</a>
                                             </li>`;
-                                } else if(role==1){
-                                    authLinks.innerHTML = `
+                                } else {
+                                    const base64Url = token.split('.')[1];
+                                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                                    const jsonPayload = decodeURIComponent(
+                                        atob(base64)
+                                        .split('')
+                                        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                                        .join('')
+                                    );
+
+                                    const decoded = JSON.parse(jsonPayload);
+                                    const role = decoded.data.role;
+                                    if (role == 1) {
+                                        authLinks.innerHTML = `
                                             <li>
                                                 <a href="index.php?src=user/profile">Cá nhân</a>
                                             </li>
@@ -100,11 +111,11 @@ foreach ($bookTypeIds as $bookType) {
                                                 <a href="">Admin</a>
                                             </li>
                                             <li>
-                                                <a href="index.php?logout=true">Logout</a>
+                                                <a href="index.php?logout=true" id="logoutLink">Logout</a>
                                             </li>
                                             `;
-                                }else{
-                                    authLinks.innerHTML = `
+                                    } else {
+                                        authLinks.innerHTML = `
                                             <li>
                                                 <a href="index.php?src=user/profile">Cá nhân</a>
                                             </li>
@@ -112,9 +123,11 @@ foreach ($bookTypeIds as $bookType) {
                                                 <a href="index.php?src=invoice/invoice">Đơn hàng</a>
                                             </li>
                                             <li>
-                                                <a href="index.php?logout=true">Logout</a>
+                                                <a href="index.php?logout=true" id="logoutLink">Logout</a>
                                             </li>
                                             `;
+                                    }
+
                                 }
                             </script>
                         </ul>
@@ -134,31 +147,44 @@ foreach ($bookTypeIds as $bookType) {
                         <li class="d-lg-none d-block account-mb">
                             <ul id="ullink">
                             <script>
-                                const ullink = document.getElementById('ullink');
-                                if (localStorage.jwt_token == null) {
-                                    ullink.innerHTML = `<li>
+                                var token = localStorage.jwt_token;
+                               
+                                if (token == null) {
+                                    authLinks.innerHTML = `<li>
                                                 <a href="index.php?src=user/login">Login</a>
                                             </li>
                                             <li>
                                                 <a href="index.php?src=user/register">Register</a>
                                             </li>`;
-                                } else if(role==1){
-                                    ullink.innerHTML = `
+                                } else {
+                                    const base64Url = token.split('.')[1];
+                                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                                    const jsonPayload = decodeURIComponent(
+                                        atob(base64)
+                                        .split('')
+                                        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                                        .join('')
+                                    );
+
+                                    const decoded = JSON.parse(jsonPayload);
+                                    const role = decoded.data.role;
+                                    if (role == 1) {
+                                        authLinks.innerHTML = `
                                             <li>
                                                 <a href="index.php?src=user/profile">Cá nhân</a>
                                             </li>
                                             <li>
                                                 <a href="index.php?src=invoice/invoice">Đơn hàng</a>
                                             </li>
-                                            <li style="margin-top: 1rem;">
+                                            <li>
                                                 <a href="">Admin</a>
                                             </li>
-                                            <li style="margin-top: 1rem;">
-                                                <a href="index.php?logout=true">Logout</a>
+                                            <li>
+                                                <a href="index.php?logout=true" id="logoutLink">Logout</a>
                                             </li>
                                             `;
-                                }else{
-                                    ullink.innerHTML = `
+                                    } else {
+                                        authLinks.innerHTML = `
                                             <li>
                                                 <a href="index.php?src=user/profile">Cá nhân</a>
                                             </li>
@@ -166,9 +192,11 @@ foreach ($bookTypeIds as $bookType) {
                                                 <a href="index.php?src=invoice/invoice">Đơn hàng</a>
                                             </li>
                                             <li>
-                                                <a href="index.php?logout=true">Logout</a>
+                                                <a href="index.php?logout=true" id="logoutLink">Logout</a>
                                             </li>
                                             `;
+                                    }
+
                                 }
                             </script>
 

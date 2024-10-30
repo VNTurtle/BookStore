@@ -248,7 +248,7 @@ if(binName!=null){
 
             // Send AJAX request to the PHP script
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'API/add_to_cart.php', true);
+            xhr.open('POST', 'controller/add_to_cart.php', true);
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {

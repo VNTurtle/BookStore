@@ -20,7 +20,10 @@ require_once('API/User.php');
     );
 
     const decoded = JSON.parse(jsonPayload);
-    const userId = decoded.data.id;
+
+
+    const userId = decoded.data.Id;
+    console.log(userId);
 </script>
 
 <div id="opacity"></div>
@@ -254,7 +257,212 @@ require_once('API/User.php');
 
     </div>
     <!-- Form OTP, mặc định ẩn -->
-    <div id="otpContainer" style="display: none;">
+    <div id="otpContainer"
+        style="display: none; background: #fff;
+        width: 20%;
+        position: fixed;
+        top: 20% !important;
+        left: 45%;
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;">
+        <style>
+            .form {
+                margin: auto;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: space-around;
+                width: 300px;
+                background-color: white;
+                border-radius: 12px;
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 20px;
+                font-weight: bold;
+                color: black
+            }
+
+            .message {
+                color: #a3a3a3;
+                font-size: 14px;
+                margin-top: 4px;
+                text-align: center
+            }
+
+            .inputs {
+                margin-top: 10px
+            }
+
+            .inputs input {
+                width: 32px;
+                height: 32px;
+                text-align: center;
+                border: none;
+                border-bottom: 1.5px solid #d2d2d2;
+                margin: 0 10px;
+            }
+
+            .inputs input:focus {
+                border-bottom: 1.5px solid royalblue;
+                outline: none;
+            }
+
+            .action {
+                margin-top: 24px;
+                padding: 12px 16px;
+                border-radius: 8px;
+                border: none;
+                background-color: royalblue;
+                color: white;
+                cursor: pointer;
+                align-self: end;
+            }
+
+            .dot-spinner {
+                --uib-size: 5.8rem;
+                --uib-speed: .9s;
+                --uib-color: #000;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                margin: auto;
+                height: 4.8rem;
+                width: var(--uib-size);
+            }
+
+            .dot-spinner__dot {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                height: 100%;
+                width: 100%;
+            }
+
+            .dot-spinner__dot::before {
+                content: '';
+                height: 20%;
+                width: 20%;
+                border-radius: 50%;
+                background-color: var(--uib-color);
+                transform: scale(0);
+                opacity: 0.5;
+                animation: pulse0112 calc(var(--uib-speed) * 1.111) ease-in-out infinite;
+                box-shadow: 0 0 20px rgba(18, 31, 53, 0.3);
+            }
+
+            .dot-spinner__dot:nth-child(2) {
+                transform: rotate(45deg);
+            }
+
+            .dot-spinner__dot:nth-child(2)::before {
+                animation-delay: calc(var(--uib-speed) * -0.875);
+            }
+
+            .dot-spinner__dot:nth-child(3) {
+                transform: rotate(90deg);
+            }
+
+            .dot-spinner__dot:nth-child(3)::before {
+                animation-delay: calc(var(--uib-speed) * -0.75);
+            }
+
+            .dot-spinner__dot:nth-child(4) {
+                transform: rotate(135deg);
+            }
+
+            .dot-spinner__dot:nth-child(4)::before {
+                animation-delay: calc(var(--uib-speed) * -0.625);
+            }
+
+            .dot-spinner__dot:nth-child(5) {
+                transform: rotate(180deg);
+            }
+
+            .dot-spinner__dot:nth-child(5)::before {
+                animation-delay: calc(var(--uib-speed) * -0.5);
+            }
+
+            .dot-spinner__dot:nth-child(6) {
+                transform: rotate(225deg);
+            }
+
+            .dot-spinner__dot:nth-child(6)::before {
+                animation-delay: calc(var(--uib-speed) * -0.375);
+            }
+
+            .dot-spinner__dot:nth-child(7) {
+                transform: rotate(270deg);
+            }
+
+            .dot-spinner__dot:nth-child(7)::before {
+                animation-delay: calc(var(--uib-speed) * -0.25);
+            }
+
+            .dot-spinner__dot:nth-child(8) {
+                transform: rotate(315deg);
+            }
+
+            .dot-spinner__dot:nth-child(8)::before {
+                animation-delay: calc(var(--uib-speed) * -0.125);
+            }
+
+            @keyframes pulse0112 {
+
+                0%,
+                100% {
+                    transform: scale(0);
+                    opacity: 0.5;
+                }
+
+                50% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            #opacity {
+                display: none;
+            }
+
+            #opacity.hidden {
+                background: rgba(0, 0, 0, 0.8);
+                position: fixed;
+                top: 0 !important;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                z-index: 99999;
+                display: block !important;
+            }
+
+            #pay-loading.hidden {
+                display: none;
+            }
+
+            .title-pay {
+                background: #fff;
+                width: 20%;
+                position: fixed;
+                top: 20% !important;
+                left: 45%;
+                z-index: 99999;
+                height: 40%;
+                display: inline-grid;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #messenger.hidden {
+                display: none;
+            }
+        </style>
         <form class="form" id="otpForm" method="POST">
             <div class="title">OTP</div>
             <div class="title">Verification Code</div>
@@ -384,17 +592,6 @@ require_once('API/User.php');
         }
         return code;
     }
-    // Lấy thông tin từ các trường nhập liệu
-    var billingName = document.getElementById('billing-name').value;
-    var billingEmail = document.getElementById('billing-email-address').value;
-    var billingPhone = document.getElementById('billing-phone').value;
-
-    var selectedProvince = provinceSelect.options[provinceSelect.selectedIndex].text;
-    var selectedDistrict = districtSelect.options[districtSelect.selectedIndex].text;
-    var selectedWard = wardSelect.options[wardSelect.selectedIndex].text;
-    var billingAddress = document.getElementById('billing-address').value;
-    var fullAddress = billingAddress + ", " + selectedWard + ", " + selectedDistrict + ", " + selectedProvince;
-
     // Lấy tất cả các input radio của phương thức thanh toán
     var paymentMethods = document.querySelectorAll('input[name="pay-method"]');
 
@@ -421,7 +618,7 @@ require_once('API/User.php');
         var billingAddress = document.getElementById('billing-address').value;
         var fullAddress = billingAddress + ", " + selectedWard + ", " + selectedDistrict + ", " + selectedProvince;
 
-
+        console.log(userId, billingEmail, billingName, billingPhone, fullAddress);
 
         // Tạo đối tượng invoice
         const invoice = {
@@ -459,6 +656,7 @@ require_once('API/User.php');
 
             selectedProducts.push(invoiceDetail);
         });
+        console.log(selectedProducts);
 
         // Chuyển đổi selectedProducts thành chuỗi JSON để truyền qua URL
         const selectedProductsJSON = JSON.stringify(selectedProducts);
@@ -466,6 +664,7 @@ require_once('API/User.php');
         // Lựa chọn phương thức thanh toán
         if (document.getElementById('1').checked) {
             sendOtpAndRedirect();
+
         } else if (document.getElementById('2').checked) {
             // Chuyển hướng đến trang VNPAY và truyền selectedProducts qua URL
             window.location.href = 'index.php?template=checkout/vnpay_checkout&selectedProducts=' + encodeURIComponent(selectedProductsJSON);
@@ -482,7 +681,6 @@ require_once('API/User.php');
         var opacity = document.getElementById('opacity');
         opacity.classList.toggle('hidden');
         payloading.classList.remove('hidden');
-        const selectedProductsJSON = JSON.stringify(selectedProducts);
         var formData = $('#check_out').serialize();
 
         // Gửi email OTP
@@ -492,13 +690,13 @@ require_once('API/User.php');
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
-                console.log(xhr.responseText); // In ra phản hồi thô
                 if (xhr.status === 200) {
                     try {
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === "success") {
+                            document.getElementById("pay-loading").style.display = "none";
                             document.getElementById("otpContainer").style.display = "block";
-                            document.getElementById("pay-loading").style.display = "block";
+
                         } else {
                             alert("Gửi OTP thất bại. Vui lòng thử lại.");
                         }
@@ -511,61 +709,9 @@ require_once('API/User.php');
                 }
             }
         };
-
         // Gửi dữ liệu biểu mẫu đã tuần tự hóa
         xhr.send(formData);
     }
-    // Thay đổi giá trị của trường "Ngày tạo hóa đơn" thành ngày hiện tại
-    function processPayment() {
-        var payloading = document.getElementById('pay-loading');
-        var opacity = document.getElementById('opacity');
-        opacity.classList.toggle('hidden');
-        payloading.classList.remove('hidden');
-
-        // Chuỗi ký tự có thể chứa trong mã hóa đơn
-
-        // Sử dụng hàm generateInvoiceCode để tạo mã hóa đơn có 20 ký tự
-        var invoiceCode = generateInvoiceCode(20);
-
-
-        console.log(billingName);
-        console.log(invoiceCode);
-        // Tạo invoice
-        const invoice = {
-            code: invoiceCode, // Mã hóa đơn
-            username: billingName, // Tên người dùng
-            date: getCurrentDate(), // Ngày tạo hóa đơn
-            phone: billingPhone, // Số điện thoại
-            email: billingEmail, // Địa chỉ email
-            address: billingAddress + ", " + selectedWard + ", " + selectedDistrict + ", " + selectedProvince, // Địa chỉ
-            userId: userId,// ID người dùng
-            total: total, // Tổng số tiền
-            paymethodId: getSelectedPaymentMethod(), // ID phương thức thanh toán
-            quantity: count, // Số lượng
-            status: 1
-        };
-        console.log(invoice);
-        var invoiceDetails = [];
-
-        products.forEach(product => {
-            var invoiceDetail; // Reset biến invoiceDetail
-
-            invoiceDetail = {
-                parent_code: invoice.code,
-                bookId: product.id,
-                userId: userId,
-                price: product.price,
-                quantity: product.quantity,
-                orderStatusId: 1,
-                status: 1
-            };
-
-            selectedProducts.push(invoiceDetail);
-        });
-
-        sendInvoiceToServer(invoice, invoiceDetails);
-    }
-
     // Hàm lấy phương thức thanh toán được chọn
     function getSelectedPaymentMethod() {
         var paymentMethods = document.getElementsByName('pay-method');
@@ -576,30 +722,90 @@ require_once('API/User.php');
         }
         return null;
     }
+    $(document).ready(function() {
+        // Intercept form submission
+        $('#otpForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-    // Hàm gửi yêu cầu AJAX tới server
-    function sendInvoiceToServer(invoice, invoiceDetails) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "API/pay.php", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
+            var payloading = document.getElementById('pay-loading');
+            var opacity = document.getElementById('opacity');
+            opacity.classList.add('hidden');
+            payloading.classList.remove('hidden');
+            var mess=document.getElementById('messenger');
+            var billingName = document.getElementById('billing-name').value;
+            var billingEmail = document.getElementById('billing-email-address').value;
+            var billingPhone = document.getElementById('billing-phone').value;
+            var selectedProvince = provinceSelect.options[provinceSelect.selectedIndex].text;
+            var selectedDistrict = districtSelect.options[districtSelect.selectedIndex].text;
+            var selectedWard = wardSelect.options[wardSelect.selectedIndex].text;
+            var billingAddress = document.getElementById('billing-address').value;
+            var fullAddress = billingAddress + ", " + selectedWard + ", " + selectedDistrict + ", " + selectedProvince;
 
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.status === "success") {
-                    console.log("Invoice and invoice details saved successfully");
-                    window.location.href = 'index.php?template=invoice/invoice';
-                } else {
-                    console.error("Error saving invoice: " + response.message);
+            // Generate invoice code
+            var invoiceCode = generateInvoiceCode(20);
+
+            // Create invoice object
+            const invoice = {
+                code: invoiceCode,
+                username: billingName,
+                date: getCurrentDate(),
+                phone: billingPhone,
+                email: billingEmail,
+                address: fullAddress,
+                userId: userId,
+                total: total,
+                paymethodId: getSelectedPaymentMethod(),
+                quantity: count,
+                status: 1
+            };
+
+            // Create invoiceDetails array
+            var invoiceDetails = [];
+            products.forEach(product => {
+                invoiceDetails.push({
+                    parent_code: invoice.code,
+                    bookId: product.id,
+                    userId: userId,
+                    price: product.price,
+                    quantity: product.quantity,
+                    orderStatusId: 1,
+                    status: 1
+                });
+            });
+
+            // Convert invoice and invoiceDetails to JSON
+            const invoiceJSON = JSON.stringify(invoice);
+            const invoiceDetailsJSON = JSON.stringify(invoiceDetails);
+
+            // Collect form data using FormData
+            var formData = new FormData(this);
+            formData.append('invoice', invoiceJSON);
+            formData.append('invoiceDetails', invoiceDetailsJSON);
+
+            $.ajax({
+                url: 'controller/pay.php', // URL to PHP handler
+                type: 'POST',
+                data: formData,
+                processData: false, // Required for FormData
+                contentType: false, // Required for FormData
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+
+                    // Kiểm tra phản hồi từ PHP
+                    if (response.status === 'success') {
+                        // Chuyển hướng về index.php khi thành công
+                        //window.location.href = 'index.php';
+                        alert("thành công")
+                    } else {
+                        // Hiển thị thông báo lỗi
+                        mess.classList.remove('hidden'); // Bỏ class 'hidden' để hiển thị thông báo
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
                 }
-            }
-        };
-
-        var data = JSON.stringify({
-            invoice: invoice,
-            invoiceDetails: invoiceDetails
+            });
         });
-
-        xhr.send(data);
-    }
+    });
 </script>

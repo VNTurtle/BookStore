@@ -31,6 +31,8 @@ class User{
             // Xác minh mật khẩu
             if (password_verify($password, $hashed_password)) {
                 // Mật khẩu đúng, tạo JWT
+                session_start();
+                $_SESSION['Id'] = $account[0]['Id'];
                 $key = base64_encode("testing1234453656347nsmvfdbsrtgjnfsjhNJFDJFujragrg"); // Khóa bí mật để ký JWT
                 $payload = [
                     'iss' => "your_website_name", // Issuer
@@ -100,12 +102,7 @@ class User{
             return "Lỗi: " . $e->getMessage();
         }
     }
-    public static function Pay($enteredOTP,$invoice,$invoiceDetails){
-        session_start();
-
-        $otpFromSession = $_SESSION["OTP"];
-        if ($enteredOTP == $otpFromSession) {
-
+    public static function Pay($invoice,$invoiceDetails){
             unset($_SESSION["OTP"]);
             $queryInvoice = "INSERT INTO `invoice` (`Code`, `Username`, `IssuedDate`, `ShippingAddress`, `ShippingPhone`, `ShippingEmail`, `UserId`, `Total`, `PaymethodId`, `Quantity`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $parameters = [$invoice['code'], $invoice['username'], $invoice['date'], $invoice['address'], $invoice['phone'], $invoice['email'], $invoice['userId'], $invoice['total'], $invoice['paymethodId'], $invoice['quantity'], $invoice['status']];
@@ -118,24 +115,9 @@ class User{
                 foreach ($invoiceDetails as $invoiceDetail) {
                     $parameters = [$invoiceDetail['parent_code'], $invoiceDetail['bookId'], $invoiceDetail['userId'], $invoiceDetail['price'], $invoiceDetail['quantity'], $invoiceDetail['orderStatusId']];
                     $ISInvoiceDetail = DP::run_query($queryInvoiceDetail, $parameters, 1);
-
-                    if ($ISInvoiceDetail <= 0) {
-                        echo json_encode(["status" => "error", "message" => "Failed to insert invoice detail."]);
-                        exit;
-                    } else {
-                        $queryDeleteCart = "DELETE c FROM `cart` AS c WHERE c.`UserId` = ? AND c.`BookId` = ?";
-                        $parameters = [$invoiceDetail['userId'], $invoiceDetail['bookId']];
-                        DP::run_query($queryDeleteCart, $parameters, 1);
-                    }
                 }
             }
-            $response['status'] = 'success';
-        } else {
-            // Xác minh thất bại
-            $response['status'] = 'error';
-            $response['message'] = 'Invalid OTP. Please try again.';
-        }
-        return $response;
+        return true;
     }
     public static function Send_otp($email,)
     {

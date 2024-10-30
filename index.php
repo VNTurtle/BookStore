@@ -22,6 +22,8 @@
     <?php
     $page = isset($_GET['src']) ? $_GET['src'] : 'home';
     // Xây dựng đường dẫn đến tệp
+    $page1 = basename($page);
+
     $pageFile = "src/{$page}.php";
 
     if (file_exists($pageFile)) {
@@ -39,14 +41,13 @@
     <?php
 // Bao gồm tệp tin JavaScript riêng của từng trang nếu có
 if (isset($page)) {
-    $pageScript = "assets/js/{$page}.js";
+    $pageScript = "assets/js/{$page1}.js";
     
     if (file_exists($pageScript)) {
         echo "<script src='{$pageScript}'></script>";
     }
 }
     ?>
-    <script src="assets/js/Product_detail.js"></script>
 </body>
 
 </html>
