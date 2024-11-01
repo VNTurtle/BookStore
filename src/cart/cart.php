@@ -47,7 +47,7 @@ require 'src/layout/header.php';
                                     <input id="<?php echo $cart_item['Id'] ?>" name="checkbox_book-1919" class="checkbox-add-cart" type="checkbox" data-price="<?php echo $cart_item['Price'] ?>" data-name="<?php echo $cart_item['Name']; ?>" data-img="<?php echo $cart_item['Path']; ?>" data-quantity="<?php echo $cart_item['Quantity']; ?>" data-price2="<?php echo $total_price ?>" />
                                 </div>
                                 <div class="img-book-cart">
-                                    <a class="book-image" href="">
+                                    <a class="book-image" href="index.php?src=product/product_detail&id=<?php echo $cart_item['Id']; ?>">
                                         <img src="assets/img/products/<?php echo $cart_item['Path'] ?>" width="120" height="120" alt="">
                                     </a>
                                 </div>
@@ -55,7 +55,7 @@ require 'src/layout/header.php';
                                     <div class="info-book-cart">
                                         <div class="name-book">
                                             <h2 class="book-name-full">
-                                                <a href=""><?php echo $cart_item['Name'] ?></a>
+                                                <a href="index.php?src=product/product_detail&id=<?php echo $cart_item['Id']; ?>"><?php echo $cart_item['Name'] ?></a>
                                             </h2>
                                         </div>
                                         <div class="price-original">

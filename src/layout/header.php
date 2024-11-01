@@ -17,7 +17,10 @@ foreach ($bookTypeIds as $bookType) {
     $typedetailList = array_merge($typedetailList, $typeDetails);
 }
 session_start();
-$userId= $_SESSION['Id'];
+if (isset($_SESSION['Id'])) {
+    $userId = $_SESSION['Id'];
+    // Thực hiện các hành động khi session Id tồn tại
+}
 
 if (isset($_GET['logout'])) {
     // Hủy toàn bộ phiên

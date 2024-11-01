@@ -24,7 +24,7 @@ if(isset($_POST['register'])){
     }else if($check==2){
         $notpassword="ConfirmPasswords không đúng";
     }else{
-        header("Location: Login.php");
+        header("Location: index.php?src=user/Login");
         exit;
     }
 }

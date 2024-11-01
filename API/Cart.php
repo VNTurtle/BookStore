@@ -8,6 +8,18 @@ class Cart{
         $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
     }
+    public static function putCart($userId, $bookId, $quantity){
+        $queryAddtoCart = "INSERT INTO `cart`(`UserId`, `BookId`, `Quantity`, `Status`) VALUES (?, ?, ?, '1')";
+        $parameters = [$userId, $bookId, $quantity];
+        $resultType = 2; 
+        return DP::run_query($queryAddtoCart, $parameters, $resultType);
+    }
+    public static function checkCart($userId, $bookId){
+        $query = "SELECT `Quantity` FROM `cart` WHERE `UserId` = ? AND `BookId` = ?";
+        $parameters = [$userId, $bookId];
+        $resultType = 2;
+        return DP::run_query($query, $parameters, $resultType);
+    }
     public static function getCartbyUserId($userId){
         $query = "SELECT c.UserId, b.*, c.Quantity, i.Path
             FROM Cart c 
@@ -23,4 +35,11 @@ class Cart{
         $resultType = 2; 
     return  DP::run_query($query, $parameters, $resultType);
     }
+    public static function updateCart($quantity, $userId, $bookId){
+        $query = "UPDATE `cart` SET `Quantity` = ? WHERE `UserId` = ? AND `BookId` = ?";
+        $parameters = [$quantity, $userId, $bookId];
+        $resultType = 2; 
+        return DP::run_query($query, $parameters, $resultType);
+    }
+
 }

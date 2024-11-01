@@ -218,8 +218,8 @@ if(binName!=null){
             tabContents[index].classList.add('active');
         });
     });
-    
     document.getElementById('product-form').addEventListener('submit', function(event) {
+        // Chuyển hướng sang trang đăng nhập nếu không có token
         event.preventDefault();
 
         var form = event.target;
@@ -241,11 +241,16 @@ if(binName!=null){
         var price2 = Quantityvalue * priceValue;
         console.log(price2);
         const selectedProducts = [];
-        if (buttonClicked === 'add-to-cart') {
-            // Handle "Add to Cart" button click
+        if (buttonClicked === 'add-to-cart') {           
+            var token=localStorage.jwt_token
+         
+            if (token==null) {            
+                window.location.href = 'index.php?src=user/Login';
+                return; 
+            }
             var formData = new FormData(form);
             console.log(formData);
-
+            document.querySelector('.thongbao').classList.add('show');
             // Send AJAX request to the PHP script
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'controller/add_to_cart.php', true);
@@ -254,7 +259,6 @@ if(binName!=null){
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         // Successfully received response
-                        document.querySelector('.thongbao').classList.add('show');
                         setTimeout(function() {
                             document.querySelector('.thongbao').classList.remove('show');
                         }, 2000);
@@ -266,6 +270,12 @@ if(binName!=null){
             };
             xhr.send(formData);
         } else if (buttonClicked === 'checkout') {
+            var token=localStorage.jwt_token
+         
+            if (token==null) {            
+                window.location.href = 'index.php?src=user/Login';
+                return; 
+            }
             selectedProducts.push({
                 id: IdProduct,
                 price: priceValue,

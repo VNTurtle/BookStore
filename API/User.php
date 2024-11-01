@@ -73,9 +73,10 @@ class User{
             // Mã hóa mật khẩu
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         
-            // Chèn người dùng mới vào cơ sở dữ liệu
-            $queryISAccount = "INSERT INTO account (FirstName, lastname, email, password, roleId) VALUES (?, ?, ?, ?, ?, ?)";
-            $parameters = [$firstname, $lastname, $email, $hashed_password, 2];
+            $fullname = $firstname . ' ' . $lastname;
+            
+            $queryISAccount = "INSERT INTO account (FirstName, lastname, email, password, fullname, roleId) VALUES (?, ?, ?, ?, ?, ?)";
+            $parameters = [$firstname, $lastname, $email, $hashed_password, $fullname, 2];
             $ISAccount = DP::run_query($queryISAccount, $parameters, $resultType);
     
             if ($ISAccount !== false) {

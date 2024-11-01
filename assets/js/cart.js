@@ -117,5 +117,5 @@ var checkoutButton = document.getElementById('checkoutButton');
 checkoutButton.addEventListener('click', function() {
     var selectedProducts = localStorage.getItem('selectedProducts');
     // Chuyển hướng đến trang thanh toán và truyền danh sách sản phẩm đã chọn qua tham số URL
-    window.location.href = 'index.php?template=checkout/checkout&selectedProducts=' + encodeURIComponent(selectedProducts);
+    window.location.href = 'index.php?src=checkout/checkout';
 });

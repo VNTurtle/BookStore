@@ -46,8 +46,49 @@ if (isset($page)) {
     if (file_exists($pageScript)) {
         echo "<script src='{$pageScript}'></script>";
     }
+    if ($page == "home") {
+        echo '<script>';
+        foreach ($bookTypeIds as $key => $BookType) {
+            echo "
+            $('.slick-slider" . $BookType['Id'] . "').slick({
+                dots: false,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                prevArrow: '.btn-pre-slider" . $BookType['Id'] . "',
+                nextArrow: '.btn-next-slider" . $BookType['Id'] . "',
+                responsive: [{
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 3,
+                            infinite: true,
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+            ";
+        }
+        echo '</script>';
+    }
 }
     ?>
+    
 </body>
 
 </html>
