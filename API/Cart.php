@@ -41,5 +41,9 @@ class Cart{
         $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
     }
-
+    public static function delateCart($userId, $bookId){
+        $query = "DELETE c FROM `cart` AS c WHERE c.`UserId` = ? AND c.`BookId` = ?";
+        $parameters = [$userId, $bookId];    
+        return DP::run_query($query, $parameters, 1); 
+    }
 }

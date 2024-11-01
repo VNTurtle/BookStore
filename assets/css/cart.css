@@ -280,4 +280,9 @@ input.checkbox-add-cart[type="checkbox"]{
     color: white !important;
 }
 
-
+.btn-checkout:disabled {
+    background-color: #ccc; 
+    color: #999; 
+    cursor: not-allowed; 
+    opacity: 0.6;
+}

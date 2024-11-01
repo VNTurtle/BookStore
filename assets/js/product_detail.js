@@ -238,8 +238,6 @@ if(binName!=null){
         }
         console.log(priceValue);
         console.log(Quantityvalue);
-        var price2 = Quantityvalue * priceValue;
-        console.log(price2);
         const selectedProducts = [];
         if (buttonClicked === 'add-to-cart') {           
             var token=localStorage.jwt_token
@@ -279,7 +277,6 @@ if(binName!=null){
             selectedProducts.push({
                 id: IdProduct,
                 price: priceValue,
-                price2: price2,
                 name: nameproduct,
                 img: Img,
                 quantity: Quantityvalue,

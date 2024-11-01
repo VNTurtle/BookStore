@@ -33,3 +33,33 @@ $('.slick-slider').slick({
     ]
 });
 
+$(document).ready(function() {
+    $('.card-button').on('click', function() {
+        var token = localStorage.jwt_token
+        if (token == null) {
+            window.location.href = 'index.php?src=user/Login';
+            return;
+        }
+        var productId = $(this).data('product-id');
+        console.log(productId);
+         // Lấy ID sản phẩm từ thuộc tính data
+        // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+        $.ajax({
+            url: 'controller/add_to_cart.php', // Đường dẫn đến file PHP xử lý
+            type: 'POST',
+            data: { 
+                Id: productId,
+                quantity: 1
+            }, // Dữ liệu gửi đi
+            success: function(response) {
+                // Xử lý phản hồi từ server
+                // Ví dụ: thông báo thành công
+                alert('Sản phẩm đã được thêm vào giỏ hàng!');
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi
+                console.error('Có lỗi xảy ra: ' + error);
+            }
+        });
+    });
+});

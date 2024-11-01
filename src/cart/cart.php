@@ -6,13 +6,18 @@ require 'src/layout/header.php';
 
 <?php
     require_once('API/Cart.php');
-    $Lst_Cart= Cart::getCartbyUserId($userId)
+    $Lst_Cart= Cart::getCartbyUserId($userId);
+    $count=0;
+    foreach ($Lst_Cart as $key => $cart_item) {
+        $count++;
+    }
+    
 ?>
 <div class="bodywrap" style="margin-top: 30px;">
     <div class="cart container">
         <div class="page-title">
             <h1>Giỏ hàng</h1>
-            <span class="cart-number-item">(2 sản phẩm)</span>
+            <span class="cart-number-item">(<?= $count ?> sản phẩm)</span>
         </div>
         <div class="row cart-content">
             <div class="col-sm-8 col-xs-12">
@@ -23,7 +28,7 @@ require 'src/layout/header.php';
                     <div>
                         <span>
                             "Chọn tất cả ("
-                            <span class="number-checkbox"></span>
+                            <span class="number-checkbox"><?= $count ?></span>
                             "sản phẩm)"
                         </span>
                     </div>
@@ -42,9 +47,9 @@ require 'src/layout/header.php';
                         foreach ($Lst_Cart as $key => $cart_item) {
                             $total_price = $cart_item['Price'] * $cart_item['Quantity'];
                         ?>
-                            <div class="item-book-cart"  data-price="<?= $cart_item['Price']; ?>">
+                            <div class="item-book-cart"  data-product-id="<?php echo $cart_item['Id'] ?>" data-price="<?= $cart_item['Price']; ?>">
                                 <div class="checkbox-book-cart">
-                                    <input id="<?php echo $cart_item['Id'] ?>" name="checkbox_book-1919" class="checkbox-add-cart" type="checkbox" data-price="<?php echo $cart_item['Price'] ?>" data-name="<?php echo $cart_item['Name']; ?>" data-img="<?php echo $cart_item['Path']; ?>" data-quantity="<?php echo $cart_item['Quantity']; ?>" data-price2="<?php echo $total_price ?>" />
+                                    <input id="<?php echo $cart_item['Id'] ?>" name="checkbox_book-1919" class="checkbox-add-cart" type="checkbox"  data-price="<?php echo $cart_item['Price'] ?>" data-name="<?php echo $cart_item['Name']; ?>" data-img="<?php echo $cart_item['Path']; ?>" data-quantity="<?php echo $cart_item['Quantity']; ?>" data-price2="<?php echo $total_price ?>" />
                                 </div>
                                 <div class="img-book-cart">
                                     <a class="book-image" href="index.php?src=product/product_detail&id=<?php echo $cart_item['Id']; ?>">
@@ -110,7 +115,25 @@ require 'src/layout/header.php';
         </div>
     </div>
 </div>
-<script></script>
+<!-- Hộp thoại xác nhận -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa sản phẩm này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <?php
     require 'src/layout/footer.php';
 ?>

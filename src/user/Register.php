@@ -17,7 +17,6 @@ if(isset($_POST['register'])){
     $password = $_POST['password'];
     $confirm_password = $_POST['cfpassword'];
     $check= User::Register($firstname, $lastname, $email, $password, $confirm_password);
-    echo $check;
     If($check==1)
     {
         $notemail="Email đã tồn tại !";

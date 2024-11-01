@@ -77,7 +77,7 @@ class User{
             
             $queryISAccount = "INSERT INTO account (FirstName, lastname, email, password, fullname, roleId) VALUES (?, ?, ?, ?, ?, ?)";
             $parameters = [$firstname, $lastname, $email, $hashed_password, $fullname, 2];
-            $ISAccount = DP::run_query($queryISAccount, $parameters, $resultType);
+            $ISAccount = DP::run_query($queryISAccount, $parameters, 1);
     
             if ($ISAccount !== false) {
                 return 3;

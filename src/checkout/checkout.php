@@ -214,12 +214,14 @@ require_once('API/User.php');
                                 // Lấy dữ liệu sản phẩm từ localStorage
                                 const products = JSON.parse(localStorage.getItem('selectedProducts')) || [];
                                 const productTable = document.getElementById('product-table');
+                                let price2=0;
                                 let total = 0;
-                                let count = 0;
+                                let count = 0;               
                                 console.log(products);
                                 // Lặp qua từng sản phẩm và thêm vào bảng
                                 products.forEach(product => {
-                                    total += product.price2;
+                                    price2=product.price*product.quantity;
+                                    total += price2;
                                     count++;
                                     const row = document.createElement('tr');
                                     row.innerHTML = `
@@ -239,11 +241,12 @@ require_once('API/User.php');
                                                     </p>
                                                     <p class="text-muted mb-0 mt-1">${product.price}0 đ x ${product.quantity}</p>
                                                 </td>
-                                                <td>${product.price2}.000 đ</td>
+                                                <td>${price2}.000 đ</td>
                                             `;
                                     productTable.appendChild(row);
                                 });
-
+                                console.log(total);
+                                
                                 // Cập nhật tổng giá trị
                                 document.getElementById('total').innerText = `${total}.000 đ`;
                                 console.log(count);

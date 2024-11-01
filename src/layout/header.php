@@ -72,11 +72,28 @@ if (isset($_GET['logout'])) {
                         <i style="width: 25px; height: 25px;" class="fa-solid fa-heart"></i>
                     </li>
                     <li class="header-cart ">
-                        <a href="index.php?src=cart/cart">
+                        <a href="index.php?src=cart/cart" id="cartLink">
                             <i style="width: 25px; height: 25px; color: #000;" class="fa-solid fa-cart-shopping"></i>
                         </a>
-
                     </li>
+                    <script>
+                        document.querySelector('.header-favourite').addEventListener('click', function(event) {
+                            var token = localStorage.jwt_token;
+                            if (token==null) {
+                                event.preventDefault(); // Ngăn không cho thực hiện hành động mặc định
+                                window.location.href = 'index.php?src=user/login'; // Chuyển hướng đến trang đăng nhập
+                            }
+                        });
+
+                        // Xử lý khi nhấn vào giỏ hàng
+                        document.querySelector('#cartLink').addEventListener('click', function(event) {
+                            var token = localStorage.jwt_token;
+                            if (token==null) {  
+                                event.preventDefault(); // Ngăn không cho thực hiện hành động mặc định
+                                window.location.href = 'index.php?src=user/login'; // Chuyển hướng đến trang đăng nhập
+                            }
+                        });
+                    </script>
                     <li class="header-account d-n">
                         <i style="width: 25px; height: 25px; color: #000;" class="fa-regular fa-user"></i>
                         <ul class="Show-account" id="auth-links">
@@ -149,30 +166,30 @@ if (isset($_GET['logout'])) {
                         </li>
                         <li class="d-lg-none d-block account-mb">
                             <ul id="ullink">
-                            <script>
-                                var token = localStorage.jwt_token;
-                               
-                                if (token == null) {
-                                    authLinks.innerHTML = `<li>
+                                <script>
+                                    var token = localStorage.jwt_token;
+
+                                    if (token == null) {
+                                        authLinks.innerHTML = `<li>
                                                 <a href="index.php?src=user/login">Login</a>
                                             </li>
                                             <li>
                                                 <a href="index.php?src=user/register">Register</a>
                                             </li>`;
-                                } else {
-                                    const base64Url = token.split('.')[1];
-                                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                                    const jsonPayload = decodeURIComponent(
-                                        atob(base64)
-                                        .split('')
-                                        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                                        .join('')
-                                    );
+                                    } else {
+                                        const base64Url = token.split('.')[1];
+                                        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                                        const jsonPayload = decodeURIComponent(
+                                            atob(base64)
+                                            .split('')
+                                            .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                                            .join('')
+                                        );
 
-                                    const decoded = JSON.parse(jsonPayload);
-                                    const role = decoded.data.role;
-                                    if (role == 1) {
-                                        authLinks.innerHTML = `
+                                        const decoded = JSON.parse(jsonPayload);
+                                        const role = decoded.data.role;
+                                        if (role == 1) {
+                                            authLinks.innerHTML = `
                                             <li>
                                                 <a href="index.php?src=user/profile">Cá nhân</a>
                                             </li>
@@ -186,8 +203,8 @@ if (isset($_GET['logout'])) {
                                                 <a href="index.php?logout=true" id="logoutLink">Logout</a>
                                             </li>
                                             `;
-                                    } else {
-                                        authLinks.innerHTML = `
+                                        } else {
+                                            authLinks.innerHTML = `
                                             <li>
                                                 <a href="index.php?src=user/profile">Cá nhân</a>
                                             </li>
@@ -198,10 +215,10 @@ if (isset($_GET['logout'])) {
                                                 <a href="index.php?logout=true" id="logoutLink">Logout</a>
                                             </li>
                                             `;
-                                    }
+                                        }
 
-                                }
-                            </script>
+                                    }
+                                </script>
 
                             </ul>
                         </li>
