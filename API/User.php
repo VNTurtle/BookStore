@@ -105,17 +105,17 @@ class User{
     }
     public static function Pay($invoice,$invoiceDetails){
             unset($_SESSION["OTP"]);
-            $queryInvoice = "INSERT INTO `invoice` (`Code`, `Username`, `IssuedDate`, `ShippingAddress`, `ShippingPhone`, `ShippingEmail`, `UserId`, `Total`, `PaymethodId`, `Quantity`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $parameters = [$invoice['code'], $invoice['username'], $invoice['date'], $invoice['address'], $invoice['phone'], $invoice['email'], $invoice['userId'], $invoice['total'], $invoice['paymethodId'], $invoice['quantity'], $invoice['status']];
+            $queryInvoice = "INSERT INTO `invoice` (`Code`, `Username`, `IssuedDate`, `ShippingAddress`, `ShippingPhone`, `ShippingEmail`, `UserId`, `Total`, `PaymethodId`, `Quantity`, `OrderStatusId`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $parameters = [$invoice['code'], $invoice['username'], $invoice['date'], $invoice['address'], $invoice['phone'], $invoice['email'], $invoice['userId'], $invoice['total'], $invoice['paymethodId'], $invoice['quantity'], $invoice['orderStatusId']];
             $ISInvoice = DP::run_query($queryInvoice, $parameters, 1);
 
 
             if ($ISInvoice > 0) {
-                $queryInvoiceDetail = "INSERT INTO `invoicedetail` (`Parent_code`, `BookId`, `UserId`, `UnitPrice`, `Quantity`, `OrderStatusId`) VALUES (?, ?, ?, ?, ?, ?)";
+                $queryInvoiceDetail = "INSERT INTO `invoicedetail` (`Parent_code`, `BookId`, `UserId`, `UnitPrice`, `Quantity`) VALUES (?, ?, ?, ?, ?)";
 
                 foreach ($invoiceDetails as $invoiceDetail) {
-                    $parameters = [$invoiceDetail['parent_code'], $invoiceDetail['bookId'], $invoiceDetail['userId'], $invoiceDetail['price'], $invoiceDetail['quantity'], $invoiceDetail['orderStatusId']];
-                    $ISInvoiceDetail = DP::run_query($queryInvoiceDetail, $parameters, 1);
+                    $parameters = [$invoiceDetail['parent_code'], $invoiceDetail['bookId'], $invoiceDetail['userId'], $invoiceDetail['price'], $invoiceDetail['quantity']];
+                    DP::run_query($queryInvoiceDetail, $parameters, 1);
                 }
             }
         return true;

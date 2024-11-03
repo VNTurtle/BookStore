@@ -20,10 +20,7 @@ $otpFromSession = $_SESSION["OTP"];
         $response['message'] = 'Invalid OTP. Please try again.';
         
     }else {
-       if(User::Pay($invoice, $invoiceDetails)){
-        foreach($invoiceDetails as $invoiceDetail){
-            Cart::delateCart($userId, $invoiceDetail['bookId']);
-        }          
+       if(User::Pay($invoice, $invoiceDetails)){        
             $response['status'] = 'success';       
        };
     }

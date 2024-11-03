@@ -286,7 +286,7 @@ if(binName!=null){
              localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
 
             // Chuyển hướng đến trang thanh toán mà không cần truyền dữ liệu qua URL
-            window.location.href = 'index.php?src=checkout/checkout';
+            window.location.href = 'index.php?src=checkout/checkout_2';
         }
     });
 
