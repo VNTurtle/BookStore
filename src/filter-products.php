@@ -15,7 +15,7 @@ $maxPrice = PHP_INT_MAX;
 
 if (in_array('Dưới 10.000đ', $priceRanges)) {
     $minPrice = 0;
-    $maxPrice = 10.000;
+    $maxPrice = 9.999;
 } elseif (in_array('Từ 10.000đ - 50.000đ', $priceRanges)) {
     $minPrice = 10.000;
     $maxPrice = 50.000;
@@ -38,4 +38,5 @@ $filteredProducts = LstProduct::getFilteredProducts($lst_id, $lst_id2, $minPrice
 
 // Trả về dữ liệu JSON
 echo json_encode($filteredProducts);
+
 exit;
