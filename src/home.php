@@ -105,11 +105,8 @@ $lst_bv = Product::getProduct();
             </section> -->
         <section class="section-product section-product1">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-xl-3 col-sm-5 d-none d-sm-block">
-                        <!-- <canvas id="<?php echo $BookType['Name'] ?>" class="3D-booktype" height="400" width="330"></canvas> -->
-                    </div>
-                    <div class="col-lg-8 col-xl-9 col-sm-7">
+                <div class="">
+                    <div class="">
                         <div class="group-title-index">
                             <h3 class="title">
                                 <a class="title-name" href=""><?php echo $BookType['Name']  ?>
@@ -154,7 +151,7 @@ $lst_bv = Product::getProduct();
                             <button class="btn-next btn-next-slider<?php echo $BookType['Id'] ?>"><i class='fa fa-angle-right' aria-hidden='true'></i></button>
                         </div>
                         <div class="see-more">
-                            <a href="" title="xem tất cả">Xem tất cả</a>
+                            <a href="index.php?src=product/lst_product&lst_id=<?=$BookType['Id']?>" title="xem tất cả">Xem tất cả</a>
                         </div>
                     </div>
                 </div>

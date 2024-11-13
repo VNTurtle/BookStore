@@ -54,7 +54,7 @@ if (isset($page)) {
                 dots: false,
                 infinite: true,
                 speed: 300,
-                slidesToShow: 4,
+                slidesToShow: 5,
                 slidesToScroll: 1,
                 prevArrow: '.btn-pre-slider" . $BookType['Id'] . "',
                 nextArrow: '.btn-next-slider" . $BookType['Id'] . "',

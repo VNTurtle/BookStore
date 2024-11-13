@@ -161,7 +161,7 @@
 }
 
 .invoice-page .invoice-header-info div:nth-child(1) {
-    width: 60%;
+    width: 45%;
     text-align: left;
     padding-left: 10px;
 }
@@ -172,6 +172,10 @@
 }
 
 .invoice-page .invoice-header-info div:nth-child(3) {
+    width: 20%;
+    text-align: center;
+}
+.invoice-page .invoice-header-info div:nth-child(4) {
     width: 20%;
     text-align: center;
 }
