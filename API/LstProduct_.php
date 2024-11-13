@@ -11,33 +11,35 @@ class LstProduct
         if ($conn === null) {
             throw new Exception("Kết nối đến cơ sở dữ liệu thất bại.");
         }
-
+        
         // Truy vấn lấy sản phẩm với các tiêu chí lọc
-        $sql = "SELECT b.Id AS BookId,
+        $query =
+        "SELECT b.Id AS BookId,
                        b.Name AS BookName,
                        b.Price,
                        b.TypeId,
-                       bt.Name AS BookTypeName,
+                       t.Name AS BookTypeName,
                        i.Path
                 FROM book b
-                JOIN Type bt ON b.TypeId = bt.Id
+                JOIN booktype bt ON b.Id = bt.BookId
+                JOIN type t ON t.Id = b.TypeId
                 LEFT JOIN image i ON b.Id = i.BookId
-                LEFT JOIN typedetail td ON td.TypeId = b.TypeId
+                LEFT JOIN typedetail td ON td.  Id = bt.TypedetailId
                 WHERE i.Id = (SELECT MIN(i2.Id) FROM image i2 WHERE i2.BookId = b.Id)";
-
-        // Thêm điều kiện lọc vào truy vấn
         if (!is_null($lst_id)) {
-            $sql .= " AND b.TypeId = :lst_id";
+            $query .= " AND b.TypeId = :lst_id";
+            $parameters[':lst_id'] = $lst_id;
         }
         if (!is_null($lst_id2)) {
-            $sql .= " AND td.Id = :lst_id2";
+            $query .= " AND td.Id = :lst_id2";
+                $parameters[':lst_id2'] = $lst_id2;
         }
         if ($minPrice >= 0 && $maxPrice < PHP_INT_MAX) {
-            $sql .= " AND b.Price BETWEEN :minPrice AND :maxPrice";
+            $query .= " AND b.Price BETWEEN :minPrice AND :maxPrice";
         }
 
         // Chuẩn bị truy vấn
-        $stmt = $conn->prepare($sql);
+        $stmt = $conn->prepare($query);
 
         // Ràng buộc các tham số nếu có
         if (!is_null($lst_id)) {

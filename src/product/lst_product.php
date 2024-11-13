@@ -96,67 +96,29 @@ require 'src/layout/header.php';
                         <div class="aside-content">
                             <ul>
                                 <li class="aside-content-item">
-                                    <input class="aside-item-input" type="checkbox">
-                                    <label class="aside-item-name" for="">Dưới 10.000đ</label>
+                                    <input class="aside-item-input" type="checkbox" id="checkbox1">
+                                    <label class="aside-item-name" for="checkbox1">Dưới 10.000đ</label>
                                 </li>
                                 <li class="aside-content-item">
-                                    <input class="aside-item-input" type="checkbox">
-                                    <label class="aside-item-name" for="">Từ 10.000đ - 50.000đ</label>
+                                    <input class="aside-item-input" type="checkbox" id="checkbox2">
+                                    <label class="aside-item-name" for="checkbox2">Từ 10.000đ - 50.000đ</label>
                                 </li>
                                 <li class="aside-content-item">
-                                    <input class="aside-item-input" type="checkbox">
-                                    <label class="aside-item-name" for="">Từ 50.000đ - 100.000đ</label>
+                                    <input class="aside-item-input" type="checkbox" id="checkbox3">
+                                    <label class="aside-item-name" for="checkbox3">Từ 50.000đ - 100.000đ</label>
                                 </li>
                                 <li class="aside-content-item">
-                                    <input class="aside-item-input" type="checkbox">
-                                    <label class="aside-item-name" for="">Từ 100.000đ - 300.000đ</label>
+                                    <input class="aside-item-input" type="checkbox" id="checkbox4">
+                                    <label class="aside-item-name" for="checkbox4">Từ 100.000đ - 300.000đ</label>
                                 </li>
                                 <li class="aside-content-item">
-                                    <input class="aside-item-input" type="checkbox">
-                                    <label class="aside-item-name" for="">Từ 300.000đ - 500.000đ</label>
+                                    <input class="aside-item-input" type="checkbox" id="checkbox5">
+                                    <label class="aside-item-name" for="checkbox5">Từ 300.000đ - 500.000đ</label>
                                 </li>
                                 <li class="aside-content-item">
-                                    <input class="aside-item-input" type="checkbox">
-                                    <label class="aside-item-name" for=""> Trên 1 triệu</label>
+                                    <input class="aside-item-input" type="checkbox" id="checkbox6">
+                                    <label class="aside-item-name" for="checkbox6">Trên 1 triệu</label>
                                 </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-item">
-                        <div class="aside-heading">
-                            Loại bìa
-                        </div>
-                        <div class="aside-content">
-                            <ul>
-                                <?php
-                                foreach ($Lst_CoverType as $key => $lst_cv) {
-                                ?>
-                                    <li class="aside-content-item">
-                                        <input class="aside-item-input" type="checkbox">
-                                        <label class="aside-item-name" for=""><?php echo $lst_cv['Name'] ?></label>
-                                    </li>
-                                <?php
-                                }
-                                ?>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="aside-item">
-                        <div class="aside-heading">
-                            Nhà xuất bản
-                        </div>
-                        <div class="aside-content">
-                            <ul>
-                                <?php
-                                foreach ($Lst_Publisher as $key => $lst_pl) {
-                                ?>
-                                    <li class="aside-content-item">
-                                        <input class="aside-item-input" type="checkbox">
-                                        <label class="aside-item-name" for=""><?php echo $lst_pl['Name'] ?></label>
-                                    </li>
-                                <?php
-                                }
-                                ?>
                             </ul>
                         </div>
                     </div>
@@ -183,7 +145,7 @@ require 'src/layout/header.php';
                         <?php
                         if (!empty($lst_bv)) {
                             foreach ($lst_bv as $bv) {
-                                
+
                         ?>
                                 <div class="product__panel-item col-lg-3 col-md-4 col-sm-6">
                                     <div class="product__panel-item-wrap">
@@ -208,7 +170,7 @@ require 'src/layout/header.php';
                                         </div>
                                         <div class="product__panel-price">
                                             <span class="product__panel-price-current">
-                                                <?php echo $bv['Price']; ?>0 đ
+                                                <?php echo $bv['Price']; ?> đ
                                             </span>
                                         </div>
                                     </div>
@@ -248,67 +210,81 @@ require 'src/layout/header.php';
 <script src="assets/babylon/babylon.js"></script>
 <script src="assets/babylon/babylonjs.loaders.min.js"></script>
 <script>
-    // Lắng nghe sự kiện thay đổi trên các checkbox
-   // Lắng nghe sự kiện thay đổi trên các checkbox
-document.querySelectorAll('.aside-item-input').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        let selectedPrices = Array.from(document.querySelectorAll('.aside-item-input:checked'))
-            .map(cb => cb.nextElementSibling.innerText);
-
-        // In dữ liệu ra console trước khi gửi
-        console.log('Sending data:', selectedPrices);
-        
-        // Lấy giá trị lst_id và lst_id2 từ URL, nếu có
-        const params = new URLSearchParams(window.location.search);
-        const lst_id = params.get('lst_id');
-        const lst_id2 = params.get('lst_id2');
-
-        fetch('src/filter-products.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                priceRanges: selectedPrices,
-                lst_id: lst_id, // Gửi tham số lst_id nếu có
-                lst_id2: lst_id2 // Gửi tham số lst_id2 nếu có
-            })
-        })
-        .then(response => response.text()) // Sử dụng .text() thay vì .json()
-        .then(data => {
-            console.log('Raw response:', data); // In ra dữ liệu thô nhận được
-            try {
-                const jsonData = JSON.parse(data); // Cố gắng phân tích dữ liệu nếu là JSON
-                console.log('Filtered products:', jsonData);
-                updateProductList(jsonData);
-            } catch (error) {
-                console.error('JSON parse error:', error);
+const checkboxes = document.querySelectorAll('.aside-item-input');
+checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('click', function() {
+        // Nếu một checkbox được chọn, bỏ chọn các checkbox khác
+        checkboxes.forEach(function(otherCheckbox) {
+            if (otherCheckbox !== checkbox) {
+                otherCheckbox.checked = false;  // Bỏ chọn các checkbox khác
             }
-        })
-        .catch(error => {
-            console.log("Lỗi AJAX:", error);
         });
     });
 });
-// Hàm lấy các khoảng giá đã được chọn
-function getSelectedRanges() {
-    const selectedRanges = [];
-    document.querySelectorAll('.aside-item-input').forEach(checkbox => {
-        if (checkbox.checked) {
-            selectedRanges.push(checkbox.nextElementSibling.textContent.trim());
-        }
-    });
-    return selectedRanges;
-}
-function updateProductList(products) {
-    const productContainer = document.querySelector('.product-container .row');
-    productContainer.innerHTML = ''; // Xóa các sản phẩm cũ
 
-    if (products.length > 0) {
-        products.forEach(product => {
-            const productElement = document.createElement('div');
-            productElement.classList.add('product__panel-item', 'col-lg-3', 'col-md-4', 'col-sm-6');
-            productElement.innerHTML = `
+</script>
+<script>
+    document.querySelectorAll('.aside-item-input').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            let selectedPrices = Array.from(document.querySelectorAll('.aside-item-input:checked'))
+                .map(cb => cb.nextElementSibling.innerText);
+
+            // In dữ liệu ra console trước khi gửi
+            console.log('Sending data:', selectedPrices);
+
+            // Lấy giá trị lst_id và lst_id2 từ URL, nếu có
+            const params = new URLSearchParams(window.location.search);
+            const lst_id = params.get('lst_id');
+            const lst_id2 = params.get('lst_id2');
+
+            fetch('src/filter-products.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        priceRanges: selectedPrices,
+                        lst_id: lst_id, // Gửi tham số lst_id nếu có
+                        lst_id2: lst_id2 // Gửi tham số lst_id2 nếu có
+                    })
+                })
+                .then(response => response.text()) // Sử dụng .text() thay vì .json()
+                .then(data => {
+                    console.log('Raw response:', data); // In ra dữ liệu thô nhận được
+                    try {
+                        const jsonData = JSON.parse(data); // Cố gắng phân tích dữ liệu nếu là JSON
+                        console.log('Filtered products:', jsonData);
+                        updateProductList(jsonData);
+                    } catch (error) {
+                        console.error('JSON parse error:', error);
+                    }
+                })
+                .catch(error => {
+                    console.log("Lỗi AJAX:", error);
+                });
+        });
+    });
+    // Hàm lấy các khoảng giá đã được chọn
+    function getSelectedRanges() {
+        const selectedRanges = [];
+        document.querySelectorAll('.aside-item-input').forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedRanges.push(checkbox.nextElementSibling.textContent.trim());
+            }
+        });
+        return selectedRanges;
+    }
+
+
+    function updateProductList(products) {
+        const productContainer = document.querySelector('.product-container .row');
+        productContainer.innerHTML = ''; // Xóa các sản phẩm cũ
+
+        if (products.length > 0) {
+            products.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.classList.add('product__panel-item', 'col-lg-3', 'col-md-4', 'col-sm-6');
+                productElement.innerHTML = `
                 <div class="product__panel-item-wrap">
                     <div class="product__panel-img-wrap">
                         <a href="index.php?src=product/product_detail&id=${product.BookId}">
@@ -334,12 +310,12 @@ function updateProductList(products) {
                     </div>
                 </div>
             `;
-            productContainer.appendChild(productElement);
-        });
-    } else {
-        productContainer.innerHTML = '<p>Không có sản phẩm nào phù hợp.</p>';
+                productContainer.appendChild(productElement);
+            });
+        } else {
+            productContainer.innerHTML = '<p>Không có sản phẩm nào phù hợp.</p>';
+        }
     }
-}
 </script>
 
 <?php
