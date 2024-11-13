@@ -128,7 +128,7 @@ if (isset($_GET['logout'])) {
                                                 <a href="index.php?src=invoice/invoice">Đơn hàng</a>
                                             </li>
                                             <li>
-                                                <a href="index.php?src=admin">Admin</a>
+                                                <a href="index.php?src=admin/home">Admin</a>
                                             </li>
                                             <li>
                                                 <a href="index.php?logout=true" id="logoutLink">Logout</a>
@@ -197,7 +197,7 @@ if (isset($_GET['logout'])) {
                                                 <a href="index.php?src=invoice/invoice">Đơn hàng</a>
                                             </li>
                                             <li>
-                                                <a href="index.php?src=admin">Admin</a>
+                                                <a href="index.php?src=admin/home">Admin</a>
                                             </li>
                                             <li>
                                                 <a href="index.php?logout=true" id="logoutLink">Logout</a>

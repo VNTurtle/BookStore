@@ -2,36 +2,50 @@
 require_once('db.php');
 class Product{  
     public static function getProduct(){
-        $query =
-        "SELECT 
-b.Id,
-b.Name AS BookName, 
-b.Price, 
-b.TypeId, 
-bt.Name AS BookTypeName,
-i.Path
-FROM 
-`book` b
-JOIN 
-`Type` bt ON b.TypeId = bt.Id
-LEFT JOIN 
-`image` i ON b.Id = i.BookId
-WHERE 
-i.Id = (
-    SELECT MIN(i2.Id)
-    FROM `image` i2
-    WHERE i2.BookId = b.Id
-);";
+        $query ="SELECT b.*, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName, i.Path
+                        FROM book b
+                        LEFT JOIN Type bt ON b.TypeId = bt.Id
+                        JOIN Size s ON b.SizeId = s.Id
+                        JOIN Publisher p ON b.PublisherId = p.Id
+                        JOIN covertype cv ON b.CoverTypeId = cv.Id
+                        JOIN 
+                            `image` i ON b.Id = i.BookId
+                            WHERE 
+                            i.Id = (
+                                SELECT MIN(i2.Id)
+                                FROM `image` i2
+                                WHERE i2.BookId = b.Id
+                            )";
+        $parameters = []; 
+        $resultType = 2; 
+        return DP::run_query($query, $parameters, $resultType);
+    }
+    public static function getProductBySL($offset, $slsp){
+        $query ="SELECT b.*, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName, i.Path
+                        FROM book b
+                        LEFT JOIN Type bt ON b.TypeId = bt.Id
+                        JOIN Size s ON b.SizeId = s.Id
+                        JOIN Publisher p ON b.PublisherId = p.Id
+                        JOIN covertype cv ON b.CoverTypeId = cv.Id
+                        JOIN 
+                            `image` i ON b.Id = i.BookId
+                            WHERE 
+                            i.Id = (
+                                SELECT MIN(i2.Id)
+                                FROM `image` i2
+                                WHERE i2.BookId = b.Id
+                            ) LIMIT $offset, $slsp";
         $parameters = []; 
         $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
     }
     public static function getProductById($id){
-        $query = "SELECT b.*, m.Model, m.ModelBin,m.Alpha,m.Beta,m.Radius,m.Target_x,m.Target_y,m.Target_z, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName
+        $query = "SELECT b.*, m.Model, m.ModelBin,m.Alpha,m.Beta,m.Radius,m.Target_x,m.Target_y,m.Target_z, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName,cb.Name AS NameCombo
         FROM book b
         LEFT JOIN model m ON b.Id = m.BookId
         JOIN Type bt ON b.TypeId = bt.Id
         JOIN Size s ON b.SizeId = s.Id
+        JOIN combobook cb ON b.ComboBookId=cb.Id
         JOIN Publisher p ON b.PublisherId = p.Id
         JOIN covertype cv ON b.CoverTypeId = cv.Id
         WHERE b.Id = $id;";
@@ -116,5 +130,6 @@ i.Id = (
         $filename = preg_replace('/[^-\w.]+/', '', $filename);
         return $filename;
     }
+
 }
 ?>
