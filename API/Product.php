@@ -21,9 +21,10 @@ class Product{
         return DP::run_query($query, $parameters, $resultType);
     }
     public static function getProductBySL($offset, $slsp){
-        $query ="SELECT b.*, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName, i.Path
+        $query ="SELECT b.*, bt.Name AS BookTypeName, m.Model, m.ModelBin, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName, i.Path
                         FROM book b
                         LEFT JOIN Type bt ON b.TypeId = bt.Id
+                        LEFT JOIN model m ON b.Id = m.BookId
                         JOIN Size s ON b.SizeId = s.Id
                         JOIN Publisher p ON b.PublisherId = p.Id
                         JOIN covertype cv ON b.CoverTypeId = cv.Id
@@ -40,12 +41,12 @@ class Product{
         return DP::run_query($query, $parameters, $resultType);
     }
     public static function getProductById($id){
-        $query = "SELECT b.*, m.Model, m.ModelBin,m.Alpha,m.Beta,m.Radius,m.Target_x,m.Target_y,m.Target_z, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName,cb.Name AS NameCombo
+        $query = "SELECT b.*,m.Id AS IdModel, m.Model, m.ModelBin,m.Alpha,m.Beta,m.Radius,m.Target_x,m.Target_y,m.Target_z, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName,cb.Name AS NameCombo
         FROM book b
         LEFT JOIN model m ON b.Id = m.BookId
         JOIN Type bt ON b.TypeId = bt.Id
         JOIN Size s ON b.SizeId = s.Id
-        JOIN combobook cb ON b.ComboBookId=cb.Id
+        LEFT JOIN combobook cb ON b.ComboBookId=cb.Id
         JOIN Publisher p ON b.PublisherId = p.Id
         JOIN covertype cv ON b.CoverTypeId = cv.Id
         WHERE b.Id = $id;";

@@ -9,6 +9,14 @@ require_once('API/User.php');
 <link rel="stylesheet" href="assets/sclick/css/slick.min.css">
 
 <script>
+    // Lấy dữ liệu sản phẩm từ localStorage
+    const check = JSON.parse(localStorage.getItem('selectedProducts')) || [];
+
+    // Check if selectedProducts is empty
+    if (check.length === 0) {
+        // If empty, redirect to the homepage or index page
+        window.location.href = "index.php";
+    }
     var token = localStorage.jwt_token;
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -660,8 +668,8 @@ require_once('API/User.php');
         });
         console.log(selectedProducts);
 
-        // Chuyển đổi selectedProducts thành chuỗi JSON để truyền qua URL
-        const selectedProductsJSON = JSON.stringify(selectedProducts);
+        // Chuyển đổi selectedProducts thành chuỗi JSON và lưu vào localStorage
+        localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
 
         // Lựa chọn phương thức thanh toán
         if (document.getElementById('1').checked) {
@@ -669,7 +677,7 @@ require_once('API/User.php');
 
         } else if (document.getElementById('2').checked) {
             // Chuyển hướng đến trang VNPAY và truyền selectedProducts qua URL
-            window.location.href = 'index.php?template=checkout/vnpay_checkout&selectedProducts=' + encodeURIComponent(selectedProductsJSON);
+            window.location.href = 'index.php?src=checkout/vnpay_checkout_2';
         } else if (document.getElementById('3').checked) {
             window.location.href = 'payment_method_3_url.php'; // Đường dẫn đến trang thanh toán 3
         } else {

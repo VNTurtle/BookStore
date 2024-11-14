@@ -4,7 +4,7 @@ $(document).ready(function() {
         var orderId = $(this).data('order-id');
 
         $.ajax({
-            url: 'admin/api/update_invoice.php',
+            url: 'controller/update_invoice.php',
             type: 'POST',
             data: {
                 order_status: orderStatusId,

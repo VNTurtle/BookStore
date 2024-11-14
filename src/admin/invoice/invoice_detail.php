@@ -71,7 +71,7 @@
                                     </td>
                                     <td>
                                         <span class="text-truncate align-items-center">
-                                            <?php echo $item['UnitPrice'] ?>
+                                            <?= $item['Price'] * $item['Quantity'] ?>.000 đ
                                         </span>
                                     </td>
                                 </tr>

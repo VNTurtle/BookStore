@@ -212,3 +212,5 @@ if ($book[0]['Model'] != null) {
 <?php
 require 'src/admin/layout/footer.php';
 ?>
+<script src="assets/babylon/babylon.js"></script>
+<script src="assets/babylon/babylonjs.loaders.min.js"></script>

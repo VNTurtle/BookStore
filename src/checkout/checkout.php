@@ -9,6 +9,15 @@ require_once('API/User.php');
 <link rel="stylesheet" href="assets/sclick/css/slick.min.css">
 
 <script>
+
+    // Lấy dữ liệu sản phẩm từ localStorage
+    const check = JSON.parse(localStorage.getItem('selectedProducts')) || [];
+
+    // Check if selectedProducts is empty
+    if (check.length === 0) {
+        // If empty, redirect to the homepage or index page
+        window.location.href = "index.php";
+    }
     var token = localStorage.jwt_token;
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -638,30 +647,19 @@ require_once('API/User.php');
             orderStatusId: 1
         };
 
-        // Thêm đối tượng invoice vào mảng selectedProducts
-        selectedProducts.push(invoice);
+        localStorage.setItem('invoice', JSON.stringify(invoice));
 
+        // Tạo đối tượng mang invoicedetail
+        const invoiceDetails = products.map(product => ({
+            parent_code: invoice.code,
+            bookId: product.id,
+            userId: userId,
+            price: product.price,
+            quantity: product.quantity,
+            status: 1
+        }));
 
-
-        // Vòng lặp để tạo và thêm các đối tượng invoiceDetail vào mảng selectedProducts
-        products.forEach(product => {
-            var invoiceDetail; // Reset biến invoiceDetail
-
-            invoiceDetail = {
-                parent_code: invoice.code,
-                bookId: product.id,
-                userId: userId,
-                price: product.price,
-                quantity: product.quantity,
-                status: 1
-            };
-
-            selectedProducts.push(invoiceDetail);
-        });
-        console.log(selectedProducts);
-
-        // Chuyển đổi selectedProducts thành chuỗi JSON để truyền qua URL
-        const selectedProductsJSON = JSON.stringify(selectedProducts);
+        localStorage.setItem('invoiceDetails', JSON.stringify(invoiceDetails));
 
         // Lựa chọn phương thức thanh toán
         if (document.getElementById('1').checked) {
@@ -669,7 +667,7 @@ require_once('API/User.php');
 
         } else if (document.getElementById('2').checked) {
             // Chuyển hướng đến trang VNPAY và truyền selectedProducts qua URL
-            window.location.href = 'index.php?template=checkout/vnpay_checkout&selectedProducts=' + encodeURIComponent(selectedProductsJSON);
+            window.location.href = 'index.php?src=checkout/vnpay_checkout';
         } else if (document.getElementById('3').checked) {
             window.location.href = 'payment_method_3_url.php'; // Đường dẫn đến trang thanh toán 3
         } else {
@@ -796,8 +794,7 @@ require_once('API/User.php');
                     // Kiểm tra phản hồi từ PHP
                     if (response.status === 'success') {
                         // Chuyển hướng về index.php khi thành công
-                        //window.location.href = 'index.php';
-                        alert("thành công")
+                        window.location.href = 'index.php?src=invoice/invoice';
                     } else {
                         // Hiển thị thông báo lỗi
                         mess.classList.remove('hidden'); // Bỏ class 'hidden' để hiển thị thông báo
