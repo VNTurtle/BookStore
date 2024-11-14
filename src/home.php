@@ -62,20 +62,18 @@ $lst_bv = Product::getProduct();
                                 <div class="product__panel-item-wrap">
                                     <div class="product__panel-img-wrap">
                                         <!-- Liên kết đến trang chi tiết sản phẩm -->
-<<<<<<< Updated upstream
                                         <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['Name']; ?>">
-=======
-                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['BookName']; ?>">
->>>>>>> Stashed changes
-                                            <img src="assets/img/products/<?php echo $bv['Path']; ?>" alt="" class="product__panel-img">
-                                        </a>
+                                            <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['Name']; ?>">
+
+                                                <img src="assets/img/products/<?php echo $bv['Path']; ?>" alt="" class="product__panel-img">
+                                            </a>
                                     </div>
                                     <div class="product__panel-heading">
-<<<<<<< Updated upstream
+
                                         <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="product__panel-link"><?php echo $bv['Name']; ?></a>
-=======
-                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="product__panel-link"><?php echo $bv['BookName']; ?></a>
->>>>>>> Stashed changes
+
+                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="product__panel-link"><?php echo $bv['Name']; ?></a>
+
                                     </div>
                                     <div class="product__panel-rate-wrap">
                                         <i class="fas fa-star product__panel-rate"></i>
@@ -134,7 +132,7 @@ $lst_bv = Product::getProduct();
                                             <div class="card">
                                                 <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="card-img" title="<?php echo $bv['Name'] ?>">
                                                     <img src="assets/img/Products/<?php echo $bv['Path'] ?>" alt="">
-                                                    
+
                                                 </a>
                                                 <a class="card-info" href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['Name'] ?>">
                                                     <p class="text-title"><?php echo $bv['Name'] ?></p>
@@ -159,7 +157,7 @@ $lst_bv = Product::getProduct();
                             <button class="btn-next btn-next-slider<?php echo $BookType['Id'] ?>"><i class='fa fa-angle-right' aria-hidden='true'></i></button>
                         </div>
                         <div class="see-more">
-                            <a href="index.php?src=product/lst_product&lst_id=<?=$BookType['Id']?>" title="xem tất cả">Xem tất cả</a>
+                            <a href="index.php?src=product/lst_product&lst_id=<?= $BookType['Id'] ?>" title="xem tất cả">Xem tất cả</a>
                         </div>
                     </div>
                 </div>
