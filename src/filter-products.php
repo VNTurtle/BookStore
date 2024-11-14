@@ -39,4 +39,8 @@ $filteredProducts = LstProduct::getFilteredProducts($lst_id, $lst_id2, $minPrice
 // Trả về dữ liệu JSON
 echo json_encode($filteredProducts);
 
+<<<<<<< Updated upstream
 exit;
+=======
+exit;
+>>>>>>> Stashed changes

@@ -232,6 +232,7 @@ if (isset($_GET['logout'])) {
                         </li>
                         <li class="nav-item has-mega">
                             <a href="index.php?src=product/lst_product" class="caret-down">Sản phẩm</a>
+<<<<<<< Updated upstream
                             <div class="mega-content">
                                 <div class="lst-Type-main">
                                     <ul class="level0">
@@ -255,20 +256,49 @@ if (isset($_GET['logout'])) {
                                                                 </a>
                                                             </li>
                                                     <?php
+=======
+                                <div class="mega-content">
+                                    <div class="lst-Type-main">
+                                        <ul class="level0">
+                                            <?php
+                                            foreach ($bookTypeIds as $key => $lst_type) {
+                                            ?>
+                                                <li class="level1 item parent">
+                                                    <!-- Đường dẫn với lst_id để lọc sản phẩm theo loại sách -->
+                                                    <a href="index.php?src=product/lst_product&lst_id=<?= urlencode($lst_type['Id']) ?>" class="hmega">
+                                                        <?php echo htmlspecialchars($lst_type['Name']) ?>
+                                                    </a>
+                                                    <ul class="level1">
+                                                        <?php
+                                                        foreach ($typedetailList as $key => $lst_typedetail) {
+                                                            if ($lst_typedetail['TypeId'] == $lst_type['Id']) {
+                                                        ?>
+                                                                <!-- Đường dẫn với lst_id2 để lọc sản phẩm theo chi tiết loại sách -->
+                                                                <li class="level2">
+                                                                    <a href="index.php?src=product/lst_product&lst_id=<?= urlencode($lst_type['Id']) ?>&lst_id2=<?= urlencode($lst_typedetail['Id']) ?>">
+                                                                        <?php echo htmlspecialchars($lst_typedetail['Name']) ?>
+                                                                    </a>
+                                                                </li>
+                                                        <?php
+                                                            }
+>>>>>>> Stashed changes
                                                         }
-                                                    }
-                                                    ?>
-                                                    <li class="level2">
-                                                        <a href="index.php?src=product/lst_product" style="color: #09bfff;">Xem thêm</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        <?php
-                                        }
-                                        ?>
-                                    </ul>
+                                                        ?>
+                                                        <li class="level2">
+                                                            <a href="index.php?src=product/lst_product" style="color: #09bfff;">Xem thêm</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            <?php
+                                            }
+                                            ?>
+                                        </ul>
+                                    </div>
                                 </div>
+<<<<<<< Updated upstream
                             </div>
+=======
+>>>>>>> Stashed changes
                         </li>
                         <li class="nav-item">
                             <a href="">Hệ thống</a>

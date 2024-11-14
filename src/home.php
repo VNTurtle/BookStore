@@ -62,12 +62,20 @@ $lst_bv = Product::getProduct();
                                 <div class="product__panel-item-wrap">
                                     <div class="product__panel-img-wrap">
                                         <!-- Liên kết đến trang chi tiết sản phẩm -->
+<<<<<<< Updated upstream
                                         <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['Name']; ?>">
+=======
+                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['BookName']; ?>">
+>>>>>>> Stashed changes
                                             <img src="assets/img/products/<?php echo $bv['Path']; ?>" alt="" class="product__panel-img">
                                         </a>
                                     </div>
                                     <div class="product__panel-heading">
+<<<<<<< Updated upstream
                                         <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="product__panel-link"><?php echo $bv['Name']; ?></a>
+=======
+                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="product__panel-link"><?php echo $bv['BookName']; ?></a>
+>>>>>>> Stashed changes
                                     </div>
                                     <div class="product__panel-rate-wrap">
                                         <i class="fas fa-star product__panel-rate"></i>
