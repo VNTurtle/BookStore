@@ -43,9 +43,8 @@ if (isset($_GET['logout'])) {
                     <img class="Logo-header" src="assets/img/logo-bookstore-header.jpg" alt="Logo">
                 </a>
             </div>
-            <form class="col-lg-4 search-header" method="get">
+            <form class="col-lg-4 search-header" method="get" action="searchresult.php" >
                 <div class="InputContainer">
-                    <input type="hidden" name="template" value="search/search">
                     <input placeholder="Search.." id="timkiem" class="input" name="timkiem" type="text" onkeyup="toggleButton()">
                     <button class="btn btn-search" style="border-color: #fff; border-radius: 25px; margin: 13px; color: #09bfff;" type="submit" id="btn">
                         <i class="fa fa-search"></i>
@@ -233,43 +232,43 @@ if (isset($_GET['logout'])) {
                         </li>
                         <li class="nav-item has-mega">
                             <a href="index.php?src=product/lst_product" class="caret-down">Sản phẩm</a>
-                                <div class="mega-content">
-                                    <div class="lst-Type-main">
-                                        <ul class="level0">
-                                            <?php
-                                            foreach ($bookTypeIds as $key => $lst_type) {
-                                            ?>
-                                                <li class="level1 item parent">
-                                                    <!-- Đường dẫn với lst_id để lọc sản phẩm theo loại sách -->
-                                                    <a href="index.php?src=product/lst_product&lst_id=<?= urlencode($lst_type['Id']) ?>" class="hmega">
-                                                        <?php echo htmlspecialchars($lst_type['Name']) ?>
-                                                    </a>
-                                                    <ul class="level1">
-                                                        <?php
-                                                        foreach ($typedetailList as $key => $lst_typedetail) {
-                                                            if ($lst_typedetail['TypeId'] == $lst_type['Id']) {
-                                                        ?>
-                                                                <!-- Đường dẫn với lst_id2 để lọc sản phẩm theo chi tiết loại sách -->
-                                                                <li class="level2">
-                                                                    <a href="index.php?src=product/lst_product&lst_id=<?= urlencode($lst_type['Id']) ?>&lst_id2=<?= urlencode($lst_typedetail['Id']) ?>">
-                                                                        <?php echo htmlspecialchars($lst_typedetail['Name']) ?>
-                                                                    </a>
-                                                                </li>
-                                                        <?php
-                                                            }
+                            <div class="mega-content">
+                                <div class="lst-Type-main">
+                                    <ul class="level0">
+                                        <?php
+                                        foreach ($bookTypeIds as $key => $lst_type) {
+                                        ?>
+                                            <li class="level1 item parent">
+                                                <!-- Đường dẫn với lst_id để lọc sản phẩm theo loại sách -->
+                                                <a href="index.php?src=product/lst_product&lst_id=<?= urlencode($lst_type['Id']) ?>" class="hmega">
+                                                    <?php echo htmlspecialchars($lst_type['Name']) ?>
+                                                </a>
+                                                <ul class="level1">
+                                                    <?php
+                                                    foreach ($typedetailList as $key => $lst_typedetail) {
+                                                        if ($lst_typedetail['TypeId'] == $lst_type['Id']) {
+                                                    ?>
+                                                            <!-- Đường dẫn với lst_id2 để lọc sản phẩm theo chi tiết loại sách -->
+                                                            <li class="level2">
+                                                                <a href="index.php?src=product/lst_product&lst_id=<?= urlencode($lst_type['Id']) ?>&lst_id2=<?= urlencode($lst_typedetail['Id']) ?>">
+                                                                    <?php echo htmlspecialchars($lst_typedetail['Name']) ?>
+                                                                </a>
+                                                            </li>
+                                                    <?php
                                                         }
-                                                        ?>
-                                                        <li class="level2">
-                                                            <a href="index.php?src=product/lst_product" style="color: #09bfff;">Xem thêm</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            <?php
-                                            }
-                                            ?>
-                                        </ul>
-                                    </div>
+                                                    }
+                                                    ?>
+                                                    <li class="level2">
+                                                        <a href="index.php?src=product/lst_product" style="color: #09bfff;">Xem thêm</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        <?php
+                                        }
+                                        ?>
+                                    </ul>
                                 </div>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a href="">Hệ thống</a>
