@@ -46,16 +46,20 @@
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="index.php?folder=admin&template=product/lst_product" class="menu-link">
+          <a href="index.php?src=admin/product/lst_product_admin" class="menu-link">
             <div data-i18n="Without menu">Danh sách SP</div>
           </a>
         </li>
         <li class="menu-item">
-          <a href="index.php?folder=admin&template=model/model_product" class="menu-link">
+          <a href="index.php?src=admin/lst_img/lst_img_product" class="menu-link">
             <div data-i18n="Without navbar">Model sản phẩm</div>
           </a>
         </li>
-        <!-- Các mục khác trong Products -->
+        <li class="menu-item">
+          <a href="index.php?src=admin/lst_img/lst_img_product" class="menu-link">
+            <div data-i18n="Without navbar">Hình ảnh sản phẩm</div>
+          </a>
+        </li>
       </ul>
     </li>
 
@@ -67,17 +71,37 @@
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="index.php?folder=admin&template=invoice/lst_invoice" class="menu-link">
+          <a href="index.php?src=admin/invoice/lst_invoice" class="menu-link">
             <div data-i18n="Landing">Hóa đơn</div>
           </a>
         </li>
-        <!-- Các mục khác trong Invoice -->
+        <li class="menu-item">
+          <a href="index.php?src=admin/invoice/confirm_invoice" class="menu-link">
+            <div data-i18n="Landing">Chờ xác nhận</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="index.php?src=admin/invoice/pickup_invoice" class="menu-link">
+            <div data-i18n="Landing">Chờ lấy hàng</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="index.php?src=admin/invoice/transport_invoice" class="menu-link">
+            <div data-i18n="Landing">Đang giao hàng</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="index.php?src=admin/invoice/receive_invoice" class="menu-link">
+            <div data-i18n="Landing">Đã nhận hàng</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="index.php?src=admin/invoice/cancelled_invoice" class="menu-link">
+            <div data-i18n="Landing">Đã hủy</div>
+          </a>
+        </li>
       </ul>
     </li>
   </ul>
 </aside>
 
-<script>
-  // JavaScript để mở/đóng menu con
-
-</script>

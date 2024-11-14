@@ -62,12 +62,12 @@ $lst_bv = Product::getProduct();
                                 <div class="product__panel-item-wrap">
                                     <div class="product__panel-img-wrap">
                                         <!-- Liên kết đến trang chi tiết sản phẩm -->
-                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['BookName']; ?>">
+                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['Name']; ?>">
                                             <img src="assets/img/products/<?php echo $bv['Path']; ?>" alt="" class="product__panel-img">
                                         </a>
                                     </div>
                                     <div class="product__panel-heading">
-                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="product__panel-link"><?php echo $bv['BookName']; ?></a>
+                                        <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="product__panel-link"><?php echo $bv['Name']; ?></a>
                                     </div>
                                     <div class="product__panel-rate-wrap">
                                         <i class="fas fa-star product__panel-rate"></i>
@@ -124,12 +124,12 @@ $lst_bv = Product::getProduct();
                                 ?>
                                         <div class="swiper-slider">
                                             <div class="card">
-                                                <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="card-img" title="<?php echo $bv['BookName'] ?>">
+                                                <a href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" class="card-img" title="<?php echo $bv['Name'] ?>">
                                                     <img src="assets/img/Products/<?php echo $bv['Path'] ?>" alt="">
                                                     
                                                 </a>
-                                                <a class="card-info" href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['BookName'] ?>">
-                                                    <p class="text-title"><?php echo $bv['BookName'] ?></p>
+                                                <a class="card-info" href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['Name'] ?>">
+                                                    <p class="text-title"><?php echo $bv['Name'] ?></p>
                                                 </a>
                                                 <div class="card-footer">
                                                     <span class="text-title"><?php echo $bv['Price'] ?> Đ</span>

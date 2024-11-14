@@ -1,8 +1,8 @@
 <?php
 require_once('db.php');
 class ComboBook{  
-    public static function getImg(){
-        $query = "SELECT * FROM `invoice`";
+    public static function getComboBook(){
+        $query = "SELECT * FROM `combobook`";
         $parameters = []; 
         $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
@@ -20,6 +20,12 @@ class ComboBook{
                 )AND ComboBookId = $id;";
         $parameters = []; 
         $resultType = 2; 
+        return DP::run_query($query, $parameters, $resultType);
+    }
+    public static function putComboBook($Name){
+        $query="INSERT INTO `combobook`(`Id`, `Name`, `Status`) VALUES (null,?,true)";
+        $parameters = [$Name];   
+        $resultType = 1;
         return DP::run_query($query, $parameters, $resultType);
     }
     

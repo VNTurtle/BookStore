@@ -7,11 +7,28 @@ class Invoice{
         $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
     }
+    public static function getInvoiceAndSL($offset, $slsp){
+        $query = "SELECT * FROM `invoice`  LIMIT $offset, $slsp" ;
+        $parameters = []; 
+        $resultType = 2; 
+        return DP::run_query($query, $parameters, $resultType);
+    }
+   
     public static function getInvoiceByuserId($id){
         $query = "SELECT i.* FROM `invoice` AS i
         WHERE i.userId = $id;";
         $parameters = [];
         $resultType = 2;
+        return DP::run_query($query, $parameters, $resultType);
+    }
+    public static function getInvoicebyOrStatus($OrId,$offset, $slsp){
+        $query = "SELECT * 
+                FROM `invoice` i
+                WHERE i.OrderStatusId = $OrId  
+                ORDER BY i.IssuedDate DESC
+                LIMIT $offset, $slsp";
+        $parameters = []; 
+        $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
     }
     public static function getInvoiceByCode($code){
