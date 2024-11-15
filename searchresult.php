@@ -11,7 +11,92 @@ require_once('API/Img.php');
 require_once('API/Type.php');
 require_once('API/LstProduct_.php');
 $Lst_Type = LstProduct::getAllTypeDetailsForBookTypes();
+
 require_once('src/layout/header.php');
+
+// Lấy tham số từ URL
+$searchKeyword = isset($_GET['timkiem']) ? $_GET['timkiem'] : '';
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// Giới hạn số sản phẩm trên mỗi trang
+$limit = 20;
+$offset = ($page - 1) * $limit;
+
+// Tách các từ khóa (ngắt từ khóa bởi dấu cách)
+$keywords = explode(' ', $searchKeyword);
+
+// Tạo câu truy vấn để lấy sản phẩm với các điều kiện tìm kiếm và phân trang
+$sql = "
+    SELECT b.Name, b.Price, i.Path 
+    FROM book b
+    JOIN image i ON b.ID = i.BookID 
+    WHERE i.Id = (
+        SELECT MIN(i2.Id)
+        FROM `image` i2
+        WHERE i2.BookId = b.Id
+    )
+";
+
+// Tạo các điều kiện tìm kiếm cho mỗi từ khóa
+$conditions = [];
+foreach ($keywords as $keyword) {
+    // Thêm điều kiện tìm kiếm với mỗi từ khóa
+    $conditions[] = "b.Name LIKE :keyword";
+}
+
+// Kết hợp các điều kiện tìm kiếm vào câu SQL (nếu có nhiều từ khóa, dùng "OR" giữa các điều kiện)
+if (!empty($conditions)) {
+    $sql .= " AND (" . implode(" OR ", $conditions) . ")";
+}
+
+// Thêm phân trang vào câu truy vấn SQL
+$sql .= " LIMIT $limit OFFSET $offset";
+
+// Chạy truy vấn với các tham số tìm kiếm
+$placeholders = [];
+foreach ($keywords as $keyword) {
+    // Thêm giá trị vào placeholders cho mỗi từ khóa
+    $placeholders[":keyword"] = "%$keyword%";
+}
+$products = DP::run_query($sql, $placeholders, PDO::FETCH_ASSOC);
+
+// Lấy tổng số sản phẩm để tính tổng số trang
+$sqlCount = "
+    SELECT COUNT(*) 
+    FROM book b
+    JOIN image i ON b.ID = i.BookID 
+    WHERE i.Id = (
+        SELECT MIN(i2.Id)
+        FROM `image` i2
+        WHERE i2.BookId = b.Id
+    )
+";
+
+// Tạo các điều kiện tìm kiếm tương tự cho câu truy vấn đếm số sản phẩm
+$conditionsCount = [];
+foreach ($keywords as $keyword) {
+    $conditionsCount[] = "b.Name LIKE :keyword";
+}
+
+if (!empty($conditionsCount)) {
+    $sqlCount .= " AND (" . implode(" OR ", $conditionsCount) . ")";
+}
+
+// Chạy câu truy vấn đếm tổng số sản phẩm
+$totalProducts = DP::run_query($sqlCount, $placeholders, PDO::FETCH_ASSOC)[0]['COUNT(*)'];
+$totalPages = ceil($totalProducts / $limit);
+
+// Trả về dữ liệu JSON nếu có yêu cầu AJAX
+if (isset($_GET['ajax'])) {
+    echo json_encode([
+        'products' => $products,
+        'totalPages' => $totalPages,
+        'currentPage' => $page
+    ]);
+    exit;
+}
+
+
 ?>
 
 <link rel="stylesheet" href="assets/css/searchresult.css">
@@ -126,81 +211,60 @@ require_once('src/layout/header.php');
                 </div>
                 <div class="product-container">
                     <div class="row">
-                        <?php
-                        if (isset($_GET['timkiem'])) {
-                            $noidung = trim($_GET['timkiem']);
-                            $tukhoa = explode(' ', $noidung);
+                        <?php   
+                            echo "<h6>KẾT QUẢ TÌM KIẾM CHO: " . htmlspecialchars($noidung) . " (" . $totalProducts . " Kết quả)</h6>";
 
-                            // Khởi tạo câu lệnh SQL
-                            $sql = "
-        SELECT b.Name, b.Price, i.Path 
-        FROM book b
-        JOIN image i ON b.ID = i.BookID 
-        WHERE 
-        i.Id = (
-            SELECT MIN(i2.Id)
-            FROM `image` i2
-            WHERE i2.BookId = b.Id
-        )";
-
-                            $conditions = [];
-                            $placeholders = [];
-
-                            // Điều kiện tìm kiếm dựa trên từ khóa
-                            foreach ($tukhoa as $index => $keyword) {
-                                $conditions[] = "b.Name LIKE ?";
-                                $placeholders[] = "%$keyword%";
-                            }
-
-                            // Thêm điều kiện lọc theo giá nếu có `minPrice` và `maxPrice`
-                            if (isset($_GET['minPrice']) && isset($_GET['maxPrice'])) {
-                                $minPrice = (int)$_GET['minPrice'];
-                                $maxPrice = (int)$_GET['maxPrice'];
-                                $conditions[] = "b.Price BETWEEN ? AND ?";
-                                $placeholders[] = $minPrice;
-                                $placeholders[] = $maxPrice;
-                            }
-
-                            // Thêm điều kiện tìm kiếm vào câu SQL nếu có
-                            if (!empty($conditions)) {
-                                $sql .= " AND (" . implode(" OR ", $conditions) . ")";
-                            }
-
-                            // Thực thi câu truy vấn
-                            $ketqua = DP::run_query($sql, $placeholders, PDO::FETCH_ASSOC);
-
-                            $soluong = count($ketqua);
-                            echo "<h6>KẾT QUẢ TÌM KIẾM CHO: " . htmlspecialchars($noidung) . " (" . $soluong . " Kết quả)</h6>";
-
-                            foreach ($ketqua as $key => $lst_search) {
-                        ?>
+                            foreach ($products as $product) {
+                                ?>
                                 <div class="product__panel-item col-lg-3 col-md-4 col-sm-6">
                                     <div class="product__panel-item-wrap">
                                         <div class="product__panel-img-wrap">
-                                            <img src="assets/img/products/<?php echo htmlspecialchars($lst_search['Path']); ?>" alt="" class="product__panel-img">
+                                            <img src="assets/img/products/<?php echo htmlspecialchars($product['Path']); ?>" alt="" class="product__panel-img">
                                         </div>
                                         <div class="product__panel-heading">
-                                            <a href="product.html" class="product__panel-link"><?php echo htmlspecialchars($lst_search['Name']); ?></a>
+                                            <a href="product.html" class="product__panel-link"><?php echo htmlspecialchars($product['Name']); ?></a>
                                         </div>
                                         <div class="product__panel-rate-wrap">
-                                            <i class="fas fa-star product__panel-rate"></i>
-                                            <i class="fas fa-star product__panel-rate"></i>
-                                            <i class="fas fa-star product__panel-rate"></i>
-                                            <i class="fas fa-star product__panel-rate"></i>
-                                            <i class="fas fa-star product__panel-rate"></i>
+                                            <!-- Hiển thị 5 sao cho sản phẩm -->
+                                            <?php
+                                            $rating = 5; // Giả sử tất cả sản phẩm đều có 5 sao
+                                            for ($i = 0; $i < $rating; $i++) {
+                                                echo '<i class="fas fa-star product__panel-rate"></i>';
+                                            }
+                                            ?>
                                         </div>
                                         <div class="product__panel-price">
                                             <span class="product__panel-price-current">
-                                                <?php echo htmlspecialchars($lst_search['Price']); ?> đ
+                                                <?php echo htmlspecialchars($product['Price']); ?> đ
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                        <?php
+                                <?php
 
                             }
-                        }
                         ?>
+                        <nav class="page-book" aria-label="Page navigation example">
+                            <ul class="pagination" id="pagination-container">
+                                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                                    <a class="page-link" href="?timkiem=<?= htmlspecialchars($searchKeyword) ?>&page=<?= $page - 1 ?>&minPrice=<?= $minPrice ?>&maxPrice=<?= $maxPrice ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <?php
+                                for ($i = 1; $i <= $totalPages; $i++) {
+                                    echo "<li class='page-item " . ($i == $page ? 'active' : '') . "'><a class='page-link' href='?timkiem=" . htmlspecialchars($searchKeyword) . "&page=$i'>$i</a></li>";
+                                }
+                                ?>
+
+                                <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                                    <a class="page-link" href="?timkiem=<?= htmlspecialchars($searchKeyword) ?>&page=<?= $page + 1 ?>&minPrice=<?= $minPrice ?>&maxPrice=<?= $maxPrice ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -211,7 +275,8 @@ require_once('src/layout/header.php');
 
 <script src="assets/babylon/babylon.js"></script>
 <script src="assets/babylon/babylonjs.loaders.min.js"></script>
-
+<script>
+</script>
 <?php
 require 'src/layout/footer.php';
 ?>
