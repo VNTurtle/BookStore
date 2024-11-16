@@ -255,3 +255,20 @@ section{
         height: 130px;
     }
 }
+
+.thongbao{
+    position: fixed;
+    right: 20px;
+    z-index: 2;
+    top: 10rem;
+    background: cornflowerblue;
+    padding: 1rem;
+    border-radius: 28px;
+    font-size: 20px;
+    font-weight: 600;
+    display: none;
+}
+
+.thongbao.show{
+    display: block;
+}

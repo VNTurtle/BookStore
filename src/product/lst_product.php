@@ -19,7 +19,14 @@ if (!$Lst_CoverType) {
 }
 if (!$Lst_Publisher) {
     echo "Không có dữ liệu nhà xuất bản hoặc xảy ra lỗi.";
-}
+    }
+
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// Giới hạn số sản phẩm trên mỗi trang
+$limit = 20;
+$offset = ($page - 1) * $limit;
+
 // Lấy danh sách sản phẩm dựa trên `lst_id` và `lst_id2` từ URL
 $lst_id = isset($_GET['lst_id']) ? $_GET['lst_id'] : null;
 $lst_id2 = isset($_GET['lst_id2']) ? $_GET['lst_id2'] : null;

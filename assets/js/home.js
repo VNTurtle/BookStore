@@ -44,6 +44,7 @@ $(document).ready(function() {
         }
         var productId = $(this).data('product-id');
         console.log(productId);
+        document.querySelector('.thongbao').classList.add('show');
          // Lấy ID sản phẩm từ thuộc tính data
         // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
         $.ajax({
@@ -54,9 +55,10 @@ $(document).ready(function() {
                 quantity: 1
             }, // Dữ liệu gửi đi
             success: function(response) {
-                // Xử lý phản hồi từ server
-                // Ví dụ: thông báo thành công
-                alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                // Successfully received response
+                setTimeout(function() {
+                    document.querySelector('.thongbao').classList.remove('show');
+                }, 2000);
             },
             error: function(xhr, status, error) {
                 // Xử lý lỗi

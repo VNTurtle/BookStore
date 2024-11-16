@@ -99,6 +99,9 @@ $lst_bv = Product::getProduct();
             </div>
         </div>
     </section>
+    <div class="thongbao">
+        Đã thêm vào giỏ hàng
+    </div>
     <?php
     foreach ($bookTypeIds as $key => $BookType) {
     ?>
