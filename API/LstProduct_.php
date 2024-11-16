@@ -67,11 +67,11 @@ class LstProduct
         return false;
     }
 }
-  public static function getLstProduct($lst_Id = null, $lst_Id2 = null)
-  {
+public static function getLstProduct($lst_Id = null, $lst_Id2 = null, $limit, $offset)
+{
     $parameters = []; // Các tham số truy vấn
     $resultType = 2; // Loại kết quả truy vấn (2: Fetch All)
-
+    
     // Câu truy vấn cơ bản
     $query = "SELECT 
         b.Id AS BookId,
@@ -94,21 +94,27 @@ class LstProduct
             FROM image i2
             WHERE i2.BookId = b.Id
         )";
-
+    
     // Thêm điều kiện nếu có `lst_Id`
     if ($lst_Id !== null) {
-      $query .= " AND b.TypeId = :lst_Id";
-      $parameters[':lst_Id'] = $lst_Id;
+        $query .= " AND b.TypeId = :lst_Id";
+        $parameters[':lst_Id'] = $lst_Id;
     }
 
     // Thêm điều kiện nếu có `lst_Id2`
     if ($lst_Id2 !== null) {
-      $query .= " AND booktype.TypeDetailId = :lst_Id2";
-      $parameters[':lst_Id2'] = $lst_Id2;
+        $query .= " AND booktype.TypeDetailId = :lst_Id2";
+        $parameters[':lst_Id2'] = $lst_Id2;
     }
 
+    // Thêm LIMIT và OFFSET cho phân trang
+    $query .= " LIMIT :limit OFFSET :offset";
+    $parameters[':limit'] = $limit;
+    $parameters[':offset'] = $offset;
+
     return DP::run_query($query, $parameters, $resultType);
-  }
+}
+
 
   public static function getBookTypes()
   {
@@ -167,5 +173,9 @@ class LstProduct
     }
 
     return $typedetailList;
+  }
+  public static function pagination(){
+    // Số sản phẩm hiển thị trên mỗi trang
+
   }
 }

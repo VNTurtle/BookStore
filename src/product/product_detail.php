@@ -6,7 +6,7 @@ if (isset($_GET['id'])) {
     $bookId = htmlspecialchars($_GET['id']);
 }
 
-$book=Product::getProductById($bookId);
+$book = Product::getProductById($bookId);
 if (count($book) > 0) {
     $NameBook = $book[0]['Name'];
     $model = $book[0]['Model'];
@@ -32,12 +32,12 @@ if (count($book) > 0) {
     $model = null;
     $modelBin = null;
 }
-$lst_Image=Img::getImgByBookId($bookId);
-$lstBook_2=Product::getBookByTypeId($typeId);
-if($comboBookId != null){
-    $lstBook=Product::getBookByComboBookId($comboBookId);
-}else{
-    $lstBook=Product::getBookByTypeId($typeId);
+$lst_Image = Img::getImgByBookId($bookId);
+$lstBook_2 = Product::getBookByTypeId($typeId);
+if ($comboBookId != null) {
+    $lstBook = Product::getBookByComboBookId($comboBookId);
+} else {
+    $lstBook = Product::getBookByTypeId($typeId);
 }
 
 $modelName = Product::sanitizeFilename(Product::removeAccents($NameBook));
@@ -130,9 +130,9 @@ require 'src/layout/header.php';
                                     ?>
                                         <div class="swiper-slide swiper-slide-active" href="" style="width: 330px !important; justify-content: center;">
                                             <div style="width: 330px !important; justify-content: center;">
-                                            <canvas id="3D-Book" class="MDImage" height="400" width="400"></canvas>
+                                                <canvas id="3D-Book" class="MDImage" height="400" width="400"></canvas>
                                             </div>
-                                            
+
                                         </div>
                                     <?php
                                     }
@@ -404,7 +404,7 @@ require 'src/layout/header.php';
                                 </div>
                                 <div id="tab3" class="tab-content">
                                     <div class="cmt">
-                                        <iframe id="commentIframe" src="index.php?src=comment/comment&idsp=<?php echo htmlspecialchars($bookId); ?>" frameborder="0" width="100%" height="750px" style="overflow-x: hidden;" scrolling="no"></iframe>
+                                        <iframe id="commentIframe" src="index.php?src=comment/comment&id=<?php echo htmlspecialchars($bookId); ?>" frameborder="0" width="100%" height="750px" style="overflow-y: hidden;" scrolling="no"></iframe>
                                     </div>
                                 </div>
                             </div>
@@ -413,16 +413,16 @@ require 'src/layout/header.php';
                             <div class="group-title-index">
                                 <h3 class="title">
                                     <?php
-                                        if ($comboBookId != null) {
-                                            echo
-                                            '<a class="title-name" href="">Theo combo<img src="assets/img/book-icon.png" alt=""></a>
+                                    if ($comboBookId != null) {
+                                        echo
+                                        '<a class="title-name" href="">Theo combo<img src="assets/img/book-icon.png" alt=""></a>
                                             <span class=""></span>';
-                                        } else {
+                                    } else {
                                         echo
                                         '<a class="title-name" href="">Theo Loại<img src="assets/img/book-icon.png" alt=""></a>
                                         <span class=""></span>';
                                     } ?>
-                                                           
+
                                 </h3>
                             </div>
                             <div class="product-flash-swiper swiper-container">
@@ -475,12 +475,12 @@ require 'src/layout/header.php';
                                     ?>
                                         <div class="swiper-slider">
                                             <div class="card">
-                                                <a class="card-img"  href="index.php?src=product/product_detail&id=<?php echo $lst['Id']; ?>">
+                                                <a class="card-img" href="index.php?src=product/product_detail&id=<?php echo $lst['Id']; ?>">
                                                     <img src="assets/img/Products/<?php echo $lst['Path'] ?>" alt="">
                                                 </a>
-                                                <a class="card-info"  href="index.php?src=product/product_detail&id=<?php echo $lst['Id']; ?>">
+                                                <a class="card-info" href="index.php?src=product/product_detail&id=<?php echo $lst['Id']; ?>">
                                                     <p class="text-title" title="<?php echo $lst['Name'] ?>"><?php echo $lst['Name'] ?></p>
-                                                 </a>
+                                                </a>
                                                 <div class="card-footer">
                                                     <span class="text-title"><?php echo $lst['Price'] ?> đ</span>
                                                     <div class="card-button">
@@ -506,7 +506,6 @@ require 'src/layout/header.php';
         </div>
     </section>
 </div>
-
 <script src="assets/babylon/babylon.js"></script>
 <script src="assets/babylon/babylonjs.loaders.min.js"></script>
 
