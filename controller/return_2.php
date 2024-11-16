@@ -40,6 +40,8 @@ if ($secureHash == $vnp_SecureHash && $_GET['vnp_ResponseCode'] == '00') {
 
     if(User::Pay($invoice, $invoiceDetails)){        
         $response['status'] = 'success';       
+    }else{
+        echo "Loix";
     };
 
     // Clear session data after inserting the invoice

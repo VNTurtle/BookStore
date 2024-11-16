@@ -19,7 +19,8 @@ foreach ($bookTypeIds as $bookType) {
 session_start();
 if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
-    // Thực hiện các hành động khi session Id tồn tại
+}else{
+    $userId =null;
 }
 
 if (isset($_GET['logout'])) {

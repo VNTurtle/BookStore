@@ -9,7 +9,6 @@ require_once('API/User.php');
 <link rel="stylesheet" href="assets/sclick/css/slick.min.css">
 
 <script>
-
     // Lấy dữ liệu sản phẩm từ localStorage
     const check = JSON.parse(localStorage.getItem('selectedProducts')) || [];
 
@@ -223,13 +222,13 @@ require_once('API/User.php');
                                 // Lấy dữ liệu sản phẩm từ localStorage
                                 const products = JSON.parse(localStorage.getItem('selectedProducts')) || [];
                                 const productTable = document.getElementById('product-table');
-                                let price2=0;
+                                let price2 = 0;
                                 let total = 0;
-                                let count = 0;               
+                                let count = 0;
                                 console.log(products);
                                 // Lặp qua từng sản phẩm và thêm vào bảng
                                 products.forEach(product => {
-                                    price2=product.price*product.quantity;
+                                    price2 = product.price * product.quantity;
                                     total += price2;
                                     count++;
                                     const row = document.createElement('tr');
@@ -255,7 +254,7 @@ require_once('API/User.php');
                                     productTable.appendChild(row);
                                 });
                                 console.log(total);
-                                
+
                                 // Cập nhật tổng giá trị
                                 document.getElementById('total').innerText = `${total}.000 đ`;
                                 console.log(count);
@@ -592,7 +591,11 @@ require_once('API/User.php');
         var year = today.getFullYear();
         var month = String(today.getMonth() + 1).padStart(2, '0');
         var day = String(today.getDate()).padStart(2, '0');
-        return year + '-' + month + '-' + day;
+        var hours = String(today.getHours()).padStart(2, '0');
+        var minutes = String(today.getMinutes()).padStart(2, '0');
+        var seconds = String(today.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
     // Hàm tạo mã hóa đơn ngẫu nhiên
     function generateInvoiceCode(length) {
@@ -731,7 +734,7 @@ require_once('API/User.php');
             var opacity = document.getElementById('opacity');
             opacity.classList.add('hidden');
             payloading.classList.remove('hidden');
-            var mess=document.getElementById('messenger');
+            var mess = document.getElementById('messenger');
             var billingName = document.getElementById('billing-name').value;
             var billingEmail = document.getElementById('billing-email-address').value;
             var billingPhone = document.getElementById('billing-phone').value;

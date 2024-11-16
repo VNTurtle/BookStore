@@ -3,6 +3,12 @@ require 'src/layout/header.php';
 ?>
 
 <link rel="stylesheet" href="assets/css/cart.css">
+<script>
+    var token = localStorage.jwt_token;
+    if(token==null){
+        window.location.href="index.php?src=user/Login";
+    }
+</script>
 
 <?php
     require_once('API/Cart.php');
