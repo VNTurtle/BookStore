@@ -227,7 +227,9 @@ if (isset($_GET['ajax'])) {
                                         <div class="product__panel-rate-wrap">
                                             <!-- Hiển thị 5 sao cho sản phẩm -->
                                             <?php
-                                            $rating = 5; // Giả sử tất cả sản phẩm đều có 5 sao
+
+                                            $rating = 5;
+                                            
                                             for ($i = 0; $i < $rating; $i++) {
                                                 echo '<i class="fas fa-star product__panel-rate"></i>';
                                             }
