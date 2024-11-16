@@ -59,7 +59,7 @@ $(document).ready(function() {
   
         // Gửi yêu cầu AJAX để cập nhật trạng thái của đơn hàng
         $.ajax({
-            url: 'controller/confirm_invoice.php',
+            url: 'controller/update_invoice.php',
             method: 'POST',
             data: { order_id: orderId, order_status: orderStatusId },
             success: function(response) {

@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-primary update-status-btn mt-2" data-order-status="2" data-order-id="<?= $invoice_id ?>">Xác nhận</button>
+                <button class="btn btn-primary update-status-btn mt-2" data-order-status="2" data-order-id="<?= $invoice['Code'] ?>">Xác nhận</button>
             </div>
         </div>
 
