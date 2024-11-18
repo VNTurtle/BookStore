@@ -1,0 +1,229 @@
+CREATE DATABASE DB_BOOK;
+USE DB_BOOK;
+
+
+CREATE TABLE Paymethod (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name NVARCHAR(200) NULL,
+	Status BIT NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Type (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name NVARCHAR(200) NULL,
+	Banner NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE TypeDetail (
+    Id INT NOT NULL AUTO_INCREMENT,
+	TypeId INT NOT NULL,
+    Name NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id),
+	FOREIGN KEY (TypeId) REFERENCES Type (Id)
+);
+
+CREATE TABLE ComBoBook (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id)
+) ENGINE=InnoDB;
+
+CREATE TABLE Publisher (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE CoverType (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Size (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Book (
+    Id INT NOT NULL AUTO_INCREMENT,
+	ComboBookId INT NULL,
+    SKU NVARCHAR(12) NOT NULL,
+    Name NVARCHAR(200) NULL,
+	Author NVARCHAR(200) NULL,
+	Description NVARCHAR(5000) NULL,
+    TypeId INT NOT NULL,
+    NumberPage INT NULL,
+    SizeId INT NOT NULL,
+    Stock INT NULL,
+    Price DECIMAL(10, 3) NULL,
+    Date DATETIME NULL,
+    PublisherId INT NOT NULL,
+    CoverTypeId INT NOT NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (ComboBookId) REFERENCES ComBoBook (Id),
+	FOREIGN KEY (TypeId) REFERENCES Type (Id),
+    FOREIGN KEY (SizeId) REFERENCES Size (Id),
+    FOREIGN KEY (PublisherId) REFERENCES Publisher (Id),
+    FOREIGN KEY (CoverTypeId) REFERENCES CoverType (Id)	
+);
+
+
+
+
+
+CREATE TABLE BookType (
+	BookId INT NOT NULL,
+	TypeDetailId INT NOT NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (BookId, TypeDetailId),
+	FOREIGN KEY (BookId) REFERENCES Book (Id),
+	FOREIGN KEY (TypeDetailId) REFERENCES TypeDetail (Id)
+);
+
+
+CREATE TABLE Model (
+    Id INT NOT NULL AUTO_INCREMENT,
+    BookId INT NOT NULL,
+    Model NVARCHAR(200) NULL,
+    ModelBin NVARCHAR(200) NULL,
+	Alpha NVARCHAR(200) NULL,
+	Beta NVARCHAR(200) NULL,
+	Radius NVARCHAR(200) NULL,
+	Target_x NVARCHAR(200) NULL,
+	Target_y NVARCHAR(200) NULL,
+	Target_z NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (BookId) REFERENCES Book (Id)
+);
+
+
+CREATE TABLE Role (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id)
+);
+CREATE TABLE Account (
+    Id INT NOT NULL AUTO_INCREMENT,
+    FirstName NVARCHAR(200) NULL,
+    PassWord NVARCHAR(200) NULL,
+    LastName NVARCHAR(200) NULL,
+    FullName NVARCHAR(200) NULL,
+    Email NVARCHAR(200) NULL,
+    AddRess NVARCHAR(400) NULL,
+    Avatar NVARCHAR(200) NULL,
+    RoleId INT NOT NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (RoleId) REFERENCES Role (Id)
+);
+
+
+
+
+CREATE TABLE Cart (
+    UserId INT NOT NULL,
+    BookId INT NOT NULL,
+    Quantity INT NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (UserId, BookId),
+    FOREIGN KEY (UserId) REFERENCES Account (Id),
+    FOREIGN KEY (BookId) REFERENCES Book (Id)
+);
+
+CREATE TABLE OrderStatus (
+    Id INT NOT NULL AUTO_INCREMENT,
+	Name NVARCHAR(200) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Invoice (
+	Code NVARCHAR(20) NOT NULL,
+	Username NVARCHAR(200) NULL,
+    IssuedDate DATETIME NULL,
+    ShippingAddress NVARCHAR(200) NULL,
+    ShippingPhone CHAR(10) NULL,
+	ShippingEmail NVARCHAR(200) NULL,
+    UserId INT NOT NULL,
+    Total DECIMAL(20, 3) NULL,
+	PaymethodId INT NOT NULL,
+    Quantity INT NULL,
+    OrderStatusId INT NOT NULL,
+    PRIMARY KEY (Code),
+    FOREIGN KEY (UserId) REFERENCES Account (Id),
+	FOREIGN KEY (PaymethodId) REFERENCES Paymethod (Id),
+	FOREIGN KEY (OrderStatusId) REFERENCES OrderStatus (Id)
+);
+
+CREATE TABLE InvoiceDetail (
+	Id INT NOT NULL AUTO_INCREMENT,
+    Parent_code NVARCHAR(20) NOT NULL,
+    BookId INT NOT NULL,
+    UserId INT NOT NULL,
+    UnitPrice DECIMAL(20, 3) NULL,
+    Quantity INT NULL,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Parent_code) REFERENCES Invoice (Code),
+    FOREIGN KEY (UserId) REFERENCES Account (Id),
+    FOREIGN KEY (BookId) REFERENCES Book (Id) 
+);
+
+
+CREATE TABLE Favourite (
+    UserId INT NOT NULL,
+    BookId INT NOT NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (UserId, BookId),
+	FOREIGN KEY (UserId) REFERENCES Account (Id),
+	FOREIGN KEY (BookID) REFERENCES Book (Id)
+);
+
+
+CREATE TABLE Vote (
+	Id INT NOT NULL AUTO_INCREMENT,
+	UserId INT NOT NULL,
+	BookId INT NOT NULL,
+	NumberStart FLOAT NULL,
+	Content NVARCHAR(255) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id),
+	FOREIGN KEY (UserId) REFERENCES Account (Id),
+	FOREIGN KEY (BookID) REFERENCES Book (Id)
+);
+
+CREATE TABLE Comment (
+    Id INT NOT NULL AUTO_INCREMENT,
+	UserId INT NOT NULL,
+	BookId INT NOT NULL,
+	Content NVARCHAR(255) NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id),
+	FOREIGN KEY (UserId) REFERENCES Account (Id),
+	FOREIGN KEY (BookID) REFERENCES Book (Id)
+);
+
+
+
+CREATE TABLE Image (
+	Id INT NOT NULL AUTO_INCREMENT,
+    BookId INT NULL,
+	VoteId INT NULL,
+    Path NVARCHAR(200) NULL, 
+    Status BIT NOT NULL,
+    PRIMARY KEY (Id),
+	FOREIGN KEY (BookId) REFERENCES Book (Id),
+	FOREIGN KEY (VoteId) REFERENCES Vote (Id)
+);

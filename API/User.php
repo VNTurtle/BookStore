@@ -108,7 +108,7 @@ class User{
             $queryInvoice = "INSERT INTO `invoice` (`Code`, `Username`, `IssuedDate`, `ShippingAddress`, `ShippingPhone`, `ShippingEmail`, `UserId`, `Total`, `PaymethodId`, `Quantity`, `OrderStatusId`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $parameters = [$invoice['code'], $invoice['username'], $invoice['date'], $invoice['address'], $invoice['phone'], $invoice['email'], $invoice['userId'], $invoice['total'], $invoice['paymethodId'], $invoice['quantity'], $invoice['orderStatusId']];
             $ISInvoice = DP::run_query($queryInvoice, $parameters, 1);
-
+            //Giam sl sp
 
             if ($ISInvoice > 0) {
                 $queryInvoiceDetail = "INSERT INTO `invoicedetail` (`Parent_code`, `BookId`, `UserId`, `UnitPrice`, `Quantity`) VALUES (?, ?, ?, ?, ?)";
