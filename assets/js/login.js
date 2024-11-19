@@ -4,6 +4,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     // Lấy giá trị email và password
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
+    var urlParams = new URLSearchParams(window.location.search);
+    var productId = urlParams.get('id');
 
     // Gửi dữ liệu đến server bằng fetch API
     fetch('controller/Login.php', {
@@ -16,9 +18,12 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     .then(response => response.json()) // Chuyển response thành JSON
     .then(data => {
       if (data.status === 'success') {
-        // Lưu JWT vào localStorage
+        if (productId) {
+          window.location.href = 'index.php?src=product/product_detail&id=' + productId;
+      } else {
+          window.location.href = 'index.php';
+      }
         localStorage.setItem('jwt_token', data.token);
-        window.location.href = 'index.php';
       } else {
         var mms= document.querySelector('.mms');
         mms.textContent = data.message;

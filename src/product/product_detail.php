@@ -199,7 +199,10 @@ if($stock<=0){
                                         <span class="a-stock"><?php echo $book[0]['Author'] ?></span>
                                     </span>
                                     <div class="favourite-product button-actions clearFix">
-                                        <button class="btn-action add-to-cart" type="submit" name="add-to-cart"><i class="fa-solid fa-heart"></i>Yêu thích</button>
+                                        <button class="btn-action add-to-favourite" type="button"
+                                            data-product-id="<?= isset($bookId) ? htmlspecialchars($bookId) : '' ?>">
+                                            <i class="fa-solid fa-heart"></i>Yêu thích
+                                        </button>
                                     </div>
                                     <div class="sku-product ">
                                         <span class="stock-brand-title">Mã sản phẩm:</span>

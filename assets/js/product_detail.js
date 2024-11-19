@@ -289,6 +289,82 @@ if(binName!=null){
             window.location.href = 'index.php?src=checkout/checkout_2';
         }
     });
+    $('.add-to-favourite').on('click', function () {
+        var Id = $(this).data('product-id');
+        console.log('bookId:', Id); // Kiểm tra giá trị của bookId
+    
+        // Kiểm tra xem Id có hợp lệ không
+        if (Id) {
+            var token = localStorage.jwt_token;
+    
+            // Nếu không có token, chuyển hướng đến trang đăng nhập
+            if (token == null) {
+                window.location.href = 'index.php?src=user/Login';
+                return;
+            }
+    
+            // Tạo đối tượng FormData và thêm Id vào dữ liệu gửi đi
+            var formData = new FormData();
+            formData.append('Id', Id);
+            formData.append('token', token);
+    
+            console.log(formData);
+    
+            // Hiển thị thông báo khi đang xử lý
+           
+    
+            // Tạo đối tượng XMLHttpRequest để gửi yêu cầu
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'controller/add_to_favourite.php', true);
+    
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        try {
+                            document.querySelector('.thongbao').classList.add('show');
+                            var response = JSON.parse(xhr.responseText); 
+                            
+                            document.querySelector('.thongbao').innerText = response.message;
+
+                            // Nếu sản phẩm được thêm thành công
+                            if (response.status === 'success') {
+                                setTimeout(function() {
+                                    document.querySelector('.thongbao').classList.remove('show');
+                                }, 2000);
+                            } else {
+                                setTimeout(function() {
+                                    document.querySelector('.thongbao').classList.remove('show');
+                                }, 2000);
+                            }
+                        } catch (e) {
+                            console.error('Lỗi khi phân tích JSON:', e);
+                        }
+    
+                        // Ẩn thông báo sau khi xử lý xong
+                        setTimeout(function() {
+                            document.querySelector('.thongbao').classList.remove('show');
+                        }, 2000);
+                    } else {
+                        // Xảy ra lỗi khi gửi yêu cầu
+                        console.log('Lỗi khi gửi yêu cầu:', xhr.status, xhr.statusText);
+    
+                        // Ẩn thông báo nếu có lỗi
+                        setTimeout(function() {
+                            document.querySelector('.thongbao').classList.remove('show');
+                        }, 2000);
+                    }
+                }
+            };
+    
+            // Gửi yêu cầu AJAX
+            xhr.send(formData);
+        } else {
+            // Nếu Id không hợp lệ, hiển thị thông báo
+            alert('Id sản phẩm không hợp lệ');
+        }
+    });    
+    
+    
 
     document.addEventListener("DOMContentLoaded", function() {
         var decreaseButton = document.getElementById('btn-decrease');

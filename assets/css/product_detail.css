@@ -616,3 +616,18 @@ svg {
 .thongbao.show{
     display: block;
 }
+.thongbao_yeuthich{
+    position: fixed;
+    right: 20px;
+    top: 10rem;
+    background: cornflowerblue;
+    padding: 1rem;
+    border-radius: 28px;
+    font-size: 20px;
+    font-weight: 600;
+    display: none;
+}
+
+.thongbao_yeuthich.show{
+    display: block;
+}
