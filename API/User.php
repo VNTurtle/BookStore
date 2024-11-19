@@ -1,5 +1,6 @@
 <?php
 require_once('db.php');
+require_once('Product.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
@@ -10,7 +11,7 @@ class User{
         $resultType = 2; 
         DP::run_query($query, $parameters, $resultType);
     }
-    public static function getProductById($id){
+    public static function getUserById($id){
         $query = "SELECT * FROM `account` AS a
         WHERE a.Id = $id;";
         $parameters = []; 
@@ -108,14 +109,20 @@ class User{
             $queryInvoice = "INSERT INTO `invoice` (`Code`, `Username`, `IssuedDate`, `ShippingAddress`, `ShippingPhone`, `ShippingEmail`, `UserId`, `Total`, `PaymethodId`, `Quantity`, `OrderStatusId`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $parameters = [$invoice['code'], $invoice['username'], $invoice['date'], $invoice['address'], $invoice['phone'], $invoice['email'], $invoice['userId'], $invoice['total'], $invoice['paymethodId'], $invoice['quantity'], $invoice['orderStatusId']];
             $ISInvoice = DP::run_query($queryInvoice, $parameters, 1);
-            //Giam sl sp
-
+          
             if ($ISInvoice > 0) {
                 $queryInvoiceDetail = "INSERT INTO `invoicedetail` (`Parent_code`, `BookId`, `UserId`, `UnitPrice`, `Quantity`) VALUES (?, ?, ?, ?, ?)";
 
                 foreach ($invoiceDetails as $invoiceDetail) {
                     $parameters = [$invoiceDetail['parent_code'], $invoiceDetail['bookId'], $invoiceDetail['userId'], $invoiceDetail['price'], $invoiceDetail['quantity']];
                     DP::run_query($queryInvoiceDetail, $parameters, 1);
+                    //Giam sl sp
+                    $QuantityBook=Product::getProductById($invoiceDetail['bookId']);
+                    $NewQuantity=$QuantityBook[0]['Stock']-$invoiceDetail['quantity'];
+                    $queryBook="UPDATE `book` 
+                                SET  `Stock` = ?
+                                WHERE `Id` = ?";
+                    DP::run_query($queryBook,[$NewQuantity, $invoiceDetail['bookId']],1);
                 }
             }
         return true;

@@ -89,12 +89,12 @@
                 const invoiceDetails = JSON.parse(invoiceDetailsJSON);
 
                 // Set the hidden input values with JSON strings
+                invoice.orderStatusId=2;
                 document.getElementById('invoiceInput').value = JSON.stringify(invoice);
                 document.getElementById('invoiceDetailsInput').value = JSON.stringify(invoiceDetails);
                 document.getElementById('vnp_Amount').value = invoice.total *1000 ;
                 document.getElementById('vnp_IpAddr').value = invoice.address;
-                document.getElementById('vnp_TxnRef').value = invoice.code;
-                
+                document.getElementById('vnp_TxnRef').value = invoice.code;         
                 console.log("Invoice:", invoice);
                 console.log("Invoice Details:", invoiceDetails);
             } else {

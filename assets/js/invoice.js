@@ -40,7 +40,10 @@ $(document).ready(function() {
         cancelButton = $(this);
         modal.show();
     });
-
+    $(document).on('click', '.btn-request-cancel', function() {
+        cancelButton = $(this);
+        modal.show();
+    });
     // Đóng modal khi nhấn nút close
     span.on('click', function() {
         modal.hide();
@@ -53,31 +56,64 @@ $(document).ready(function() {
         }
     });
 
+    document.querySelectorAll('input[name="cancelReason"]').forEach((radio) => {
+        radio.addEventListener('change', function () {
+            // Kiểm tra nếu lựa chọn là "Khác"
+            const customReasonTextarea = document.getElementById('customCancelReason');
+            if (this.value === "Khác") {
+                customReasonTextarea.style.display = "block"; // Hiển thị textarea
+            } else {
+                customReasonTextarea.style.display = "none"; // Ẩn textarea nếu không phải "Khác"
+            }
+        });
+    });
+    var token = localStorage.jwt_token;
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+        atob(base64)
+            .split('')
+            .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+            .join('')
+    );
+
+    const decoded = JSON.parse(jsonPayload);
+    const userId = decoded.data.Id;
+    console.log(userId);
+    
     // Xử lý sự kiện xác nhận hủy
     $('#confirmCancel').on('click', function() {
-        var reason = $('#cancelReason').val();
-        var orderId = cancelButton.data('order-id');
-
-        if (reason.trim() == '') {
-            alert('Vui lòng nhập lý do hủy.');
+        const selectedReason = $('input[name="cancelReason"]:checked').val();  // Lý do được chọn
+        const otherReason = $('#customCancelReason').val().trim();  // Lý do "Khác"
+        const orderId = cancelButton.data('order-id');
+    
+        // Kiểm tra xem đã chọn lý do chưa
+        if (!selectedReason && !otherReason) {
+            alert("Vui lòng chọn hoặc nhập lý do hủy đơn.");
             return;
         }
-
+        
+        const reason = selectedReason || otherReason;  // Chọn lý do
+    
+        console.log("Lý do hủy đơn:", reason);
+    
         $.ajax({
             url: 'controller/cance_invoice.php',
             method: 'POST',
-            data: { order_id: orderId, reason: reason },
-            success: function(response) {
-                // Xử lý phản hồi từ server nếu cần
+            data: { 
+                order_id: orderId, 
+                userId: userId,
+                reason: reason 
+            },
+            success: function() {
                 console.log('Đã hủy đơn hàng');
-                // Ẩn đơn hàng đã hủy
-                cancelButton.closest('.invoice-detail').remove();
-                // Đóng modal
-                location.reload()
+                cancelButton.closest('.invoice-detail').remove();  // Ẩn đơn hàng
+                alert('Yêu cầu hủy đơn đã được gửi. Chờ admin xác nhận!');  // Làm mới trang
             },
             error: function(xhr, status, error) {
                 console.error('Lỗi khi hủy đơn hàng:', error);
             }
         });
     });
+    
 });

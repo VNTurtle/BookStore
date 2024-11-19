@@ -15,8 +15,20 @@ class Invoice{
     }
    
     public static function getInvoiceByuserId($id){
-        $query = "SELECT i.* FROM `invoice` AS i
-        WHERE i.userId = $id;";
+        $query = "SELECT i.* 
+                FROM `invoice` AS i
+                WHERE i.userId = $id
+                ORDER BY i.IssuedDate DESC";
+        $parameters = [];
+        $resultType = 2;
+        return DP::run_query($query, $parameters, $resultType);
+    }
+    public static function getInvoiceByOrderStatus($id){
+        $query = "SELECT iv.*, COUNT(ivd.Id) AS ivd_count
+                FROM invoice iv
+                LEFT JOIN invoicedetail ivd ON iv.Code = ivd.Parent_code
+                WHERE iv.OrderStatusId=$id
+                GROUP BY iv.Code;";
         $parameters = [];
         $resultType = 2;
         return DP::run_query($query, $parameters, $resultType);

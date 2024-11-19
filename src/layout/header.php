@@ -71,6 +71,9 @@ if (isset($_GET['logout'])) {
                     <li class="header-favourite d-n">
                         <i style="width: 25px; height: 25px;" class="fa-solid fa-heart"></i>
                     </li>
+                    <li class="header-favourite d-n">
+                        <i style="width: 25px; height: 25px;" class="fa-solid fa-heart"></i>
+                    </li>
                     <li class="header-cart ">
                         <a href="index.php?src=cart/cart" id="cartLink">
                             <i style="width: 25px; height: 25px; color: #000;" class="fa-solid fa-cart-shopping"></i>
@@ -119,6 +122,7 @@ if (isset($_GET['logout'])) {
 
                                     const decoded = JSON.parse(jsonPayload);
                                     const role = decoded.data.role;
+                                    const userId = decoded.data.Id;                                    
                                     if (role == 1) {
                                         authLinks.innerHTML = `
                                             <li>

@@ -129,7 +129,7 @@ $lst_bv = Product::getProduct();
                             <div class="swiper-wrapper  slick-slider<?php echo $BookType['Id'] ?>">
                                 <?php
                                 foreach ($lst_bv as $key => $bv) {
-                                    if ($bv['TypeId'] == $BookType['Id']) {
+                                    if ($bv['TypeId'] == $BookType['Id'] && $bv['Stock']>0) {
                                 ?>
                                         <div class="swiper-slider">
                                             <div class="card">
@@ -140,6 +140,11 @@ $lst_bv = Product::getProduct();
                                                 <a class="card-info" href="index.php?src=product/product_detail&id=<?php echo $bv['Id']; ?>" title="<?php echo $bv['Name'] ?>">
                                                     <p class="text-title"><?php echo $bv['Name'] ?></p>
                                                 </a>
+                                                <div class="d-flex justify-content-end">
+                                                    <span style="font-size: 12px; color: rgb(13, 110, 253);">
+                                                        Còn <?=  $bv['Stock'] ?> sản phẩm
+                                                    </span>
+                                                </div >
                                                 <div class="card-footer">
                                                     <span class="text-title"><?php echo $bv['Price'] ?> Đ</span>
                                                     <div class="card-button" data-product-id="<?php echo $bv['Id']; ?>">

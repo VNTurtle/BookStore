@@ -12,7 +12,9 @@ require 'src/layout/header.php';
 
 <?php
     require_once('API/Cart.php');
+    require_once('API/Product.php');
     $Lst_Cart= Cart::getCartbyUserId($userId);
+    
     $count=0;
     foreach ($Lst_Cart as $key => $cart_item) {
         $count++;
@@ -51,11 +53,20 @@ require 'src/layout/header.php';
                     if (isset($_SESSION['Id'])) {
                         if($Lst_Cart>0){
                         foreach ($Lst_Cart as $key => $cart_item) {
+                            $Book=Product::getProductById($cart_item['Id']);
+                            $QuantityBook=$Book[0]['Stock'];
                             $total_price = $cart_item['Price'] * $cart_item['Quantity'];
                         ?>
-                            <div class="item-book-cart"  data-product-id="<?php echo $cart_item['Id'] ?>" data-price="<?= $cart_item['Price']; ?>">
+                            <div class="item-book-cart <?php echo $QuantityBook == 0 ? 'disabled-cart' : ''; ?>"  data-product-id="<?php echo $cart_item['Id'] ?>" data-price="<?= $cart_item['Price']; ?>">
                                 <div class="checkbox-book-cart">
-                                    <input id="<?php echo $cart_item['Id'] ?>" name="checkbox_book-1919" class="checkbox-add-cart" type="checkbox"  data-price="<?php echo $cart_item['Price'] ?>" data-name="<?php echo $cart_item['Name']; ?>" data-img="<?php echo $cart_item['Path']; ?>" data-quantity="<?php echo $cart_item['Quantity']; ?>" data-price2="<?php echo $total_price ?>" />
+                                    <input id="<?php echo $cart_item['Id'] ?>" name="checkbox_book-1919" class="checkbox-add-cart" type="checkbox"  
+                                    data-price="<?php echo $cart_item['Price'] ?>" 
+                                    data-name="<?php echo $cart_item['Name']; ?>" 
+                                    data-img="<?php echo $cart_item['Path']; ?>" 
+                                    data-quantity="<?php echo $cart_item['Quantity']; ?>" 
+                                    data-price2="<?php echo $total_price ?>" 
+                                    <?= $QuantityBook == 0 ? 'disabled' : ''; ?> 
+                                    />
                                 </div>
                                 <div class="img-book-cart">
                                     <a class="book-image" href="index.php?src=product/product_detail&id=<?php echo $cart_item['Id']; ?>">
@@ -68,6 +79,11 @@ require 'src/layout/header.php';
                                             <h2 class="book-name-full">
                                                 <a href="index.php?src=product/product_detail&id=<?php echo $cart_item['Id']; ?>"><?php echo $cart_item['Name'] ?></a>
                                             </h2>
+                                            <?php
+                                                if($QuantityBook==0){
+                                                    echo '<span> Đã hết hàng </span>';
+                                                }
+                                            ?>
                                         </div>
                                         <div class="price-original">
                                             <div class="cart-price">

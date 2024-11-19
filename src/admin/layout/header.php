@@ -18,22 +18,80 @@
 
       <ul class="navbar-nav flex-row align-items-center ms-auto">
         <!-- Place this tag where you want the button to render. -->
-        <!-- <?php
-         require_once('API/db.php');
-        $query_count = "SELECT COUNT(*) as sl FROM invoice AS i WHERE i.OrderStatusId=1 ";
-        $count_product = DP::run_query($query_count, [], 2); // Giả sử `run_query` trả về mảng kết quả
-        $total_items = $count_product[0]['sl'];
-        ?> -->
-        <li class="nav-item lh-1 me-3 position-relative">
-          <i class='bx bxs-bell' id="notification-icon" style="cursor: pointer;"></i>
-          <?php if ($total_items > 0) : ?>
-            <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle"><?php echo $total_items; ?></span>
-          <?php endif; ?>
-          <div id="notification-dropdown" class="dropdown-menu-2 dropdown-menu-end" style="display: none; ">
-            <h6 class="dropdown-header">Thông báo</h6>
-            <div id="notification-content"></div>
-          </div>
-        </li>
+        <?php
+        require_once('API/db.php');
+        require_once('API/Cancel_requests.php');
+        require_once('API/Invoice.php');
+
+        $Lst_cancelinvoice = Cancel_requests::getCancel_requestsByStatus('pending');
+
+        $count_iv = Invoice::getInvoiceByOrderStatus(1);
+
+        $notifications = [];
+
+        foreach ($Lst_cancelinvoice as $iv) {
+          $notifications[] = [
+            'type' => 'cancel_request',
+            'order_id' => $iv['order_id'],
+            'FullName' => $iv['FullName'],
+            'Name' => $iv['Name'],
+            'Content' => $iv['Content'],
+            'OrderId' => $iv['OrderId'],
+          ];
+        }
+
+        foreach ($count_iv as $iv) {
+          $notifications[] = [
+            'type' => 'new_order',
+            'Code' => $iv['Code'],
+            'ivd_count' => $iv['ivd_count'],
+            'IssuedDate' => $iv['IssuedDate'],
+            'Total' => $iv['Total'],
+          ];
+        }
+
+        $total_mess = count($Lst_cancelinvoice);
+        $total_items = count($count_iv);
+        ?>
+
+<li class="nav-item lh-1 me-3 position-relative" style="cursor: pointer;">
+    <i class='bx bxs-message-rounded-dots' id="mess-icon"></i>
+    <?php if ($total_mess + $total_items > 0) : ?>
+        <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle">
+            <?php echo $total_mess + $total_items; ?>
+        </span>
+    <?php endif; ?>
+    <div id="mess-dropdown" class="dropdown-menu-2 dropdown-menu-end" style="display: none; padding: 25px;">
+        <h6 class="dropdown-header">Thông báo</h6>
+        <div id="mess-content">
+            <?php if (!empty($notifications)) : ?>
+                <?php foreach ($notifications as $key => $notification) : ?>
+                    <div id="mess-item-<?= $key ?>" data-key="<?= $key ?>">
+                        <?php if ($notification['type'] == 'cancel_request') : ?>
+                            <p><strong>Đơn hàng:</strong> <?= $notification['order_id'] ?></p>
+                            <p><strong>Người đặt:</strong> <?= $notification['FullName'] ?></p>
+                            <p><strong>Phương thức thanh toán:</strong> <?= $notification['Name'] ?></p>
+                            <p><strong>Lý do hủy:</strong> <?= $notification['Content'] ?></p>
+                            <button class="approve-cancel btn btn-primary" data-order-status="5" data-order-id="<?= $notification['order_id'] ?>" data-status="approved">Phê duyệt</button>
+                            <button class="reject-cancel btn btn-danger" data-order-status="<?= $notification['OrderId'] ?>" data-order-id="<?= $notification['order_id'] ?>" data-status="refuse">Từ chối</button>
+                        <?php elseif ($notification['type'] == 'new_order') : ?>
+                            <p><strong>Đơn hàng mới:</strong> <?= $notification['Code'] ?></p>
+                            <p>Số hóa đơn con: <?= $notification['ivd_count'] ?></p>
+                            <p>Ngày đặt: <?= $notification['IssuedDate'] ?></p>
+                            <p>Tổng tiền: <?= $notification['Total'] ?></p>
+                            <a href="index.php?src=admin/invoice/invoice_detail&id_invoice=<?= $notification['Code'] ?>" class="btn btn-sm btn-primary" style="margin-right: 20px;">Xem chi tiết</a>
+                            <button class="btn btn-sm btn-primary update-status-btn" data-order-status="2" data-order-id="<?= $notification['Code'] ?>">Xác nhận</button>
+                        <?php endif; ?>
+                    </div>
+                    <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <p>Không có thông báo mới</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</li>
+
 
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">

@@ -227,3 +227,27 @@ CREATE TABLE Image (
 	FOREIGN KEY (BookId) REFERENCES Book (Id),
 	FOREIGN KEY (VoteId) REFERENCES Vote (Id)
 );
+
+CREATE TABLE Cancel_requests  (
+	UserId INT NOT NULL,
+    order_id NVARCHAR(20) NOT NULL,
+    Content NVARCHAR(255) NULL,
+	created_at DATETIME NULL,
+	Status NVARCHAR(50) NOT NULL,
+    PRIMARY KEY (UserId , order_id),
+    FOREIGN KEY (UserId) REFERENCES Account (Id),
+    FOREIGN KEY (order_id) REFERENCES Invoice (Code)
+);
+
+CREATE TABLE Voucher (
+    Code NVARCHAR(10) NOT NULL,
+	UserId INT NOT NULL,
+    Des NVARCHAR(200) NOT NULL,
+    Date DATETIME NULL,
+    EndDate DATETIME NULL,
+    MaxTotal DECIMAL(20, 3) NULL,
+    Percent DECIMAL(5, 2) NOT NULL,
+    Status BIT NOT NULL,
+    PRIMARY KEY (Code),
+	FOREIGN KEY (UserId) REFERENCES Account (Id)
+);

@@ -115,6 +115,7 @@ $(document).ready(function() {
     });
     const checkboxAll = document.getElementById('checkbox-all-products');
     const checkboxes = document.querySelectorAll('.checkbox-add-cart');
+
     const totalPriceElement = document.getElementById('total-price');
     const checkoutButton = document.getElementById('checkoutButton');
 
@@ -123,7 +124,7 @@ $(document).ready(function() {
         const selectedProducts = [];
         
         checkboxes.forEach(function(checkbox) {
-            if (checkbox.checked) {
+            if (checkbox.checked && !checkbox.disabled) { // Chỉ xử lý checkbox không bị disabled
                 const price2 = parseInt(checkbox.getAttribute('data-price2'));
                 const name = checkbox.getAttribute('data-name');
                 const img = checkbox.getAttribute('data-img');
@@ -159,7 +160,10 @@ $(document).ready(function() {
 
     checkboxAll.addEventListener('change', function() {
         checkboxes.forEach(function(checkbox) {
-            checkbox.checked = checkboxAll.checked;
+            // Kiểm tra nếu checkbox không bị disabled
+            if (!checkbox.disabled) {
+                checkbox.checked = checkboxAll.checked;
+            }
         });
         updateSelectedProducts();
     });
@@ -170,12 +174,13 @@ $(document).ready(function() {
             if (!checkbox.checked) {
                 checkboxAll.checked = false;
             } else {
-                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                // Kiểm tra nếu checkbox không bị disabled
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked || cb.disabled);
                 checkboxAll.checked = allChecked;
             }
         });
     });
-
+    
     // Cập nhật giá trị ban đầu khi trang được tải
     updateSelectedProducts();
 

@@ -286,3 +286,13 @@ input.checkbox-add-cart[type="checkbox"]{
     cursor: not-allowed; 
     opacity: 0.6;
 }
+.disabled-cart {
+    opacity: 0.5; /* Làm mờ toàn bộ mục */
+    pointer-events: none; /* Ngăn mọi thao tác */
+}
+
+.disabled-cart .btn-num,
+.disabled-cart .prd-quantity,
+.disabled-cart .checkbox-add-cart {
+    cursor: not-allowed; /* Hiển thị con trỏ không cho phép */
+}

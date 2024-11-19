@@ -7,11 +7,13 @@ if (isset($_GET['id'])) {
 }
 
 $book = Product::getProductById($bookId);
+
 if (count($book) > 0) {
     $NameBook = $book[0]['Name'];
     $model = $book[0]['Model'];
     $modelBin = $book[0]['ModelBin'];
     $comboBookId = $book[0]['ComboBookId'];
+    $stock = $book[0]['Stock'];
     $typeId = $book[0]['TypeId'];
     $cameraState = [
         'alpha' => $book[0]['Alpha'],
@@ -58,9 +60,18 @@ if ($book[0]['Model'] != null) {
     }
 }
 require 'src/layout/header.php';
+if($stock<=0){
+    echo '<h2 style="margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;">
+    SẢN PHẨM ĐÃ NGỪNG BÁN
+    </h2>';
+}else{
 ?>
 
 <link rel="stylesheet" href="assets/css/product_detail.css">
+
 <div class="bodywrap">
     <section class="bread-crumb">
         <div class="container">
@@ -511,5 +522,6 @@ require 'src/layout/header.php';
 
 
 <?php
+}
 require 'src/layout/footer.php';
 ?>

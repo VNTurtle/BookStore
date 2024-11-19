@@ -1,16 +1,17 @@
 <?php
 require_once('../API/Cancel_requests.php');
+require_once('../API/db.php');
 $response = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Lấy trạng thái đơn hàng mới và ID đơn hàng từ yêu cầu AJAX
-    $orderId = $_POST['order_id'];
-    $userId = $_POST['userId'];
-    $reason =$_POST['reason'];
-    $Status='pending';
-    // Câu truy vấn cập nhật
     
-    $check= Cancel_requests::PostCancel_requests($userId, $orderId, $reason, $Status);
+    $orderId = $_POST['order_id'];
+    $status= $_POST['status'];
+    $orderStatusId= $_POST['order_status'];
+
+    $check= Cancel_requests::putCancel_requests($orderId, $status);
+    $query="UPDATE invoice SET OrderStatusId = ? WHERE Code = ?";
+    DP::run_query($query, [$orderStatusId, $orderId], 1);
     // Thực hiện câu truy vấn
     if ($check) {
         $response['status'] = 'success';

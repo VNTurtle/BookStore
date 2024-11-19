@@ -1,6 +1,13 @@
 <?php
 require_once('API/User.php');
-
+session_start();
+if (isset($_SESSION['Id'])) {
+    $userId = $_SESSION['Id'];
+}else{
+    $userId =null;
+}
+$LstUser=User::getUserById($userId);
+$User=$LstUser[0];
 ?>
 
 <link rel="stylesheet" href="assets/css/checkout.css">
@@ -63,13 +70,13 @@ require_once('API/User.php');
                                                         <div class="col-lg-4">
                                                             <div class="mb-3">
                                                                 <label class="form-label" for="billing-name">Họ tên người nhận</label>
-                                                                <input type="text" class="form-control" id="billing-name" placeholder="Enter name">
+                                                                <input type="text" class="form-control" id="billing-name" placeholder="Enter name" value="<?= $User["FullName"] ?>">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="mb-3">
                                                                 <label class="form-label" for="billing-email-address">Email Address</label>
-                                                                <input type="email" class="form-control" name="email" id="billing-email-address" placeholder="Enter email">
+                                                                <input type="email" class="form-control" name="email" id="billing-email-address" value="<?= $User["Email"] ?>" placeholder="Enter email">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
@@ -599,11 +606,23 @@ require_once('API/User.php');
     }
     // Hàm tạo mã hóa đơn ngẫu nhiên
     function generateInvoiceCode(length) {
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var code = '';
-        for (var i = 0; i < length; i++) {
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345789';
+        var now = new Date();
+        var day = String(now.getDate()).padStart(2, '0'); 
+        var month = String(now.getMonth() + 1).padStart(2, '0'); 
+        var year = String(now.getFullYear()).slice(-2); 
+        var hour = String(now.getHours()).padStart(2, '0'); 
+        var minute = String(now.getMinutes()).padStart(2, '0');
+        var baseCode = `HDB${day}${month}${year}${hour}${minute}`;
+        var code = baseCode;
+        if (code.length < length) {
+        for (var i = code.length; i < length; i++) {
             var randomIndex = Math.floor(Math.random() * characters.length);
             code += characters.charAt(randomIndex);
+        }
+        } else {
+            // Nếu dài hơn, cắt bớt
+            code = code.slice(0, length);
         }
         return code;
     }
