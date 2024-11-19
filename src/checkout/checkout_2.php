@@ -796,9 +796,7 @@ require_once('API/User.php');
 
                     // Kiểm tra phản hồi từ PHP
                     if (response.status === 'success') {
-                        // Chuyển hướng về index.php khi thành công
-                        //window.location.href = 'index.php';
-                        alert("thành công")
+                        window.location.href = 'index.php?src=invoice/invoice';
                     } else {
                         // Hiển thị thông báo lỗi
                         mess.classList.remove('hidden'); // Bỏ class 'hidden' để hiển thị thông báo
