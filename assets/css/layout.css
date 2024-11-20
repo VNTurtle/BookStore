@@ -540,6 +540,59 @@ footer.footer {
   background-color: rgba(249, 244, 255, 0.774);
   animation: bounce_613 0.4s linear;
 }
+.dropdown-menu-2 {
+  margin-top: 15px;
+  position: absolute;
+  top: 100%;
+  left: -310px; /* Điều chỉnh vị trí thả xuống theo yêu cầu */
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  width: 350px; /* Điều chỉnh kích thước */
+  z-index: 1000;
+  display: none;
+}
+
+.dropdown-header {
+  padding: 10px;
+  font-weight: bold;
+}
+.mess-content a:nth-child(1){
+  display: block;
+  padding: 10px;
+}
+.mess-content:hover{
+  cursor: pointer;
+  background-color: #e6d7fb;
+}
+#bank-form {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#bank-form h4 {
+  margin-bottom: 15px;
+}
+
+#bank-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+#bank-form input, #bank-form select {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
 
 @keyframes bounce_613 {
   40% {

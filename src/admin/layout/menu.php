@@ -18,7 +18,7 @@
     document.getElementById("content").innerHTML = "<p>Bạn không có quyền truy cập vào trang này.</p>";
 } 
 </script>
-<link rel="stylesheet" href="assets/fonts/boxicons.css">
+
 <link rel="stylesheet" href="assets/css/admin_layout.css">
 <link rel="stylesheet" href="assets/css/core.css">
 <link rel="stylesheet" href="assets/css/theme.css">

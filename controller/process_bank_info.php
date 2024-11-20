@@ -1,16 +1,19 @@
 <?php
-require_once('../API/Cancel_requests.php');
+require_once('../API/db.php');
 $response = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Lấy trạng thái đơn hàng mới và ID đơn hàng từ yêu cầu AJAX
-    $orderId = $_POST['order_id'];
-    $userId = $_POST['userId'];
-    $reason =$_POST['reason'];
-    $Status='pending';
+    $orderId = $_POST['orderId'];
+    $bankName = $_POST['bankName'];
+    $accountNumber =$_POST['accountNumber'];
+    $accountName =$_POST['accountName'];
+    $Content3 = "Ngân hàng: " . $bankName . ". Số tài khoản: " . $accountNumber . ". Tên tài khoản: " . $accountName;
+    $Status='bankpay';
     // Câu truy vấn cập nhật
-    
-    $check= Cancel_requests::PostCancel_requests($userId, $orderId, $reason,null,null, $Status);
+    $query="UPDATE `cancel_requests` 
+        SET `Content3`=?, `Status`= ? WHERE order_id = ? ";
+    $check=DP::run_query($query,[$Content3, $Status, $orderId],1);
     // Thực hiện câu truy vấn
     if ($check) {
         $response['status'] = 'success';

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="assets/fonts/boxicons.css">
     <link rel="icon" href="assets/img/logo-web.jpg">
     <link rel="stylesheet" href="assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
@@ -39,6 +40,8 @@
     <script src="assets/fontawesome/js/all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
     <script src="assets/js/layout_admin.js"></script>
+    
+    <script src="assets/js/layout.js"></script>
     <?php
 // Bao gồm tệp tin JavaScript riêng của từng trang nếu có
 if (isset($page)) {

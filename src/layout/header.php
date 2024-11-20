@@ -4,6 +4,8 @@
 require_once('API/Type.php');
 require_once('API/db.php');
 require_once('API/User.php');
+require_once('API/User.php');
+require_once('API/Cancel_requests.php');
 $bookTypeIds = Type::getType();
 
 $typedetailList = array();
@@ -19,8 +21,8 @@ foreach ($bookTypeIds as $bookType) {
 session_start();
 if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
-}else{
-    $userId =null;
+} else {
+    $userId = null;
 }
 
 if (isset($_GET['logout'])) {
@@ -44,7 +46,7 @@ if (isset($_GET['logout'])) {
                     <img class="Logo-header" src="assets/img/logo-bookstore-header.jpg" alt="Logo">
                 </a>
             </div>
-            <form class="col-lg-4 search-header" method="get" action="searchresult.php" >
+            <form class="col-lg-4 search-header" method="get" action="searchresult.php">
                 <div class="InputContainer">
                     <input placeholder="Search.." id="timkiem" class="input" name="timkiem" type="text" onkeyup="toggleButton()">
                     <button class="btn btn-search" style="border-color: #fff; border-radius: 25px; margin: 13px; color: #09bfff;" type="submit" id="btn">
@@ -63,15 +65,71 @@ if (isset($_GET['logout'])) {
                 $querySearch = "SELECT * FROM book WHERE Name LIKE '%$noidung%' ";
                 $ketqua = DP::run_query($querySearch, $parameters, $resultType);
             }
+            $Lst_mess = Cancel_requests::getCancel_requestsByUserId($userId, 'approved');
+            $Lst_complete = Cancel_requests::getCancel_requestsByUserId($userId, 'complete');
+            $total_complete = count($Lst_complete);
+            $total_mess = count($Lst_mess);
             ?>
 
             <div class="col-lg-5 header-control">
                 <ul class="ul-control">
+                    <li style="cursor: pointer; position: relative;">
+                        <i class='bx bxs-message-rounded-dots' id="mess-icon" style="padding: 10px;"></i>
+                        <span class="badge bg-primary rounded-circle position-absolute top-0 start-100 translate-middle">
+                            <?php echo $total_mess + $total_complete; ?>
+                        </span>
+                        <div id="mess-dropdown" class="dropdown-menu-2 dropdown-menu-end" style="display: none;">
+                            <h6 class="dropdown-header">Thông báo</h6>
+                            <?php
+                            foreach ($Lst_complete as $key => $complete) {
+                            ?>
+                                <div class="mess-content">
+                                    <a id="mess-item-<?= $key ?>" data-key="<?= $key ?>" href="index.php?src=invoice/invoice">
+                                        <p style="display: inline-block;"><strong>Đơn hàng:</strong> <?= $complete['order_id'] ?></p>
+                                        <p>
+                                            <strong>Đã hoàn tiền cho bạn.</strong>
+                                            <button class="end_status float-end btn  btn-secondary btn-sm" 
+                                            data-order-status="5" data-order-id="<?= $complete['order_id'] ?>" data-status="end_request">
+                                            Xóa</button>
+                                        </p>
+                                        <p><strong>Mọi thắc mắc xin liên hệ qua số điện thoại: 0962548301.</strong> </p>
+                                    </a>
+                                    <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
+                                </div>
+                                <?php
+                            }
+                            foreach ($Lst_mess as $key => $mess) {
+                                if ($mess['PaymethodId'] == 1) {
+                                ?>
+                                    <div class="mess-content">
+                                        <a id="mess-item-<?= $key ?>" data-key="<?= $key ?>" href="index.php?src=invoice/invoice">
+                                            <p style="display: inline-block;"><strong>Đơn hàng:</strong> <?= $mess['order_id'] ?></p>
+                                            <p>
+                                                <strong>Đã hủy thành công</strong>
+                                                <button class="end_status float-end btn  btn-secondary btn-sm" 
+                                                data-order-status="5" data-order-id="<?= $mess['order_id'] ?>" data-status="end_request">
+                                                Xóa</button>
+                                            </p>
 
-                    <li class="header-favourite d-n">
-                        <a href="index.php?src=favourite/favourite" id="favouriteLink">
-                            <i style="width: 25px; height: 25px; color: #000; "class="fa-solid fa-heart"></i>
-                        </a>
+                                        </a>
+                                        <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
+                                    </div>
+                                <?php
+                                } else { ?>
+                                    <div class="mess-content">
+                                        <a id="mess-item-<?= $key ?>" data-key="<?= $key ?>" href="javascript:void(0);">
+                                            <p style="display: inline-block;"><strong>Đơn hàng:</strong> <?= $mess['order_id'] ?></p>
+                                            <p><strong>Đã hủy thành công</strong></p>
+                                            <p><strong>Quý khách chọn ngân hàng để hoàn tiền</strong></p>
+                                            <button class="btn btn-secondary btn-sm show-bank-form" data-order-id="<?= $mess['order_id'] ?>">Ngân Hàng</button>
+                                        </a>
+                                        <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
+                                    </div>
+                            <?php
+                                }
+                            }
+                            ?>
+                        </div>
                     </li>
                     <li class="header-favourite d-n">
                         <i style="width: 25px; height: 25px;" class="fa-solid fa-heart"></i>
@@ -124,7 +182,7 @@ if (isset($_GET['logout'])) {
 
                                     const decoded = JSON.parse(jsonPayload);
                                     const role = decoded.data.role;
-                                    const userId = decoded.data.Id;                                    
+                                    const userId = decoded.data.Id;
                                     if (role == 1) {
                                         authLinks.innerHTML = `
                                             <li>
@@ -292,3 +350,58 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 </header>
+<div id="bank-form" style="display: none; padding: 20px; border: 1px solid #ccc; background: #f9f9f9; width: 400px; position: absolute;">
+    <h4>Thông tin ngân hàng</h4>
+    <form id="bankForm">
+        <label for="bankName">Chọn Ngân Hàng:</label>
+        <select id="bankName" name="bankName" required>
+            <option value="">--Chọn Ngân Hàng--</option>
+            <option value="QRONLY">Thanh toan QRONLY</option>
+            <option value="MBAPP">Ung dung MobileBanking</option>
+            <option value="VNPAYQR">VNPAYQR</option>
+            <option value="VNBANK">LOCAL BANK</option>
+            <option value="IB">INTERNET BANKING</option>
+            <option value="ATM">ATM CARD</option>
+            <option value="INTCARD">INTERNATIONAL CARD</option>
+            <option value="VISA">VISA</option>
+            <option value="MASTERCARD"> MASTERCARD</option>
+            <option value="JCB">JCB</option>
+            <option value="UPI">UPI</option>
+            <option value="VIB">VIB</option>
+            <option value="VIETCAPITALBANK">VIETCAPITALBANK</option>
+            <option value="SCB">Ngan hang SCB</option>
+            <option value="NCB">Ngan hang NCB</option>
+            <option value="SACOMBANK">Ngan hang SacomBank </option>
+            <option value="EXIMBANK">Ngan hang EximBank </option>
+            <option value="MSBANK">Ngan hang MSBANK </option>
+            <option value="NAMABANK">Ngan hang NamABank </option>
+            <option value="VNMART"> Vi dien tu VnMart</option>
+            <option value="VIETINBANK">Ngan hang Vietinbank </option>
+            <option value="VIETCOMBANK">Ngan hang VCB </option>
+            <option value="HDBANK">Ngan hang HDBank</option>
+            <option value="DONGABANK">Ngan hang Dong A</option>
+            <option value="TPBANK">Ngân hàng TPBank </option>
+            <option value="OJB">Ngân hàng OceanBank</option>
+            <option value="BIDV">Ngân hàng BIDV </option>
+            <option value="TECHCOMBANK">Ngân hàng Techcombank </option>
+            <option value="VPBANK">Ngan hang VPBank </option>
+            <option value="AGRIBANK">Ngan hang Agribank </option>
+            <option value="MBBANK">Ngan hang MBBank </option>
+            <option value="ACB">Ngan hang ACB </option>
+            <option value="OCB">Ngan hang OCB </option>
+            <option value="IVB">Ngan hang IVB </option>
+            <option value="SHB">Ngan hang SHB </option>
+            <option value="APPLEPAY">Apple Pay </option>
+            <option value="GOOGLEPAY">Google Pay </option>
+        </select>
+        <br>
+        <label for="accountNumber">Số Tài Khoản:</label>
+        <input type="text" id="accountNumber" name="accountNumber" required>
+        <br>
+        <label for="accountNumber">Tên Tài Khoản: </label>
+        <input type="text" id="accountName" name="accountName" required>
+        <br>
+        <button type="button" class="mb-2 btn btn-primary submit-bank-info">Gửi</button>
+        <button type="button" class="btn btn-secondary cancel-bank-form">Hủy</button>
+    </form>
+</div>

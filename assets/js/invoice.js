@@ -106,9 +106,9 @@ $(document).ready(function() {
                 reason: reason 
             },
             success: function() {
-                console.log('Đã hủy đơn hàng');
+                console.log('Chờ Admin xác nhận');
                 cancelButton.closest('.invoice-detail').remove();  // Ẩn đơn hàng
-                alert('Yêu cầu hủy đơn đã được gửi. Chờ admin xác nhận!');  // Làm mới trang
+                location.reload();  // Làm mới trang
             },
             error: function(xhr, status, error) {
                 console.error('Lỗi khi hủy đơn hàng:', error);

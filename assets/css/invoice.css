@@ -422,7 +422,18 @@
 .inp-rbx:checked + .rbx-label::before {
     background-color: #007bff;
 }
+.disabled {
+    opacity: 0.5; /* Làm mờ */
+    pointer-events: none; /* Không cho phép click */
+}
 
+.processing-button {
+    background-color: #f0ad4e; /* Màu vàng */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: not-allowed;
+}
 /* Ẩn textarea cho lý do khác ban đầu */
 textarea#customCancelReason {
     display: none;

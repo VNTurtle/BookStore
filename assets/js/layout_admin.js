@@ -41,7 +41,7 @@ $(document).ready(function() {
         });
     });
     // Xử lý sự kiện click trên nút "Xác nhận"
-    $('#mess-content').on('click', '.approve-cancel, .reject-cancel', function() {
+    $('#mess-content').on('click', '.approve-cancel, .reject-cancel, .complete-cancel', function() {
         var orderId = $(this).data('order-id');
         var status = $(this).data('status');
         var orderStatusId = $(this).data('order-status');

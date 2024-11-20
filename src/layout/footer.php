@@ -150,4 +150,3 @@
 
 </footer>
 
-<script src="assets/js/layout.js"></script>

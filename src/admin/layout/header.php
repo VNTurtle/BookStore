@@ -24,6 +24,7 @@
         require_once('API/Invoice.php');
 
         $Lst_cancelinvoice = Cancel_requests::getCancel_requestsByStatus('pending');
+        $bankPay = Cancel_requests::getCancel_requestsByStatus('bankpay');
 
         $count_iv = Invoice::getInvoiceByOrderStatus(1);
 
@@ -35,8 +36,19 @@
             'order_id' => $iv['order_id'],
             'FullName' => $iv['FullName'],
             'Name' => $iv['Name'],
-            'Content' => $iv['Content'],
+            'Content' => $iv['Content1'],
             'OrderId' => $iv['OrderId'],
+          ];
+        }
+        foreach ($bankPay as $iv) {
+          $notifications[] = [
+            'type' => 'bankpay',
+            'order_id' => $iv['order_id'],
+            'FullName' => $iv['FullName'],
+            'Name' => $iv['Name'],
+            'Content3' => $iv['Content3'],
+            'OrderId' => $iv['OrderId'],
+            'Total'=>$iv['Total'],
           ];
         }
 
@@ -49,7 +61,7 @@
             'Total' => $iv['Total'],
           ];
         }
-
+        $total_bank=count($bankPay);
         $total_mess = count($Lst_cancelinvoice);
         $total_items = count($count_iv);
         ?>
@@ -58,7 +70,7 @@
     <i class='bx bxs-message-rounded-dots' id="mess-icon"></i>
     <?php if ($total_mess + $total_items > 0) : ?>
         <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle">
-            <?php echo $total_mess + $total_items; ?>
+            <?php echo $total_mess + $total_items + $total_bank; ?>
         </span>
     <?php endif; ?>
     <div id="mess-dropdown" class="dropdown-menu-2 dropdown-menu-end" style="display: none; padding: 25px;">
@@ -67,7 +79,13 @@
             <?php if (!empty($notifications)) : ?>
                 <?php foreach ($notifications as $key => $notification) : ?>
                     <div id="mess-item-<?= $key ?>" data-key="<?= $key ?>">
-                        <?php if ($notification['type'] == 'cancel_request') : ?>
+                        <?php if($notification['type'] == 'bankpay') :?>
+                          <p><strong>Đơn hàng:</strong> <?= $notification['order_id'] ?></p>
+                            <p><strong>Người đặt:</strong> <?= $notification['FullName'] ?></p>
+                            <p><strong>Yêu cầu hoàn tiền</strong> <?= $notification['Content3'] ?></p>
+                            <p><strong>Số tiền:</strong> <?= $notification['Total'] ?> VNĐ</p>
+                            <button class="complete-cancel btn btn-primary" data-order-status="5" data-order-id="<?= $notification['order_id'] ?>" data-status="complete">Đã chuyển khoản</button>
+                        <?php elseif ($notification['type'] == 'cancel_request') : ?>
                             <p><strong>Đơn hàng:</strong> <?= $notification['order_id'] ?></p>
                             <p><strong>Người đặt:</strong> <?= $notification['FullName'] ?></p>
                             <p><strong>Phương thức thanh toán:</strong> <?= $notification['Name'] ?></p>
@@ -78,7 +96,7 @@
                             <p><strong>Đơn hàng mới:</strong> <?= $notification['Code'] ?></p>
                             <p>Số hóa đơn con: <?= $notification['ivd_count'] ?></p>
                             <p>Ngày đặt: <?= $notification['IssuedDate'] ?></p>
-                            <p>Tổng tiền: <?= $notification['Total'] ?></p>
+                            <p>Tổng tiền: <?= $notification['Total'] ?> VNĐ</p>
                             <a href="index.php?src=admin/invoice/invoice_detail&id_invoice=<?= $notification['Code'] ?>" class="btn btn-sm btn-primary" style="margin-right: 20px;">Xem chi tiết</a>
                             <button class="btn btn-sm btn-primary update-status-btn" data-order-status="2" data-order-id="<?= $notification['Code'] ?>">Xác nhận</button>
                         <?php endif; ?>

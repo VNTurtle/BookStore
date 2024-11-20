@@ -3,6 +3,7 @@ require 'src/layout/header.php';
 require_once('API/OrderStatus.php');
 require_once('API/Invoice.php');
 require_once('API/InvoiceDetail.php');
+require_once('API/Cancel_requests.php');
 $OrderStatus = OrderStatus::getOrderStatus();
 ?>
 
@@ -28,6 +29,7 @@ $OrderStatus = OrderStatus::getOrderStatus();
         </ul>
         <div class="tab-float">
             <?php
+            $Cancel= Cancel_requests::getCancel_requestsByUserId($userId, 'pending');
             $invoice = Invoice::getInvoiceByuserId($userId);
             foreach ($OrderStatus as $lst_order) {
                 if($lst_order['Id']==1){
@@ -38,10 +40,19 @@ $OrderStatus = OrderStatus::getOrderStatus();
                     echo '<div id="tab' . $lst_order['Id'] . '" class="tab-content ">
                         <div class="rte product_getcontent">';
                 }
+               
                 foreach ($invoice as $lst_invoice) {
+                    $isCanceled = false;    
                     if ($lst_invoice['OrderStatusId'] == $lst_order['Id']) 
-                    {
-                        echo '<div class="invoice-page">
+                    {   
+                        if($Cancel>0){
+                        foreach ($Cancel as $cancel_item) {
+                            if ($cancel_item['order_id'] == $lst_invoice['Code']) {
+                                $isCanceled = true;
+                                break;
+                            }
+                        }}
+                        echo '<div class="invoice-page ' . ($isCanceled ? 'disabled' : '') . '">
                                 <div class="drawer-inner">
                                     <div class="InvoicePageContainer">
                                         <form action="" class="invoice ajaxcart">
@@ -58,7 +69,9 @@ $OrderStatus = OrderStatus::getOrderStatus();
                                                         <div class="grid-item invoice-date">' . $lst_invoice['IssuedDate'] . '</div>
                                                         <div class="grid-item invoice-stock">' . $lst_invoice['Quantity'] . '</div>
                                                         <div class="grid-item invoice-stock">';
-                                                            if($lst_order['Id']==1){
+                                                            if ($isCanceled) {
+                                                                echo '<button class="processing-button" disabled>Đang xử lý</button>';
+                                                            }else if($lst_order['Id']==1){
                                                                 echo '<button class="btn-cancel-order btn btn-primary" type="button" data-order-id="' . $lst_invoice['Code'] . '">Hủy đơn</button>';
                                                             }else if( $lst_order['Id']==2 ){
                                                                 echo '<button class="btn-request-cancel btn btn-primary" type="button" data-order-id="' . $lst_invoice['Code'] . '">Hủy đơn</button>';
@@ -118,7 +131,7 @@ $OrderStatus = OrderStatus::getOrderStatus();
                 echo '</div>
                 </div>';
                 
-                                    
+                          
             }
             ?>
         </div>

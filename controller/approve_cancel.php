@@ -3,7 +3,7 @@ require_once('../API/Cancel_requests.php');
 require_once('../API/db.php');
 $response = array();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $orderId = $_POST['order_id'];
     $status= $_POST['status'];

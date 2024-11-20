@@ -231,7 +231,9 @@ CREATE TABLE Image (
 CREATE TABLE Cancel_requests  (
 	UserId INT NOT NULL,
     order_id NVARCHAR(20) NOT NULL,
-    Content NVARCHAR(255) NULL,
+    Content1 NVARCHAR(255) NULL,
+    Content2 NVARCHAR(255) NULL,
+    Content3 NVARCHAR(255) NULL,
 	created_at DATETIME NULL,
 	Status NVARCHAR(50) NOT NULL,
     PRIMARY KEY (UserId , order_id),
