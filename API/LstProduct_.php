@@ -5,14 +5,12 @@ class LstProduct
   public static function getFilteredProducts($lst_id, $lst_id2, $minPrice, $maxPrice)
 {
     try {
-        // Sử dụng phương thức getConnection để lấy kết nối
         $conn = DP::getConnection();
 
         if ($conn === null) {
             throw new Exception("Kết nối đến cơ sở dữ liệu thất bại.");
         }
         
-        // Truy vấn lấy sản phẩm với các tiêu chí lọc
         $query =
         "SELECT b.Id AS BookId,
                        b.Name AS BookName,
@@ -38,10 +36,8 @@ class LstProduct
             $query .= " AND b.Price BETWEEN :minPrice AND :maxPrice";
         }
 
-        // Chuẩn bị truy vấn
         $stmt = $conn->prepare($query);
 
-        // Ràng buộc các tham số nếu có
         if (!is_null($lst_id)) {
             $stmt->bindParam(':lst_id', $lst_id, PDO::PARAM_INT);
         }
@@ -67,54 +63,57 @@ class LstProduct
         return false;
     }
 }
-public static function getLstProduct($lst_Id = null, $lst_Id2 = null, $limit, $offset)
+public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = null, $offset = null, $countOnly = false)
 {
     $parameters = []; // Các tham số truy vấn
-    $resultType = 2; // Loại kết quả truy vấn (2: Fetch All)
-    
+    $resultType = $countOnly ? PDO::FETCH_ASSOC : 2; // Định dạng kết quả
+
     // Câu truy vấn cơ bản
-    $query = "SELECT 
-        b.Id AS BookId,
-        b.Name AS BookName, 
-        b.Price, 
-        b.TypeId, 
-        bt.Name AS BookTypeName,
-        i.Path
-    FROM 
-        book b
-    JOIN 
-        Type bt ON b.TypeId = bt.Id
-    LEFT JOIN 
-        image i ON b.Id = i.BookId
-    LEFT JOIN 
-        booktype booktype ON booktype.BookId = b.Id
+    $query = $countOnly 
+        ? "SELECT COUNT(DISTINCT b.Id) AS totalProducts FROM book b"
+        : "SELECT 
+            b.Id AS BookId,
+            b.Name AS BookName, 
+            b.Price, 
+            b.TypeId, 
+            bt.Name AS BookTypeName,
+            i.Path
+        FROM book b";
+
+    // Các JOIN không thay đổi
+    $query .= " 
+        JOIN Type bt ON b.TypeId = bt.Id
+        LEFT JOIN image i ON b.Id = i.BookId
+        LEFT JOIN booktype booktype ON booktype.BookId = b.Id
     WHERE 
         i.Id = (
             SELECT MIN(i2.Id)
             FROM image i2
             WHERE i2.BookId = b.Id
         )";
-    
-    // Thêm điều kiện nếu có `lst_Id`
-    if ($lst_Id !== null) {
+
+    // Điều kiện lọc
+    if ($lst_id !== null) {
         $query .= " AND b.TypeId = :lst_Id";
-        $parameters[':lst_Id'] = $lst_Id;
+        $parameters[':lst_Id'] = $lst_id;
     }
 
-    // Thêm điều kiện nếu có `lst_Id2`
-    if ($lst_Id2 !== null) {
+    if ($lst_id2 !== null) {
         $query .= " AND booktype.TypeDetailId = :lst_Id2";
-        $parameters[':lst_Id2'] = $lst_Id2;
+        $parameters[':lst_Id2'] = $lst_id2;
     }
 
-    // Thêm LIMIT và OFFSET cho phân trang
-    $query .= " LIMIT :limit OFFSET :offset";
-    $parameters[':limit'] = $limit;
-    $parameters[':offset'] = $offset;
+    // Nếu không phải đếm, thêm LIMIT và OFFSET
+    if (!$countOnly && $limit !== null && $offset !== null) {
+        $query .= " LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+    }
 
-    return DP::run_query($query, $parameters, $resultType);
+    // Thực thi truy vấn
+    $result = DP::run_query($query, $parameters, $resultType);
+
+    // Nếu là đếm, trả về tổng số sản phẩm
+    return $countOnly ? $result[0]['totalProducts'] : $result;
 }
-
 
   public static function getBookTypes()
   {

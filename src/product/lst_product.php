@@ -37,22 +37,16 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
 // Lấy tổng số sản phẩm để tính tổng số trang
-$sqlCount = "
-    SELECT COUNT(*) as total
-    FROM book b
-    JOIN typedetail td ON b.TypeId = td.TypeId
-    WHERE b.TypeId = :lst_id AND td.Id = :lst_id2
-";
-$totalCount = DP::run_query($sqlCount, [':lst_id' => $lst_id, ':lst_id2' => $lst_id2], PDO::FETCH_ASSOC);
-$totalProducts = isset($totalCount[0]['total']) ? $totalCount[0]['total'] : 0;
+$totalProducts = LstProduct::getLstProduct($lst_id, $lst_id2, null, null, true);
 $totalPages = ceil($totalProducts / $limit);
 
 // Truy vấn sản phẩm với phân trang
 $lst_bv = LstProduct::getLstProduct($lst_id, $lst_id2, $limit, $offset);
-
 require 'src/layout/header.php';
 ?>
-
+<script>
+    console.log($totalProducts)
+</script>
 <body>
     <link rel="stylesheet" href="assets/css/lst_product.css">
     <div class="bodywrap">
@@ -202,10 +196,7 @@ require 'src/layout/header.php';
                                 echo "<p>Không có sản phẩm nào phù hợp.</p>";
                             }
                             ?>
-                        </div>
-
-                        <!-- Phần hiển thị nút phân trang -->
-                        <nav class="page-book" aria-label="Page navigation example">
+                            <nav class="page-book" aria-label="Page navigation example">
                             <ul class="pagination">
                                 <!-- Nút Previous -->
                                 <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
@@ -231,6 +222,7 @@ require 'src/layout/header.php';
                                 </li>
                             </ul>
                         </nav>
+                        </div>
                     </div>
                 </div>
             </div>

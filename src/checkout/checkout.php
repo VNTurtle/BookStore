@@ -1,13 +1,15 @@
 <?php
 require_once('API/User.php');
+require_once('API/Voucher.php');
 session_start();
 if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
-}else{
-    $userId =null;
+} else {
+    $userId = null;
 }
-$LstUser=User::getUserById($userId);
-$User=$LstUser[0];
+$LstUser = User::getUserById($userId);
+$userVouchers = Voucher::getVouchersByUserId($userId);
+$User = $LstUser[0];
 ?>
 
 <link rel="stylesheet" href="assets/css/checkout.css">
@@ -82,7 +84,7 @@ $User=$LstUser[0];
                                                         <div class="col-lg-4">
                                                             <div class="mb-3">
                                                                 <label class="form-label" for="billing-phone">Phone</label>
-                                                                <input type="text" class="form-control" id="billing-phone"  placeholder="Enter Phone no.">
+                                                                <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -124,6 +126,25 @@ $User=$LstUser[0];
                                                 </div>
                                             </form>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="sort-product">
+                                    <h5 class="sort-heading">
+                                        Mã giảm giá
+                                    </h5>
+                                    <div class="d-flex">
+                                        <select class="sort-arrange" name="voucher-code" id="voucher-select">
+                                            <option value="" disabled selected>Chọn mã giảm giá</option>
+                                            <?php
+                                            if (!empty($userVouchers)) {
+                                                foreach ($userVouchers as $voucher) {
+                                                    echo '<option class="sort-item" value="' . $voucher['Code'] . '">' . $voucher['Des'] . '</option>';
+                                                }
+                                            } else {
+                                                echo '<option value="">Không có mã giảm giá khả dụng</option>';
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                             </li>
@@ -265,6 +286,33 @@ $User=$LstUser[0];
                                 // Cập nhật tổng giá trị
                                 document.getElementById('total').innerText = `${total}.000 đ`;
                                 console.log(count);
+                            </script>
+                            <script>
+                                const vouchers = <?php echo json_encode($userVouchers); ?>;
+                                let totalElement = document.getElementById('total');
+                                const originalTotal = parseFloat(totalElement.innerText);
+
+                                document.getElementById('voucher-select').addEventListener('change', function() {
+                                    const selectedCode = this.value;
+
+
+                                    total = originalTotal;
+
+                                    let discountedTotal = 0;
+                                    const voucher = vouchers.find(v => v.Code === selectedCode);
+
+                                    if (voucher) {
+
+                                        const discount = Math.min(total * voucher.Percent, voucher.MaxTotal);
+                                        discountedTotal = total - discount;
+
+                                        discountedTotal = Math.max(discountedTotal, 0);
+
+                                        totalElement.innerText = discountedTotal.toFixed(3) + ` ` + `đ`;
+                                        total = discountedTotal;
+                                        console.log(total);
+                                    }
+                                });
                             </script>
                         </div>
                     </div>
@@ -608,18 +656,18 @@ $User=$LstUser[0];
     function generateInvoiceCode(length) {
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345789';
         var now = new Date();
-        var day = String(now.getDate()).padStart(2, '0'); 
-        var month = String(now.getMonth() + 1).padStart(2, '0'); 
-        var year = String(now.getFullYear()).slice(-2); 
-        var hour = String(now.getHours()).padStart(2, '0'); 
+        var day = String(now.getDate()).padStart(2, '0');
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var year = String(now.getFullYear()).slice(-2);
+        var hour = String(now.getHours()).padStart(2, '0');
         var minute = String(now.getMinutes()).padStart(2, '0');
         var baseCode = `HDB${day}${month}${year}${hour}${minute}`;
         var code = baseCode;
         if (code.length < length) {
-        for (var i = code.length; i < length; i++) {
-            var randomIndex = Math.floor(Math.random() * characters.length);
-            code += characters.charAt(randomIndex);
-        }
+            for (var i = code.length; i < length; i++) {
+                var randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters.charAt(randomIndex);
+            }
         } else {
             // Nếu dài hơn, cắt bớt
             code = code.slice(0, length);
