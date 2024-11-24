@@ -60,6 +60,7 @@ $dsbl = Comment::showbl($productId);
                     <?php
                     $fullName = htmlspecialchars($bl['UserName']);
                     $content = nl2br(htmlspecialchars($bl['Content']));
+                    $time = htmlspecialchars($bl['Date']);
                     ?>
 
                     <div class="comment-item">
@@ -67,6 +68,9 @@ $dsbl = Comment::showbl($productId);
                             <div class="comment-item-user">
                                 <img src="assets/img/avatar/user.jpg" alt="" class="comment-item-user-img">
                                 <span><b><?= $fullName ?></b></span>
+                            </div>
+                            <div class="comment-time">
+                                <p><?= $time ?></p>
                             </div>
                             <div class="comment-content">
                                 <p><?= $content ?></p>

@@ -132,7 +132,9 @@ if (isset($_GET['logout'])) {
                         </div>
                     </li>
                     <li class="header-favourite d-n">
-                        <i style="width: 25px; height: 25px;" class="fa-solid fa-heart"></i>
+                    <a href="index.php?src=favourite/favourite" id="favouriteLink">
+                            <i style="width: 25px; height: 25px; color: #000; "class="fa-solid fa-heart"></i>
+                        </a>
                     </li>
                     <li class="header-cart ">
                         <a href="index.php?src=cart/cart" id="cartLink">

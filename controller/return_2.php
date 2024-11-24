@@ -2,6 +2,7 @@
 require_once('../API/db.php');
 require_once('../API/User.php');
 require_once('../API/Cart.php');
+require_once('../API/Voucher.php');
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
@@ -47,6 +48,20 @@ if ($secureHash == $vnp_SecureHash && $_GET['vnp_ResponseCode'] == '00') {
     // Clear session data after inserting the invoice
     unset($_SESSION['invoice']);
     unset($_SESSION['invoiceDetails']);
+    if (isset($_SESSION['voucherCode'])) {
+        $voucherCode = $_SESSION['voucherCode'];
+    
+        $result = Voucher::updateVoucherStatus($voucherCode, 0);
+    
+        if ($result) {
+            echo "Voucher đã được sử dụng.";
+        } else {
+            echo "Không thể cập nhật trạng thái voucher.";
+        }
+    
+        // Xóa voucherCode khỏi session sau khi xử lý xong
+        unset($_SESSION['voucherCode']);
+    }
 
     header("Location: ../index.php");
 } else {

@@ -55,7 +55,19 @@
             <div data-i18n="Dashboards">Dashboards</div>
           </a>
         </li>
-
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle" data-toggle="submenu">
+            <i class="menu-icon tf-icons bx bx-layout"></i>
+            <div data-i18n="Account">Tài khoản</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="index.php?src=admin/account/lst_account" class="menu-link">
+                <div data-i18n="Without menu">Danh sách tài khoản</div>
+              </a>
+            </li>
+          </ul>
+        </li>
         <!-- Products -->
         <li class="menu-item">
           <a href="javascript:void(0);" class="menu-link menu-toggle" data-toggle="submenu">

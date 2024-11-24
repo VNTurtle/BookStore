@@ -8,7 +8,7 @@ session_start(); // Start session
 $vnp_TmnCode = "HDG2BBN6"; // Mã website tại VNPAY 
 $vnp_HashSecret = "7WGDGPIT62YT0NHSKJCP1OP3S775IQQB"; // Chuỗi bí mật
 $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-$vnp_Returnurl = "http://localhost/bookstore/controller/return.php"; // Change to your return URL
+$vnp_Returnurl = "http://localhost:8088/bookstore/controller/return.php"; // Change to your return URL
 $vnp_TxnRef = $_POST['order_id']; 
 $vnp_OrderInfo = $_POST['order_desc'];
 $vnp_OrderType = $_POST['order_type'];
