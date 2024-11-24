@@ -323,14 +323,19 @@ $User = $LstUser[0];
 
                                     if (voucher) {
 
+
                                         const discount = Math.min(total * voucher.Percent / 100, voucher.MaxTotal);
+
                                         discountedTotal = total - discount;
 
                                         discountedTotal = Math.max(discountedTotal, 0);
 
+
                                         oldPriceElement.innerText = total.toFixed(3) + `đ`;
 
                                         totalElement.innerText = discountedTotal.toFixed(3) + `đ`;
+                                        totalElement.innerText = discountedTotal.toFixed(3) + ` ` + `đ`;
+
                                         total = discountedTotal;
                                         console.log(total);
                                     }
