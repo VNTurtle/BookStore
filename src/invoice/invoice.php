@@ -77,7 +77,7 @@ $OrderStatus = OrderStatus::getOrderStatus();
                                                                 echo '<button class="btn-request-cancel btn btn-primary" type="button" data-order-id="' . $lst_invoice['Code'] . '">Hủy đơn</button>';
                                                             }
                                                             else if ($lst_order['Id'] == 3){
-                                                                echo '<button class="btn-cancel-order btn btn-primary" type="button" data-order-id="' . $lst_invoice['Code'] . '">Nhận hàng</button>';
+                                                                echo '<button class="btn-transport-order btn btn-primary" type="button" data-order-status="4" data-order-id="' . $lst_invoice['Code'] . '">Nhận hàng</button>';
                                                             }else if ($lst_order['Id'] == 4){
                                                                 echo '<button class="btn-cancel-order btn btn-primary" type="button" data-order-id="' . $lst_invoice['Code'] . '">Đánh giá</button>';
                                                             }else{
@@ -92,12 +92,12 @@ $OrderStatus = OrderStatus::getOrderStatus();
                                                         echo '<div class="invoice-detail">
                                                                 <div class="ajaxcart-row">
                                                                     <div class="ajaxcart-product invoice-product">
-                                                                        <a href="" class="ajaxcart-product-image invoice-image">
+                                                                        <a href="index.php?src=product/product_detail&id='. $lst_ivd['BookId'] .'" class="ajaxcart-product-image invoice-image">
                                                                             <img src="assets/img/products/' . $lst_ivd['Path'] . '" alt="">
                                                                         </a>
                                                                         <div class="grid-item invoice-info">
                                                                             <div class="invoice-name">
-                                                                                <a href="">' . $lst_ivd['Name'] . '</a>
+                                                                                <a href="index.php?src=product/product_detail&id='. $lst_ivd['BookId'] .'">' . $lst_ivd['Name'] . '</a>
                                                                                 <span class="variant-title">' . $lst_ivd['Price'] . 'đ</span>
                                                                             </div>
                                                                             <div class="grid">

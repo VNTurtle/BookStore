@@ -468,6 +468,7 @@ svg {
 
 .slick-slide {
     margin: 0 8px;
+    width: 359px !important;
 }
 
 

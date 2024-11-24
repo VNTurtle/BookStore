@@ -182,10 +182,10 @@ $User=$LstUser[0];
 
                 <div class="row my-4">
                     <div class="col">
-                        <a href="cart.php" class="btn btn-link text-muted">
+                        <a href="index.php" class="btn btn-link text-muted">
                             &nbsp;
                             <i class="fa-solid fa-angle-left"></i>
-                            &nbsp; Continue Cart
+                            &nbsp; Trang chủ
                         </a>
                     </div> <!-- end col -->
                     <div class="col">

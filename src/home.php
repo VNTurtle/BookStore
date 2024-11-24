@@ -33,8 +33,13 @@ $lst_bv = Product::getProduct();
             </div>
 
             <div class="col-lg-4">
-                <!-- <canvas width="450" height="590" id="Book-index" class="3D-book-index"></canvas> -->
-            </div>
+                    <div class="bestselle">
+                        <img class="d-block w-100" src="assets/img/banner/363104_06.jpg"  alt="">
+                    </div>
+                    <div class="bestselle">
+                        <img class="d-block w-100" src="assets/img/banner/363107_05.jpg" alt="">
+                    </div>
+                </div>
         </div>
 
 

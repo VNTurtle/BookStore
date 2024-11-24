@@ -91,7 +91,7 @@
                             <p><strong>Phương thức thanh toán:</strong> <?= $notification['Name'] ?></p>
                             <p><strong>Lý do hủy:</strong> <?= $notification['Content'] ?></p>
                             <button class="approve-cancel btn btn-primary" data-order-status="5" data-order-id="<?= $notification['order_id'] ?>" data-status="approved">Phê duyệt</button>
-                            <button class="reject-cancel btn btn-danger" data-order-status="<?= $notification['OrderId'] ?>" data-order-id="<?= $notification['order_id'] ?>" data-status="refuse">Từ chối</button>
+                            <button class="reject-cancel btn btn-danger" data-order-status="<?= $notification['OrderId'] ?>" data-order-id="<?= $notification['order_id'] ?>">Từ chối</button>
                         <?php elseif ($notification['type'] == 'new_order') : ?>
                             <p><strong>Đơn hàng mới:</strong> <?= $notification['Code'] ?></p>
                             <p>Số hóa đơn con: <?= $notification['ivd_count'] ?></p>

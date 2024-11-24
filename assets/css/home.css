@@ -5,6 +5,15 @@
 }
 
 
+.bestselle{
+    height: 280px;
+    position: relative;
+    display: block;
+}
+.bestselle:first-child{
+    margin-top: 25px;
+    margin-bottom: 3px;
+}
 
 .slider_1 {
     display: block;

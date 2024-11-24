@@ -139,7 +139,7 @@ if($stock<=0){
                                     <?php
                                     if ($book[0]['Model'] != null) {
                                     ?>
-                                        <div class="swiper-slide swiper-slide-active" href="" style="width: 330px !important; justify-content: center;">
+                                        <div class="swiper-slide swiper-slide-active "  style="width: 330px !important; justify-content: center;">
                                             <div style="width: 330px !important; justify-content: center;">
                                                 <canvas id="3D-Book" class="MDImage" height="400" width="400"></canvas>
                                             </div>
@@ -152,9 +152,9 @@ if($stock<=0){
                                     <?php
                                     foreach ($lst_Image as $key => $img) {
                                     ?>
-                                        <a class="swiper-slide swiper-slide-active" href="" style="width: 330px; justify-content: center;">
+                                        <div class="swiper-slide swiper-slide-active count-img" href="" style="width: 330px; justify-content: center;">
                                             <img height="400" width="400" src="assets/img/products/<?php echo $img['Path'] ?>" alt="">
-                                        </a>
+                                        </div>
                                     <?php
                                     }
                                     ?>

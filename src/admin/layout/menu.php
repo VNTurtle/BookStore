@@ -16,7 +16,7 @@
     window.location.href = "index.php"; // Redirect to an access denied page
     // Alternatively, you can display a message in place of the page content
     document.getElementById("content").innerHTML = "<p>Bạn không có quyền truy cập vào trang này.</p>";
-} 
+  }
 </script>
 
 <link rel="stylesheet" href="assets/css/admin_layout.css">
@@ -35,11 +35,11 @@
     display: block;
   }
 </style>
-<div class="layout-wrapper layout-content-navbar" id="token_role" >
+<div class="layout-wrapper layout-content-navbar" id="token_role">
   <div class="layout-container">
     <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
       <div class="app-brand demo">
-        <a href="index.php?folder=admin" class="app-brand-link">
+        <a href="index.php?src=admin/home" class="app-brand-link">
           <span class="app-brand-logo demo">
             <!-- Logo SVG -->
           </span>
@@ -50,7 +50,7 @@
       <ul class="menu-inner py-1">
         <!-- Dashboards -->
         <li class="menu-item active open">
-          <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <a  class="menu-link ">
             <i class="menu-icon tf-icons bx bx-home-circle"></i>
             <div data-i18n="Dashboards">Dashboards</div>
           </a>
@@ -76,6 +76,11 @@
             <li class="menu-item">
               <a href="index.php?src=admin/lst_img/lst_img_product" class="menu-link">
                 <div data-i18n="Without navbar">Hình ảnh sản phẩm</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="index.php?src=admin/size/lst_size" class="menu-link">
+                <div data-i18n="Without navbar">Kích thước sản phẩm</div>
               </a>
             </li>
           </ul>
@@ -118,7 +123,26 @@
                 <div data-i18n="Landing">Đã hủy</div>
               </a>
             </li>
+            <li class="menu-item">
+              <a href="index.php?src=admin/invoice/cancel_request" class="menu-link">
+                <div data-i18n="Landing">Chờ xử lý</div>
+              </a>
+            </li>
           </ul>
+        </li>
+        <li class="menu-item">
+          <a href="index.php?src=admin/publisher/lst_publisher" class="menu-link">
+            <i class='bx bxs-institution' ></i>
+            <div data-i18n="Without navbar">Nhà xuất bản</div>
+          </a>
         </li>
       </ul>
     </aside>
+    <div id="rejectModal" class="modal2" style="display: none;">
+      <div class="modal-content2">
+        <span class="close">&times;</span>
+        <h2>Nhập lý do từ chối</h2>
+        <textarea id="rejectReason" rows="4" cols="50" placeholder="Nhập lý do từ chối..."></textarea>
+        <button id="submitReject" class="btn btn-danger">Xác nhận</button>
+      </div>
+    </div>

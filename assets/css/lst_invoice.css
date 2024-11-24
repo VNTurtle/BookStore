@@ -31,3 +31,9 @@
 .custom-button:hover {
     background-color: #0056b3;
 }
+.text-truncate {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%; /* Hoặc giá trị cụ thể, ví dụ: 300px */
+}

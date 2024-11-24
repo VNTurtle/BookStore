@@ -66,9 +66,11 @@ if (isset($_GET['logout'])) {
                 $ketqua = DP::run_query($querySearch, $parameters, $resultType);
             }
             $Lst_mess = Cancel_requests::getCancel_requestsByUserId($userId, 'approved');
+            $Lst_mess2 = Cancel_requests::getCancel_requestsByUserId($userId, 'refused');
             $Lst_complete = Cancel_requests::getCancel_requestsByUserId($userId, 'complete');
             $total_complete = count($Lst_complete);
             $total_mess = count($Lst_mess);
+            $total_mess2 = count($Lst_mess2);
             ?>
 
             <div class="col-lg-5 header-control">
@@ -76,7 +78,7 @@ if (isset($_GET['logout'])) {
                     <li style="cursor: pointer; position: relative;">
                         <i class='bx bxs-message-rounded-dots' id="mess-icon" style="padding: 10px;"></i>
                         <span class="badge bg-primary rounded-circle position-absolute top-0 start-100 translate-middle">
-                            <?php echo $total_mess + $total_complete; ?>
+                            <?php echo $total_mess + $total_complete + $total_mess2; ?>
                         </span>
                         <div id="mess-dropdown" class="dropdown-menu-2 dropdown-menu-end" style="display: none;">
                             <h6 class="dropdown-header">Thông báo</h6>
@@ -98,6 +100,26 @@ if (isset($_GET['logout'])) {
                                 </div>
                                 <?php
                             }
+                            foreach ($Lst_mess2 as $key => $mess2) {
+                            ?>
+                            <div class="mess-content">
+                                        <a id="mess-item-<?= $key ?>" data-key="<?= $key ?>" href="index.php?src=invoice/invoice">
+                                            <p style="display: inline-block;"><strong>Đơn hàng:</strong> <?= $mess2['order_id'] ?></p>
+                                            <p>
+                                                <strong>Yêu cầu hủy không chấp nhận.</strong>
+                                                <p><strong>Lý do:</strong> <?= $mess2['Content2'] ?>
+                                                <button class="end_status float-end btn  btn-secondary btn-sm" 
+                                                data-order-status="5" data-order-id="<?= $mess2['order_id'] ?>" data-status="end_request">
+                                                Xóa</button></p>
+                                                
+                                            </p>
+
+                                        </a>
+                                        <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
+                                    </div>
+                            <?php
+                            }
+                            
                             foreach ($Lst_mess as $key => $mess) {
                                 if ($mess['PaymethodId'] == 1) {
                                 ?>

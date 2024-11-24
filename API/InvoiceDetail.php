@@ -8,7 +8,7 @@ class InvoiceDetail{
         return DP::run_query($query, $parameters, $resultType);
     }
     public static function getInvoiceDetailByCode($code){
-        $query = "SELECT ivd.*, b.Name,b.Price, i.Path
+        $query = "SELECT ivd.*, b.Stock, b.Name,b.Price, i.Path
                 FROM invoicedetail ivd
                 JOIN book b ON ivd.BookId = b.Id
                 LEFT JOIN `image` i ON b.Id = i.BookId

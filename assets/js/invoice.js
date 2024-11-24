@@ -115,5 +115,27 @@ $(document).ready(function() {
             }
         });
     });
-    
+    $('.btn-transport-order').on('click', function() {
+        var orderId = $(this).data('order-id');
+        var orderStatusId = $(this).data('order-status');
+
+        // Lấy `id` của phần tử thông báo
+       
+        $.ajax({
+            url: 'controller/update_invoice.php',
+            method: 'POST',
+            data: { order_id: orderId, order_status: orderStatusId},
+            success: function(response) {
+                // Xử lý phản hồi từ server nếu cần
+                location.reload();
+                // Ẩn thông báo đã xác nhận
+                notificationItem.fadeOut(300, function () {
+                    $(this).remove();
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Lỗi khi cập nhật trạng thái đơn hàng:', error);
+            }
+        });
+    });
 });
