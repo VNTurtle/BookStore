@@ -2,7 +2,6 @@
 require_once('db.php'); 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 $currentTime = date('Y-m-d H:i:s');
-echo $currentTime;
 class Comment {
     public static function thembl($iduser, $idsp, $noidung) {
         $sql = "INSERT INTO comment (UserId, BookId, Content, Date) VALUES (:iduser, :id, :noidung, :datecomment)";

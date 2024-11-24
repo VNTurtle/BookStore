@@ -9,7 +9,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $parameters = [];
 $resultType = 2;
 
-$query_count = "SELECT COUNT(*)as sl FROM invoice";
+$query_count = "SELECT COUNT(*)as sl FROM account";
 $count_product = DP::run_query($query_count, $parameters, 2); // Giả sử `run_query` trả về mảng kết quả
 $total_items = $count_product[0]['sl'];
 $total_pages = ceil($total_items / $items_per_page);

@@ -18,5 +18,14 @@ class Voucher {
         $resultType = 2; // Trả về danh sách
         return DP::run_query($query, $parameters, $resultType);
     }
+    public static function updateVoucherStatus($voucherCode, $status) {
+        $query = "UPDATE `voucher` 
+                  SET `Status` = ? 
+                  WHERE `Code` = ?";
+
+        $parameters = [$status, $voucherCode]; // Tham số đầu vào: trạng thái mới và mã giảm giá
+        $resultType = 1; // Kiểu thực thi UPDATE
+        return DP::run_query($query, $parameters, $resultType);
+    }
     
 }

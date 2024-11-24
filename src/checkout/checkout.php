@@ -242,6 +242,7 @@ $User = $LstUser[0];
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Total:</h5>
                                         </td>
+                                        <td id="old-total" style="text-decoration: line-through"></td>
                                         <td id="total"></td>
                                     </tr>
                                 </tfoot>
@@ -284,17 +285,36 @@ $User = $LstUser[0];
                                 console.log(total);
 
                                 // Cập nhật tổng giá trị
-                                document.getElementById('total').innerText = `${total}.000 đ`;
+                                document.getElementById('total').innerText = `${total}.000đ`;
                                 console.log(count);
                             </script>
                             <script>
                                 const vouchers = <?php echo json_encode($userVouchers); ?>;
                                 let totalElement = document.getElementById('total');
+                                let oldPriceElement = document.getElementById('old-total');
                                 const originalTotal = parseFloat(totalElement.innerText);
 
                                 document.getElementById('voucher-select').addEventListener('change', function() {
                                     const selectedCode = this.value;
 
+                                    fetch('controller/update_voucher_status.php', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({
+                                                voucherCode: selectedCode
+                                            })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                console.log('Voucher save section');
+                                            } else {
+                                                console.error('Failed to voucher');
+                                            }
+                                        })
+                                        .catch(error => console.error('Error:', error));
 
                                     total = originalTotal;
 
@@ -304,11 +324,18 @@ $User = $LstUser[0];
                                     if (voucher) {
 
                                         const discount = Math.min(total * voucher.Percent /100, voucher.MaxTotal);
+
+
                                         discountedTotal = total - discount;
 
                                         discountedTotal = Math.max(discountedTotal, 0);
 
+
+                                        oldPriceElement.innerText = total.toFixed(3) + `đ`;
+
+                                        totalElement.innerText = discountedTotal.toFixed(3) + `đ`;
                                         totalElement.innerText = discountedTotal.toFixed(3) + ` ` + `đ`;
+
                                         total = discountedTotal;
                                         console.log(total);
                                     }
