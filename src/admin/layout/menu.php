@@ -1,5 +1,28 @@
+<?php
+session_start();
+if (isset($_SESSION['Id'])) {
+    $userId = $_SESSION['Id'];
+} else {
+    $userId = null;
+}
+
+if (isset($_GET['logout'])) {
+    // Hủy toàn bộ phiên
+    session_destroy();
+
+    // Chuyển hướng người dùng đến trang đăng nhập hoặc trang khác
+    header("Location: index.php");
+    exit;
+}
+?>
 <script>
   var token = localStorage.jwt_token;
+  if (!token) {
+    alert("Bạn không có quyền truy cập vào trang này.");
+    window.location.href = "index.php"; // Redirect to an access denied page
+    // Alternatively, you can display a message in place of the page content
+    document.getElementById("content").innerHTML = "<p>Bạn không có quyền truy cập vào trang này.</p>";
+  }
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
   const jsonPayload = decodeURIComponent(

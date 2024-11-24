@@ -123,3 +123,9 @@
     align-content: center;
     justify-content: end;
 }
+.text-truncate {
+    white-space: normal;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word  !important;
+    max-width: 40%; /* Hoặc giá trị cụ thể, ví dụ: 300px */
+}

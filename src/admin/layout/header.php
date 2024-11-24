@@ -22,6 +22,7 @@
         require_once('API/db.php');
         require_once('API/Cancel_requests.php');
         require_once('API/Invoice.php');
+        require_once('API/Account.php');
 
         $Lst_cancelinvoice = Cancel_requests::getCancel_requestsByStatus('pending');
         $bankPay = Cancel_requests::getCancel_requestsByStatus('bankpay');
@@ -48,7 +49,7 @@
             'Name' => $iv['Name'],
             'Content3' => $iv['Content3'],
             'OrderId' => $iv['OrderId'],
-            'Total'=>$iv['Total'],
+            'Total' => $iv['Total'],
           ];
         }
 
@@ -61,114 +62,91 @@
             'Total' => $iv['Total'],
           ];
         }
-        $total_bank=count($bankPay);
+        $total_bank = count($bankPay);
         $total_mess = count($Lst_cancelinvoice);
         $total_items = count($count_iv);
         ?>
 
-<li class="nav-item lh-1 me-3 position-relative" style="cursor: pointer;">
-    <i class='bx bxs-message-rounded-dots' id="mess-icon"></i>
-    <?php if ($total_mess + $total_items > 0) : ?>
-        <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle">
-            <?php echo $total_mess + $total_items + $total_bank; ?>
-        </span>
-    <?php endif; ?>
-    <div id="mess-dropdown" class="dropdown-menu-2 dropdown-menu-end" style="display: none; padding: 25px;">
-        <h6 class="dropdown-header">Thông báo</h6>
-        <div id="mess-content">
-            <?php if (!empty($notifications)) : ?>
+        <li class="nav-item lh-1 me-3 position-relative" style="cursor: pointer;">
+          <i class='bx bxs-message-rounded-dots' id="mess-icon"></i>
+          <?php if ($total_mess + $total_items > 0) : ?>
+            <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle">
+              <?php echo $total_mess + $total_items + $total_bank; ?>
+            </span>
+          <?php endif; ?>
+          <div id="mess-dropdown" class="dropdown-menu-2 dropdown-menu-end" style="display: none; padding: 25px;">
+            <h6 class="dropdown-header">Thông báo</h6>
+            <div id="mess-content">
+              <?php if (!empty($notifications)) : ?>
                 <?php foreach ($notifications as $key => $notification) : ?>
-                    <div id="mess-item-<?= $key ?>" data-key="<?= $key ?>">
-                        <?php if($notification['type'] == 'bankpay') :?>
-                          <p><strong>Đơn hàng:</strong> <?= $notification['order_id'] ?></p>
-                            <p><strong>Người đặt:</strong> <?= $notification['FullName'] ?></p>
-                            <p><strong>Yêu cầu hoàn tiền</strong> <?= $notification['Content3'] ?></p>
-                            <p><strong>Số tiền:</strong> <?= $notification['Total'] ?> VNĐ</p>
-                            <button class="complete-cancel btn btn-primary" data-order-status="5" data-order-id="<?= $notification['order_id'] ?>" data-status="complete">Đã chuyển khoản</button>
-                        <?php elseif ($notification['type'] == 'cancel_request') : ?>
-                            <p><strong>Đơn hàng:</strong> <?= $notification['order_id'] ?></p>
-                            <p><strong>Người đặt:</strong> <?= $notification['FullName'] ?></p>
-                            <p><strong>Phương thức thanh toán:</strong> <?= $notification['Name'] ?></p>
-                            <p><strong>Lý do hủy:</strong> <?= $notification['Content'] ?></p>
-                            <button class="approve-cancel btn btn-primary" data-order-status="5" data-order-id="<?= $notification['order_id'] ?>" data-status="approved">Phê duyệt</button>
-                            <button class="reject-cancel btn btn-danger" data-order-status="<?= $notification['OrderId'] ?>" data-order-id="<?= $notification['order_id'] ?>">Từ chối</button>
-                        <?php elseif ($notification['type'] == 'new_order') : ?>
-                            <p><strong>Đơn hàng mới:</strong> <?= $notification['Code'] ?></p>
-                            <p>Số hóa đơn con: <?= $notification['ivd_count'] ?></p>
-                            <p>Ngày đặt: <?= $notification['IssuedDate'] ?></p>
-                            <p>Tổng tiền: <?= $notification['Total'] ?> VNĐ</p>
-                            <a href="index.php?src=admin/invoice/invoice_detail&id_invoice=<?= $notification['Code'] ?>" class="btn btn-sm btn-primary" style="margin-right: 20px;">Xem chi tiết</a>
-                            <button class="btn btn-sm btn-primary update-status-btn" data-order-status="2" data-order-id="<?= $notification['Code'] ?>">Xác nhận</button>
-                        <?php endif; ?>
-                    </div>
-                    <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
+                  <div id="mess-item-<?= $key ?>" data-key="<?= $key ?>">
+                    <?php if ($notification['type'] == 'bankpay') : ?>
+                      <p><strong>Đơn hàng:</strong> <?= $notification['order_id'] ?></p>
+                      <p><strong>Người đặt:</strong> <?= $notification['FullName'] ?></p>
+                      <p><strong>Yêu cầu hoàn tiền</strong> <?= $notification['Content3'] ?></p>
+                      <p><strong>Số tiền:</strong> <?= $notification['Total'] ?> VNĐ</p>
+                      <button class="complete-cancel btn btn-primary" data-order-status="5" data-order-id="<?= $notification['order_id'] ?>" data-status="complete">Đã chuyển khoản</button>
+                    <?php elseif ($notification['type'] == 'cancel_request') : ?>
+                      <p><strong>Đơn hàng:</strong> <?= $notification['order_id'] ?></p>
+                      <p><strong>Người đặt:</strong> <?= $notification['FullName'] ?></p>
+                      <p><strong>Phương thức thanh toán:</strong> <?= $notification['Name'] ?></p>
+                      <p><strong>Lý do hủy:</strong> <?= $notification['Content'] ?></p>
+                      <button class="approve-cancel btn btn-primary" data-order-status="5" data-order-id="<?= $notification['order_id'] ?>" data-status="approved">Phê duyệt</button>
+                      <button class="reject-cancel btn btn-danger" data-order-status="<?= $notification['OrderId'] ?>" data-order-id="<?= $notification['order_id'] ?>">Từ chối</button>
+                    <?php elseif ($notification['type'] == 'new_order') : ?>
+                      <p><strong>Đơn hàng mới:</strong> <?= $notification['Code'] ?></p>
+                      <p>Số hóa đơn con: <?= $notification['ivd_count'] ?></p>
+                      <p>Ngày đặt: <?= $notification['IssuedDate'] ?></p>
+                      <p>Tổng tiền: <?= $notification['Total'] ?> VNĐ</p>
+                      <a href="index.php?src=admin/invoice/invoice_detail&id_invoice=<?= $notification['Code'] ?>" class="btn btn-sm btn-primary" style="margin-right: 20px;">Xem chi tiết</a>
+                      <button class="btn btn-sm btn-primary update-status-btn" data-order-status="2" data-order-id="<?= $notification['Code'] ?>">Xác nhận</button>
+                    <?php endif; ?>
+                  </div>
+                  <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
                 <?php endforeach; ?>
-            <?php else : ?>
+              <?php else : ?>
                 <p>Không có thông báo mới</p>
-            <?php endif; ?>
-        </div>
-    </div>
-</li>
+              <?php endif; ?>
+            </div>
+          </div>
+        </li>
 
 
         <!-- User -->
-        <li class="nav-item navbar-dropdown dropdown-user dropdown">
-          <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+         <?php
+          
+          $User=Account::getAccountById($userId);
+         ?>
+        <li class="nav-item navbar-dropdown dropdown-user dropdown" style="position: relative;">
+  <a class="nav-link dropdown-toggle hide-arrow" id="dropdownToggle" style="cursor: pointer;">
+    <div class="avatar avatar-online">
+      <img src="assets/img/avatar/Admin.jpeg" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
+    </div>
+  </a>
+  <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end" style="display: none; position: absolute; top: 100%; right: 0;">
+    <li>
+      <a class="dropdown-item" href="#">
+        <div class="d-flex">
+          <div class="flex-shrink-0 me-3">
             <div class="avatar avatar-online">
-              <img src="assets/img/avatar/Admin.jpeg" alt class="w-px-40 h-auto rounded-circle" />
+              <img src="assets/img/avatar/Admin.jpeg" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
             </div>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <a class="dropdown-item" href="#">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar avatar-online">
-                      <img src="assets/img/avatar/Admin.jpeg" alt class="w-px-40 h-auto rounded-circle" />
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <span class="fw-medium d-block">John Doe</span>
-                    <small class="text-muted">Admin</small>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <div class="dropdown-divider"></div>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">
-                <i class="bx bx-user me-2"></i>
-                <span class="align-middle">My Profile</span>
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">
-                <i class="bx bx-cog me-2"></i>
-                <span class="align-middle">Settings</span>
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">
-                <span class="d-flex align-items-center align-middle">
-                  <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                  <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                  <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                </span>
-              </a>
-            </li>
-            <li>
-              <div class="dropdown-divider"></div>
-            </li>
-            <li>
-              <a class="dropdown-item" href="javascript:void(0);">
-                <i class="bx bx-power-off me-2"></i>
-                <span class="align-middle">Log Out</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+          </div>
+          <div class="flex-grow-1">
+            <span class="fw-medium d-block"><?= $User[0]['FullName'] ?></span>
+            <small class="text-muted">Admin</small>
+          </div>
+        </div>
+      </a>
+    </li>
+    <li><div class="dropdown-divider"></div></li>
+    <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i> My Profile</a></li>
+    <li><div class="dropdown-divider"></div></li>
+    <li><a class="dropdown-item" href="index.php?logout=true" id="logoutLink""><i class="bx bx-power-off me-2"></i> Log Out</a></li>
+  </ul>
+</li>
+
+
         <!--/ User -->
       </ul>
     </div>

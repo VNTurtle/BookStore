@@ -82,7 +82,7 @@ $User=$LstUser[0];
                                                         <div class="col-lg-4">
                                                             <div class="mb-3">
                                                                 <label class="form-label" for="billing-phone">Phone</label>
-                                                                <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">
+                                                                <input type="text" class="form-control" id="billing-phone" maxlength="10" pattern="\d{10}" placeholder="Enter Phone no." title="Vui lòng nhập đủ 10 số.">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -520,6 +520,18 @@ $User=$LstUser[0];
 <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
 <script src="assets/fontawesome/js/all.min.js"></script>
 <script>
+    document.getElementById('billing-phone').addEventListener('input', function () {
+    const phoneInput = this.value;
+    const maxLength = 10;
+
+    // Xóa các ký tự không phải là số
+    this.value = phoneInput.replace(/\D/g, '');
+
+    // Giới hạn số lượng ký tự
+    if (this.value.length > maxLength) {
+      this.value = this.value.slice(0, maxLength);
+    }
+  });
     var provinceSelect = document.getElementById('province-select');
     var districtSelect = document.getElementById('district-select');
     var wardSelect = document.getElementById('ward-select');
