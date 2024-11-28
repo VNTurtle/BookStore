@@ -7,7 +7,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $parameters = [];
 $resultType = 2;
 
-$query_count = "SELECT COUNT(*)as sl FROM invoice";
+$query_count = "SELECT COUNT(*)as sl FROM cancel_requests";
 $count_product = DP::run_query($query_count, $parameters, 2); // Giả sử `run_query` trả về mảng kết quả
 $total_items = $count_product[0]['sl'];
 $total_pages = ceil($total_items / $items_per_page);
@@ -44,7 +44,7 @@ $Lst_rq = Cancel_requests::getCancel_requests();
                             <th>Lý do từ chối</th>
                             <th>Ngân hàng</th>
                             <th>Ngày Hủy</th>
-                            <th>status</th>
+                            <th style="width: 10%;">status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,10 +93,10 @@ $Lst_rq = Cancel_requests::getCancel_requests();
                                 <td>
                                     <?php 
                                     if($lst['Status']=='pending') {
-                                        echo '<button class="approve-cancel btn btn-primary" data-order-status="5" data-order-id="'. $lst['order_id'] .'" data-status="approved">Phê duyệt</button>
-                                                <button class="reject-cancel btn btn-danger" data-order-status="'. $lst['OrderId'] .'" data-order-id="'. $lst['order_id'] .'">Từ chối</button>';
+                                        echo '<button class="approve-cancel btn btn-primary btn-sm" data-order-status="5" data-order-id="'. $lst['order_id'] .'" data-status="approved"><i class="bx bxs-check-square"></i></button>
+                                                <button class="reject-cancel btn btn-danger btn-sm" data-order-status="'. $lst['OrderId'] .'" data-order-id="'. $lst['order_id'] .'"><i class="bx bx-x-circle"></i></button>';
                                     }else if($lst['Status']=='bankpay'){
-                                        echo '<button class="complete-cancel btn btn-primary" data-order-status="5" data-order-id="'. $lst['order_id'] .'" data-status="complete">Đã chuyển khoản</button>';
+                                        echo '<button class="complete-cancel btn btn-primary btn-sm" data-order-status="5" data-order-id="'. $lst['order_id'] .'" data-status="complete"><i class="bx bxs-check-square"></i></button>';
                                     }else{
                                         echo '<span class="text-truncate align-items-center">
                                                     Hoàn thành
@@ -120,7 +120,7 @@ $Lst_rq = Cancel_requests::getCancel_requests();
                             <ul class="pagination">
                                 <?php if ($current_page > 1) : ?>
                                     <li class="page-item">
-                                        <a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=<?php echo $current_page - 1 ?>" aria-label="Previous">
+                                        <a class="page-link" href="index.php?src=admin/invoice/cancel_request&page=<?php echo $current_page - 1 ?>" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
@@ -129,7 +129,7 @@ $Lst_rq = Cancel_requests::getCancel_requests();
                                 <?php
                                 // Hiển thị trang đầu
                                 if ($current_page > ($adjacents + 1)) {
-                                    echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=1">1</a></li>';
+                                    echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancel_request&page=1">1</a></li>';
                                     if ($current_page > ($adjacents + 2)) {
                                         echo '<li class="page-item"><span class="page-link">...</span></li>';
                                     }
@@ -142,7 +142,7 @@ $Lst_rq = Cancel_requests::getCancel_requests();
                                     if ($i == $current_page) {
                                         echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
                                     } else {
-                                        echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=' . $i . '">' . $i . '</a></li>';
+                                        echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancel_request&page=' . $i . '">' . $i . '</a></li>';
                                     }
                                 }
 
@@ -151,12 +151,12 @@ $Lst_rq = Cancel_requests::getCancel_requests();
                                     if ($current_page < ($total_pages - $adjacents - 1)) {
                                         echo '<li class="page-item"><span class="page-link">...</span></li>';
                                     }
-                                    echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=' . $total_pages . '">' . $total_pages . '</a></li>';
+                                    echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancel_request&page=' . $total_pages . '">' . $total_pages . '</a></li>';
                                 }
 
                                 if ($current_page < $total_pages) : ?>
                                     <li class="page-item">
-                                        <a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=<?php echo $current_page + 1 ?>" aria-label="Next">
+                                        <a class="page-link" href="index.php?src=admin/invoice/cancel_request&page=<?php echo $current_page + 1 ?>" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>

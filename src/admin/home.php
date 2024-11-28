@@ -1,19 +1,20 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Cancel_requests.php');
-$Lst_cancel_iv=Cancel_requests::getCancel_requestsByStatus('pending')
+require_once('API/Invoice.php');
+// Lấy ngày hiện tại
+$currentDate = date('Y-m-d');
+
+// Lấy ngày 7 ngày trước
+$startDate = date('Y-m-d', strtotime('-30 days'));
+$revenue = Invoice::getRevenueByDate($startDate, $currentDate);
+
+// Hiển thị kết quả
+echo "Doanh thu từ $startDate đến $currentDate:<br>";
+foreach ($revenue as $day) {
+    echo "Ngày: " . $day['date'] . " - Doanh thu: " . number_format($day['total_revenue'], 3) . " VND<br>";
+}
 ?>
-<?php 
-foreach ($Lst_cancel_iv as $key => $iv) {
-    
- ?>
-    <div>
-        <p>Order ID: <?= $iv['order_id'] ?></p>
-        <button class="approve-cancel" data-id="<?= $iv['order_id'] ?>">Phê duyệt</button>
-        <button class="reject-cancel" data-id="<?= $iv['order_id'] ?>">Từ chối</button>
-    </div>
-<?php }?>
 
 
 <?php

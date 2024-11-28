@@ -39,9 +39,10 @@
     <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
     <script src="assets/fontawesome/js/all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
-    <script src="assets/js/layout_admin.js"></script>
+    
     
     <script src="assets/js/layout.js"></script>
+    <script src="assets/js/layout_admin.js"></script>
     <?php
 // Bao gồm tệp tin JavaScript riêng của từng trang nếu có
 if (isset($page)) {

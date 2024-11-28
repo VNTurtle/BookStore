@@ -52,6 +52,28 @@ class Invoice{
          $resultType = 2;
          return DP::run_query($query, $parameters, $resultType);
     }
+    public static function getRevenueByDate($startDate = null, $endDate = null) {
+        $query = "SELECT DATE(IssuedDate) as date, SUM(Total) as total_revenue 
+                  FROM Invoice";
+        $parameters = [];
+        
+        // Thêm điều kiện ngày nếu có
+        if ($startDate && $endDate) {
+            $query .= " WHERE DATE(IssuedDate) BETWEEN ? AND ?";
+            $parameters = [$startDate, $endDate];
+        } elseif ($startDate) {
+            $query .= " WHERE DATE(IssuedDate) >= ?";
+            $parameters = [$startDate];
+        } elseif ($endDate) {
+            $query .= " WHERE DATE(IssuedDate) <= ?";
+            $parameters = [$endDate];
+        }        
+        $query .= " GROUP BY DATE(IssuedDate)
+                    ORDER BY DATE(IssuedDate) ASC";
+        
+        $resultType = 2; // Fetch all rows as an associative array
+        return DP::run_query($query, $parameters, $resultType);
+    }
     
 }
 ?>

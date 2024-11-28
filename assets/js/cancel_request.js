@@ -51,7 +51,6 @@ $(document).ready(function() {
             success: function (response) {
                 console.log('Đã từ chối đơn hàng:', response);
                 $('#rejectModal').fadeOut();
-                alert('Đã từ chối đơn hàng!');
                 location.reload(); // Tải lại trang nếu cần
             },
             error: function (xhr, status, error) {

@@ -113,41 +113,67 @@
 
 
         <!-- User -->
-         <?php
-          
-          $User=Account::getAccountById($userId);
-         ?>
+        <?php
+
+        $User = Account::getAccountById($userId);
+        ?>
         <li class="nav-item navbar-dropdown dropdown-user dropdown" style="position: relative;">
-  <a class="nav-link dropdown-toggle hide-arrow" id="dropdownToggle" style="cursor: pointer;">
-    <div class="avatar avatar-online">
-      <img src="assets/img/avatar/Admin.jpeg" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
-    </div>
-  </a>
-  <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end" style="display: none; position: absolute; top: 100%; right: 0;">
-    <li>
-      <a class="dropdown-item" href="#">
-        <div class="d-flex">
-          <div class="flex-shrink-0 me-3">
+          <a class="nav-link dropdown-toggle hide-arrow" id="dropdownToggle" style="cursor: pointer;">
             <div class="avatar avatar-online">
               <img src="assets/img/avatar/Admin.jpeg" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
             </div>
-          </div>
-          <div class="flex-grow-1">
-            <span class="fw-medium d-block"><?= $User[0]['FullName'] ?></span>
-            <small class="text-muted">Admin</small>
-          </div>
-        </div>
-      </a>
-    </li>
-    <li><div class="dropdown-divider"></div></li>
-    <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i> My Profile</a></li>
-    <li><div class="dropdown-divider"></div></li>
-    <li><a class="dropdown-item" href="index.php?logout=true" id="logoutLink""><i class="bx bx-power-off me-2"></i> Log Out</a></li>
-  </ul>
-</li>
-
+          </a>
+          <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end" style="display: none; position: absolute; top: 100%; right: 0;">
+            <li>
+              <a class="dropdown-item" href="#">
+                <div class="d-flex">
+                  <div class="flex-shrink-0 me-3">
+                    <div class="avatar avatar-online">
+                      <img src="assets/img/avatar/Admin.jpeg" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <span class="fw-medium d-block"><?= $User[0]['FullName'] ?></span>
+                    <small class="text-muted">Admin</small>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+            <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i> My Profile</a></li>
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+            <li><a class="dropdown-item" href="index.php"><i class="bx bx-user me-2"></i> Home</a></li>
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+            <li><a class="dropdown-item" href="index.php?logout=true" id="logoutLink""><i class=" bx bx-power-off me-2"></i> Log Out</a></li>
+          </ul>
+        </li>
 
         <!--/ User -->
+        <script>
+          document.getElementById('dropdownToggle').addEventListener('click', function() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+              dropdownMenu.style.display = 'block';
+            } else {
+              dropdownMenu.style.display = 'none';
+            }
+          });
+
+          // Đóng menu khi nhấn bên ngoài
+          document.addEventListener('click', function(event) {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const dropdownToggle = document.getElementById('dropdownToggle');
+            if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+              dropdownMenu.style.display = 'none';
+            }
+          });
+        </script>
       </ul>
     </div>
   </nav>

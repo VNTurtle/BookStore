@@ -22,23 +22,7 @@ document.querySelectorAll('.menu-item > .menu-link.menu-toggle').forEach(item =>
       }
     });
   });
-  document.getElementById('dropdownToggle').addEventListener('click', function () {
-    const dropdownMenu = document.getElementById('dropdownMenu');
-    if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
-      dropdownMenu.style.display = 'block';
-    } else {
-      dropdownMenu.style.display = 'none';
-    }
-  });
-  
-  // Đóng menu khi nhấn bên ngoài
-  document.addEventListener('click', function (event) {
-    const dropdownMenu = document.getElementById('dropdownMenu');
-    const dropdownToggle = document.getElementById('dropdownToggle');
-    if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
-      dropdownMenu.style.display = 'none';
-    }
-  });
+
   
 
 $(document).ready(function() {  
