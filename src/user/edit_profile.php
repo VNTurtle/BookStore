@@ -10,9 +10,9 @@ $User = Account::getAccountById($userId);
       <div class="col">
         <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-            <li class="breadcrumb-item"><a href="profile.php">User Profile</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+            <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="index.php?src=user/profile">Hồ sơ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa hồ sơ</li>
           </ol>
         </nav>
       </div>
