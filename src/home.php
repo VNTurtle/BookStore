@@ -4,13 +4,6 @@ require_once('API/Product.php');
 $lst_bv = Product::getProduct();
 $topProducts = Product::getTopSellingProducts(10);
 
-// Hiển thị kết quả
-echo "Top 10 sản phẩm bán chạy nhất:<br>";
-foreach ($topProducts as $product) {
-    echo "Sản phẩm: " . $product['Name'] .
-        " - Số lượng đã bán: " . $product['TotalSold'] . "<br>";
-}
-
 ?>
 
 <link rel="stylesheet" href="assets/css/home.css">
