@@ -11,8 +11,13 @@ $revenue = Invoice::getRevenueByDate($startDate, $currentDate);
 
 // Hiển thị kết quả
 echo "Doanh thu từ $startDate đến $currentDate:<br>";
-foreach ($revenue as $day) {
-    echo "Ngày: " . $day['date'] . " - Doanh thu: " . number_format($day['total_revenue'], 3) . " VND<br>";
+if (!empty($revenue)) {
+    foreach ($revenue as $day) {
+        // Hiển thị ngày và tổng doanh thu theo định dạng số
+        echo "Ngày: " . htmlspecialchars($day['date']) . " - Doanh thu: " . number_format($day['total_revenue'], 0, ',', '.') . " VND<br>";
+    }
+} else {
+    echo "Không có doanh thu trong khoảng thời gian này.";
 }
 ?>
 

@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName = $_POST['FirstName'];
     $lastName = $_POST['LastName'];
     $email = $_POST['Email'];
-    $roleId = $_POST['RoleId'];
+    $roleId = isset($_POST['RoleId']) ? 1 : 2;
     $status = isset($_POST['Status']) ? 1 : 0;
 
     $result = Account::updateAccount($id, $firstName, $lastName, $email, $roleId, $status);
@@ -72,11 +72,11 @@ ob_end_flush();
                 <input type="email" id="Email" name="Email" class="form-control" value="<?= htmlspecialchars($account['Email']) ?>" required>
             </div>
             <div class="form-group">
-                <label for="RoleId">Role</label>
-                <select id="RoleId" name="RoleId" class="form-control" required>
-                    <option value="1" <?= $account['RoleId'] == 1 ? 'selected' : '' ?>>Admin</option>
-                    <option value="2" <?= $account['RoleId'] == 2 ? 'selected' : '' ?>>User</option>
-                </select>
+                <label for="Role">Role Admin</label>
+                <div class="custom-switch">
+                    <input type="checkbox" id="Role" name="RoleId" class="custom-switch-input" value="1" <?= $account['RoleId'] == 1 ? 'checked' : '' ?>>
+                    <label for="Role" class="custom-switch-label"></label>
+                </div>
             </div>
             <div class="form-group">
                 <label for="Status">Status</label>

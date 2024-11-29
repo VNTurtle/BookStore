@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require 'src/admin/layout/menu.php';
 require_once('API/Account.php');
 
@@ -8,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lastName = $_POST['LastName'];
     $email = $_POST['Email'];
     $password = password_hash($_POST['Password'], PASSWORD_DEFAULT); // Mã hóa mật khẩu
-    $roleId = $_POST['RoleId'];
+    $roleId = isset($_POST['RoleId']) ? 1 : 2;
     $status = isset($_POST['Status']) ? 1 : 0;
 
     if (Account::emailExists($email)) {
@@ -16,12 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $result = Account::addAccount($firstName, $lastName, $email, $password, $roleId, $status);
         if (!$result) {
-            echo "Thêm tài khoản thành công!";
+            header("Location: index.php?src=admin/account/lst_account");
+            exit;
         } else {
             echo "Thêm tài khoản thất bại.";
         }
     }
 }
+ob_end_flush();
 ?>
 
 <link rel="stylesheet" href="assets/css/edit_product.css">
@@ -51,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" id="Password" name="Password" class="form-control" required>
         </div>
         <div class="form-group">
-            <label for="RoleId">Role</label>
-            <select id="RoleId" name="RoleId" class="form-control" required>
-                <option value="1">Admin</option>
-                <option value="2">User</option>
-            </select>
+            <label for="Role">Rolde Admin</label>
+            <div class="custom-switch">
+                <input type="checkbox" id="Role" name="RoleId" class="custom-switch-input">
+                <label for="Role" class="custom-switch-label"></label>
+            </div>
         </div>
         <div class="form-group">
             <label for="Status">Status</label>

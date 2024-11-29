@@ -164,6 +164,19 @@ if (isset($_GET['logout'])) {
               </a>
             </li>
           </ul>
+          <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle" data-toggle="submenu">
+            <i class="menu-icon tf-icons bx bx-layout"></i>
+            <div data-i18n="Account">Mã giảm giá</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="index.php?src=admin/voucher/lst_voucher" class="menu-link">
+                <div data-i18n="Without menu">Danh sách mã giảm giá</div>
+              </a>
+            </li>
+          </ul>
+        </li>
         </li>
         <li class="menu-item">
           <a href="index.php?src=admin/publisher/lst_publisher" class="menu-link">

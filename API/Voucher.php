@@ -1,12 +1,46 @@
 <?php
-require_once('db.php'); // Kết nối với database
-
+require_once('db.php'); 
 class Voucher {
-    public static function getAllVouchers() {
-        $query = "SELECT * FROM `voucher`";
-        $parameters = []; // Không cần tham số
-        $resultType = 2; // Trả về danh sách
+    public static function getVoucherById($id) {
+        $query = "SELECT * FROM `voucher` WHERE Id = :id";
+        $parameters = [
+            ':id' => $id
+        ];
+        $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
+    }
+    public static function getAllVouchers($offset, $slsp) {
+        $query = "SELECT * FROM `voucher`  LIMIT $offset, $slsp ";
+        $parameters = []; 
+        $resultType = 2; 
+        return DP::run_query($query, $parameters, $resultType);
+    }
+    public static function updateVoucher($id, $code, $userId, $des, $date, $enddate, $maxtotal, $percent, $status){
+        $query = "
+    UPDATE `voucher` 
+    SET 
+        Code = :code,
+        UserId = :userId,
+        Des = :des,
+        Date = :date,
+        EndDate = :enddate,
+        MaxTotal = :maxtotal,
+        Percent = :percent,
+        Status = :status
+    WHERE Id = :id
+";
+        $parameters = [
+            ':code' => $code,
+            ':userId' => $userId,
+            ':des' => $des,
+            ':date' => $date,
+            ':enddate' => $enddate,
+            ':maxtotal' => $maxtotal,
+            ':percent' => $percent,
+            ':status' => $status,
+            ':id' => $id
+        ];
+        return DP::run_query($query, $parameters, 0); // Thực thi không trả về kết quả
     }
     public static function getVouchersByUserId($userId) {
         $query = "SELECT * FROM `voucher` 
@@ -18,6 +52,23 @@ class Voucher {
         $resultType = 2; // Trả về danh sách
         return DP::run_query($query, $parameters, $resultType);
     }
+    public static function addVoucher($code, $userId, $des, $date, $enddate, $maxtotal, $percent, $status) {
+        $query = "
+            INSERT INTO `voucher` (Code, UserId, Des, Date, EndDate, MaxTotal, Percent, Status)
+            VALUES (:code, :userId, :des, :date, :enddate, :maxtotal, :percent, :status)
+        ";
+        $parameters = [
+            ':code' => $code,
+            ':userId' => $userId,
+            ':des' => $des,
+            ':date' => $date,
+            ':enddate' => $enddate,
+            ':maxtotal' => $maxtotal,
+            ':percent' => $percent,
+            ':status' => $status,
+        ];
+        return DP::run_query($query, $parameters, 0);
+    }
     public static function updateVoucherStatus($voucherCode, $status) {
         $query = "UPDATE `voucher` 
                   SET `Status` = ? 
@@ -27,5 +78,5 @@ class Voucher {
         $resultType = 1; // Kiểu thực thi UPDATE
         return DP::run_query($query, $parameters, $resultType);
     }
-    
+
 }
