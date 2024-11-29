@@ -57,9 +57,9 @@ $Order=OrderStatus::getOrderStatus();
                                     <?php echo $key + 1 ?>
                                 </td>
                                 <td class="sorting_1">
-                                    <span class="text-truncate align-items-center">
+                                    <a class="text-truncate align-items-center" href="index.php?src=admin/invoice/invoice_detail&id_invoice=<?= $lst['Code'] ?>">
                                         <?= $lst['Code'] ?>
-                                    </span>
+                                    </a>
                                 </td>
                                 <td>
                                     <span class="text-truncate align-items-center">

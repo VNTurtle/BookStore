@@ -13,7 +13,7 @@
     <div class="container-xxl flex-grow-1 container-p-y">
 
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light">Hóa đơn /</span> Xác nhận hóa đơn
+            <span class="text-muted fw-light">Hóa đơn /</span> Chi tiết đơn hàng
         </h4>
         <h2>Chi tiết đơn hàng</h2>
         <div id="Confirm-invoice" class="invoice">
@@ -80,7 +80,12 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-primary update-status-btn mt-2" data-order-status="2" data-order-id="<?= $invoice['Code'] ?>">Xác nhận</button>
+                <?php
+                    if($invoice['OrderStatusId']==1){
+                        echo '<button class="btn btn-primary update-status-btn mt-2" data-order-status="2" data-order-id="'.$invoice['Code'] .'">Xác nhận</button>';
+                    }
+                ?>
+                
             </div>
         </div>
 

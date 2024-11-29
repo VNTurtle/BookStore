@@ -56,9 +56,9 @@ $Lst_rq = Cancel_requests::getCancel_requests();
                                     <?php echo $key + 1 ?>
                                 </td>
                                 <td class="sorting_1">
-                                    <span class="text-truncate align-items-center">
+                                    <a class="text-truncate align-items-center" href="index.php?src=admin/invoice/invoice_detail&id_invoice=<?= $lst['order_id'] ?>">
                                         <?= $lst['order_id'] ?>
-                                    </span>
+                                    </a>
                                 </td>
                                 <td>
                                     <span class="text-truncate align-items-center">
@@ -91,13 +91,13 @@ $Lst_rq = Cancel_requests::getCancel_requests();
                                     </span>
                                 </td>
                                 <td>
-                                    <?php 
-                                    if($lst['Status']=='pending') {
-                                        echo '<button class="approve-cancel btn btn-primary btn-sm" data-order-status="5" data-order-id="'. $lst['order_id'] .'" data-status="approved"><i class="bx bxs-check-square"></i></button>
-                                                <button class="reject-cancel btn btn-danger btn-sm" data-order-status="'. $lst['OrderId'] .'" data-order-id="'. $lst['order_id'] .'"><i class="bx bx-x-circle"></i></button>';
-                                    }else if($lst['Status']=='bankpay'){
-                                        echo '<button class="complete-cancel btn btn-primary btn-sm" data-order-status="5" data-order-id="'. $lst['order_id'] .'" data-status="complete"><i class="bx bxs-check-square"></i></button>';
-                                    }else{
+                                    <?php
+                                    if ($lst['Status'] == 'pending') {
+                                        echo '<button class="approve-cancel btn btn-primary btn-sm" data-order-status="5" data-order-id="' . $lst['order_id'] . '" data-status="approved"><i class="bx bxs-check-square"></i></button>
+                                                <button class="reject-cancel btn btn-danger btn-sm" data-order-status="' . $lst['OrderId'] . '" data-order-id="' . $lst['order_id'] . '"><i class="bx bx-x-circle"></i></button>';
+                                    } else if ($lst['Status'] == 'bankpay') {
+                                        echo '<button class="complete-cancel btn btn-primary btn-sm" data-order-status="5" data-order-id="' . $lst['order_id'] . '" data-status="complete"><i class="bx bxs-check-square"></i></button>';
+                                    } else {
                                         echo '<span class="text-truncate align-items-center">
                                                     Hoàn thành
                                         </span>';

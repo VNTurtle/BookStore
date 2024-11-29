@@ -53,8 +53,9 @@ class Invoice{
          return DP::run_query($query, $parameters, $resultType);
     }
     public static function getRevenueByDate($startDate = null, $endDate = null) {
-        $query = "SELECT DATE(IssuedDate) as date, SUM(Total) as total_revenue 
-                  FROM Invoice";
+        $query = "SELECT DATE(IssuedDate) as date, CONVERT(SUM(Total), DECIMAL(20, 3)) AS total_revenue, SUM(ivd.Quantity) AS total_quantity_sold
+                  FROM Invoice iv
+                  LEFT JOIN invoicedetail ivd ON iv.Code = ivd.Parent_code";
         $parameters = [];
         
         // Thêm điều kiện ngày nếu có

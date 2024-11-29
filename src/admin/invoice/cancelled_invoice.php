@@ -17,7 +17,7 @@ $offset = ($current_page - 1) * $items_per_page;
 $adjacents = 2;
 
 $invoice = Invoice::getInvoicebyOrStatus(5, $offset, $items_per_page);
-$Order=OrderStatus::getOrderStatus();
+$Order = OrderStatus::getOrderStatus();
 ?>
 
 <link rel="stylesheet" href="assets/css/lst_invoice.css">
@@ -57,9 +57,9 @@ $Order=OrderStatus::getOrderStatus();
                                     <?php echo $key + 1 ?>
                                 </td>
                                 <td class="sorting_1">
-                                    <span class="text-truncate align-items-center">
+                                    <a class="text-truncate align-items-center" href="index.php?src=admin/invoice/invoice_detail&id_invoice=<?= $lst['Code'] ?>">
                                         <?= $lst['Code'] ?>
-                                    </span>
+                                    </a>
                                 </td>
                                 <td>
                                     <span class="text-truncate align-items-center">
@@ -86,16 +86,16 @@ $Order=OrderStatus::getOrderStatus();
                                         <?php echo $lst['Quantity'] ?>
                                     </span>
                                 </td>
-                                    <td>
-                                        <select name="order_status" id="order_status" class="custom-select order_status" data-order-id="<?php echo $lst['Code']; ?>" >
-                                            <?php
-                                            foreach ($Order as $key => $item) {
-                                                $selected = ($lst['OrderStatusId'] == $item['Id']) ? 'selected' : '';
-                                                echo '<option value="' . ($item['Id']) . '" ' . $selected . '>' . $item['Name'] . '</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </td>
+                                <td>
+                                    <select name="order_status" id="order_status" class="custom-select order_status" data-order-id="<?php echo $lst['Code']; ?>">
+                                        <?php
+                                        foreach ($Order as $key => $item) {
+                                            $selected = ($lst['OrderStatusId'] == $item['Id']) ? 'selected' : '';
+                                            echo '<option value="' . ($item['Id']) . '" ' . $selected . '>' . $item['Name'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </td>
                             </tr>
                         <?php
                         }
