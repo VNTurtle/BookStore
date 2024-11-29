@@ -34,17 +34,17 @@ if(isset($_POST['register'])){
 
     <div class="container">
         <form class="form" method="POST" enctype="multipart/form-data">
-            <p class="title">Register </p>
-            <p class="message">Signup now and get full access to our app. </p>
+            <p class="title">Đăng Ký </p>
+            <p class="message">Đăng ký ngay bây giờ và nhận quyền truy cập đầy đủ vào ứng dụng của chúng tôi. </p>
             <div class="flex">
                 <label>
                     <input required="" name="firstname" placeholder="" type="text" class="input" value="<?php echo htmlspecialchars($firstname); ?>">
-                    <span>Firstname</span>
+                    <span>Tên</span>
                 </label>
 
                 <label>
                     <input required="" name="lastname" placeholder="" type="text" class="input" value="<?php echo htmlspecialchars($lastname); ?>">
-                    <span>Lastname</span>
+                    <span>Họ và tên đệm</span>
                 </label>
             </div>
 
@@ -56,15 +56,15 @@ if(isset($_POST['register'])){
 
             <label>
                 <input required="" name="password" placeholder="" type="password" class="input" value="<?php echo htmlspecialchars($password); ?>">
-                <span>Password</span>
+                <span>Mật khẩu</span>
             </label>
             <label>
                 <input required="" name="cfpassword" placeholder="" type="password" class="input" value="<?php echo htmlspecialchars($confirm_password); ?>">
-                <span>Confirm password</span>
+                <span>nhập lại mật khẩu</span>
                 <div class="checkpassword"><?php echo $notpassword ?></div>
             </label>
-            <button class="submit" name="register">Submit</button>
-            <p class="signin">Already have an acount ? <a href="index.php?src=user/Login">Signin</a> </p>
+            <button class="submit" name="register">Đăng ký</button>
+            <p class="signin">Đã có tài khoản ? <a href="index.php?src=user/Login">Đăng nhập</a> </p>
         </form>
     </div>
 

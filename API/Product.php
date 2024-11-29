@@ -131,26 +131,31 @@ class Product{
         $filename = preg_replace('/[^-\w.]+/', '', $filename);
         return $filename;
     }
-    public static function getTopSellingProducts($limit = 10) {
+    public static function getTopSellingProducts($limit = 10, $startDate = null) {
+        if (!$startDate) {
+            $startDate = date('Y-m-d', strtotime('-30 days'));  // Ngày 30 ngày trước
+        }
         $query = "
             SELECT b.*, i.Path,
-                SUM(d.Quantity) AS TotalSold
-            FROM 
-                InvoiceDetail d
-            JOIN Book b ON d.BookId = b.Id
-            JOIN  `image` i ON b.Id = i.BookId
-                WHERE 
-                i.Id = (
+            SUM(d.Quantity) AS TotalSold
+        FROM 
+            InvoiceDetail d
+        JOIN invoice iv ON d.Parent_code=iv.Code
+        JOIN Book b ON d.BookId = b.Id
+        JOIN  `image` i ON b.Id = i.BookId
+        WHERE 
+            i.Id = (
                 SELECT MIN(i2.Id)
                 FROM `image` i2
                 WHERE i2.BookId = b.Id
-                )
-            GROUP BY 
-                d.BookId, b.Name
-            ORDER BY 
-                TotalSold DESC
-            LIMIT ?";
-        $parameters = [$limit];
+            )
+            AND iv.IssuedDate >= ?  -- Lọc theo ngày truyền vào
+        GROUP BY 
+            d.BookId, b.Name
+        ORDER BY 
+            TotalSold DESC
+        LIMIT ?";
+        $parameters = [$startDate, $limit];
         $resultType = 2; // Fetch all rows as an associative array
         return DP::run_query($query, $parameters, $resultType);
     }

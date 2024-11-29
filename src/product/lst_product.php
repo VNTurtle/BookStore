@@ -1,25 +1,23 @@
 <?php
 require_once('API/LstProduct_.php');
+require_once('API/Type.php');
+
 require_once('API/Img.php');
 // Lấy danh sách loại sách, chi tiết loại, loại bìa, và nhà xuất bản
-$bookTypeIds = LstProduct::getBookTypes();
-$Lst_Type = LstProduct::getAllTypeDetailsForBookTypes();
+$Type = Type::getType();
 $Lst_CoverType = LstProduct::getCoverTypes();
 $Lst_Publisher = LstProduct::getPublishers();
 
 // Kiểm tra và thông báo nếu không có dữ liệu
-if (!$bookTypeIds) {
+if (!$Type) {
     echo "Không có dữ liệu loại sách hoặc xảy ra lỗi.";
-}
-if (!$Lst_Type) {
-    echo "Không có dữ liệu chi tiết loại hoặc xảy ra lỗi.";
 }
 if (!$Lst_CoverType) {
     echo "Không có dữ liệu loại bìa hoặc xảy ra lỗi.";
 }
 if (!$Lst_Publisher) {
     echo "Không có dữ liệu nhà xuất bản hoặc xảy ra lỗi.";
-    }
+}
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
@@ -27,9 +25,7 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 20;
 $offset = ($page - 1) * $limit;
 
-// Lấy danh sách sản phẩm dựa trên `lst_id` và `lst_id2` từ URL
 $lst_id = isset($_GET['lst_id']) ? $_GET['lst_id'] : null;
-$lst_id2 = isset($_GET['lst_id2']) ? $_GET['lst_id2'] : null;
 
 // Gọi hàm `getLstProduct` với `lst_id` và `lst_id2` (nếu có)
 $limit = 20;
@@ -37,16 +33,17 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
 // Lấy tổng số sản phẩm để tính tổng số trang
-$totalProducts = LstProduct::getLstProduct($lst_id, $lst_id2, null, null, true);
+$totalProducts = LstProduct::getLstProduct($lst_id, null, null, true);
 $totalPages = ceil($totalProducts / $limit);
 
 // Truy vấn sản phẩm với phân trang
-$lst_bv = LstProduct::getLstProduct($lst_id, $lst_id2, $limit, $offset);
+$lst_bv = LstProduct::getLstProduct($lst_id, $limit, $offset);
 require 'src/layout/header.php';
 ?>
 <script>
     console.log($totalProducts)
 </script>
+
 <body>
     <link rel="stylesheet" href="assets/css/lst_product.css">
     <div class="bodywrap">
@@ -83,24 +80,11 @@ require 'src/layout/header.php';
                             </div>
                             <ul class="product-category-list">
                                 <?php
-                                foreach ($bookTypeIds as $key => $lst_type) {
+                                foreach ($Type as $key => $lst_type) {
                                 ?>
                                     <li class="product-category-item">
                                         <a class="nav-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_type['Id']; ?>"><?php echo $lst_type['Name'] ?></a>
                                         <i id=" category-code-<?php echo $lst_type['Id'] ?>" class="open-menu category-code icon-menu" onclick="ShowMenu(this)" data-target="Menu-detail-<?php echo $lst_type['Id'] ?>"></i>
-                                        <ul class="menu-down" id="Menu-detail-<?php echo $lst_type['Id'] ?>">
-                                            <?php
-                                            foreach ($Lst_Type as $key => $lst_typedetail) {
-                                                if ($lst_typedetail['TypeId'] == $lst_type["Id"]) {
-                                            ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="index.php?src=product/lst_product&lst_id2=<?php echo $lst_typedetail['Id'] ?>"><?php echo $lst_typedetail['Name'] ?></a>
-                                                    </li>
-                                            <?php
-                                                }
-                                            }
-                                            ?>
-                                        </ul>
                                     </li>
                                 <?php
                                 }
@@ -197,31 +181,39 @@ require 'src/layout/header.php';
                             }
                             ?>
                             <nav class="page-book" aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <!-- Nút Previous -->
-                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                                    <a class="page-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?>&lst_id2=<?php echo $lst_id2; ?>&page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-
-                                <!-- Hiển thị các số trang -->
-                                <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                        <a class="page-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?>&lst_id2=<?php echo $lst_id2; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                <ul class="pagination">
+                                    <!-- Nút Previous -->
+                                    <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                                        <a class="page-link"
+                                            href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?><?php echo $lst_id2 ? '&lst_id2=' . $lst_id2 : ''; ?>&page=<?php echo $page - 1; ?>"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
                                     </li>
-                                <?php } ?>
 
-                                <!-- Nút Next -->
-                                <li class="page-item <?php if ($page >= $totalPages) echo 'disabled'; ?>">
-                                    <a class="page-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?>&lst_id2=<?php echo $lst_id2; ?>&page=<?php echo $page + 1; ?>" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                                    <!-- Hiển thị các số trang -->
+                                    <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
+                                        <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                            <a class="page-link"
+                                                href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?><?php echo $lst_id2 ? '&lst_id2=' . $lst_id2 : ''; ?>&page=<?php echo $i; ?>">
+                                                <?php echo $i; ?>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+
+                                    <!-- Nút Next -->
+                                    <li class="page-item <?php if ($page >= $totalPages) echo 'disabled'; ?>">
+                                        <a class="page-link"
+                                            href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?><?php echo $lst_id2 ? '&lst_id2=' . $lst_id2 : ''; ?>&page=<?php echo $page + 1; ?>"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+
                         </div>
                     </div>
                 </div>

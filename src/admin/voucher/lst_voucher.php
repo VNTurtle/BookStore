@@ -54,7 +54,7 @@ $Order = OrderStatus::getOrderStatus();
                                     <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
                                         <a href="index.php?src=admin/voucher/add_voucher" style="color: #fff;">
                                             <i class="bx bx-plus me-0 me-sm-1"></i>
-                                            <span class="d-none d-sm-inline-block">Add Voucher</span>
+                                            <span class="d-none d-sm-inline-block">Thêm Mã giảm giá</span>
                                         </a>
                                     </button>
                                 </div>
@@ -63,11 +63,11 @@ $Order = OrderStatus::getOrderStatus();
                         <thead>
                             <tr style="background-color: aqua;">
                                 <th>STT</th>
-                                <th>Code</th>
-                                <th>UserId</th>
-                                <th>Des</th>
-                                <th>EndDate</th>
-                                <th>Status</th>
+                                <th>Mã</th>
+                                <th>Số lượng</th>
+                                <th>Tên</th>
+                                <th>Ngày hết</th>
+                                <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -86,7 +86,7 @@ $Order = OrderStatus::getOrderStatus();
                                     </td>
                                     <td>
                                         <span class="text-truncate align-items-center">
-                                            <?php echo $lst['UserId'] ?>
+                                            <?php echo $lst['Stock'] ?>
                                         </span>
                                     </td>
                                     <td>
@@ -101,7 +101,7 @@ $Order = OrderStatus::getOrderStatus();
                                     </td>
                                     <td>
                                         <label>
-                                            <input class="toggle-checkbox" type="checkbox" data-book-id="<?php echo $lst['Id']; ?>" <?php echo ($lst['Status'] == 1) ? 'checked' : ''; ?>>
+                                            <input class="toggle-checkbox" type="checkbox" data-book-id="<?php echo $lst['Code']; ?>" <?php echo ($lst['Status'] == 1) ? 'checked' : ''; ?>>
                                             <div class="toggle-slot">
                                                 <div class="sun-icon-wrapper">
                                                     <div class="iconify sun-icon" data-icon="feather-sun" data-inline="false"></div>
@@ -116,7 +116,7 @@ $Order = OrderStatus::getOrderStatus();
                                     <td>
                                         <div class="d-inline-block text-nowrap">
                                             <button class="btn btn-sm btn-icon">
-                                                <a href="index.php?src=admin/voucher/edit_voucher&id=<?php echo $lst['Id'] ?>">
+                                                <a href="index.php?src=admin/voucher/edit_voucher&id=<?php echo $lst['Code'] ?>">
                                                     <i class="bx bx-edit"></i>
                                                 </a>
                                             </button>

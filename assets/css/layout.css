@@ -399,7 +399,7 @@ footer.footer {
 }
 
 .list-menu li {
-    display: block;
+    display: flex;
     margin-bottom: 5px;
 }
 

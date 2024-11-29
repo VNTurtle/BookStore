@@ -53,7 +53,9 @@ if (isset($page)) {
     }
     if ($page == "home") {
         echo '<script>';
-        foreach ($bookTypeIds as $key => $BookType) {
+        foreach ($Type as $key => $BookType) {
+            if (in_array($BookType['Id'], [5, 27, 43])) {
+                // Logic xử lý khi Id là 5, 27 hoặc 43
             echo "
             $('.slick-slider" . $BookType['Id'] . "').slick({
                 dots: false,
@@ -88,6 +90,7 @@ if (isset($page)) {
                 ]
             });
             ";
+            }
         }
         echo '</script>';
     }

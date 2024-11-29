@@ -63,7 +63,7 @@ class LstProduct
         return false;
     }
 }
-public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = null, $offset = null, $countOnly = false)
+public static function getLstProduct($lst_id = null, $limit = null, $offset = null, $countOnly = false)
 {
     $parameters = []; // Các tham số truy vấn
     $resultType = $countOnly ? PDO::FETCH_ASSOC : 2; // Định dạng kết quả
@@ -84,7 +84,6 @@ public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = n
     $query .= " 
         JOIN Type bt ON b.TypeId = bt.Id
         LEFT JOIN image i ON b.Id = i.BookId
-        LEFT JOIN booktype booktype ON booktype.BookId = b.Id
     WHERE 
         i.Id = (
             SELECT MIN(i2.Id)
@@ -96,11 +95,6 @@ public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = n
     if ($lst_id !== null) {
         $query .= " AND b.TypeId = :lst_Id";
         $parameters[':lst_Id'] = $lst_id;
-    }
-
-    if ($lst_id2 !== null) {
-        $query .= " AND booktype.TypeDetailId = :lst_Id2";
-        $parameters[':lst_Id2'] = $lst_id2;
     }
 
     // Nếu không phải đếm, thêm LIMIT và OFFSET
@@ -123,14 +117,6 @@ public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = n
     return DP::run_query($query, $parameters, $resultType);
   }
 
-  // Phương thức lấy danh sách các chi tiết loại sách
-  public static function getTypeDetails()
-  {
-    $query = "SELECT * FROM `typedetail` WHERE 1";
-    $parameters = [];
-    $resultType = 2;
-    return DP::run_query($query, $parameters, $resultType);
-  }
 
   // Phương thức lấy danh sách các loại bìa
   public static function getCoverTypes()
@@ -150,14 +136,6 @@ public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = n
     return DP::run_query($query, $parameters, $resultType);
   }
 
-  // Phương thức lấy 4 chi tiết loại sách theo loại sách
-  public static function getTop4TypeDetailsByTypeId($typeId)
-  {
-    $query = "SELECT * FROM typedetail WHERE TypeId = :typeId LIMIT 4";
-    $parameters = [':typeId' => $typeId];
-    $resultType = 2;
-    return DP::run_query($query, $parameters, $resultType);
-  }
 
   // Phương thức lấy tất cả các chi tiết loại sách cho mỗi loại sách
   public static function getAllTypeDetailsForBookTypes()
@@ -167,8 +145,7 @@ public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = n
 
     foreach ($bookTypes as $bookType) {
       $typeId = $bookType['Id'];
-      $Top4typeDetails = self::getTop4TypeDetailsByTypeId($typeId);
-      $typedetailList = array_merge($typedetailList, $Top4typeDetails);
+      $typedetailList = array_merge($typedetailList);
     }
 
     return $typedetailList;

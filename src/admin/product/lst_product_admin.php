@@ -33,24 +33,17 @@ $lst_product= Product::getProductBySL($offset, $items_per_page);
                         <div class="me-5 ms-n2 pe-5">
                             <div class="dataTables_filter">
                                 <label>
-                                    <input type="search" class="form-control" placeholder="Search Product" aria-controls="DataTables_Table_0">
+                                    <input type="search" class="form-control" placeholder="Tìm sách" aria-controls="DataTables_Table_0">
                                 </label>
                             </div>
                         </div>
                         <div class="d-flex justify-content-start justify-content-md-end align-items-baseline">
                             <div class="add-product dt-action-buttons d-flex align-items-start align-items-md-center justify-content-sm-center mb-3 mb-sm-0">
                                 <div class="dt-buttons btn-group flex-wrap d-flex">
-                                    <div class="btn-group">
-                                        <button class="btn buttons-collection dropdown-toggle btn-label-secondary me-3" tabindex="0" aria-controls="DataTables_Table_0" type="button" aria-haspopup="dialog" aria-expanded="false">
-                                            <span>
-                                                <i class="bx bx-export me-1"></i>Export
-                                            </span>
-                                        </button>
-                                    </div>
                                     <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
                                         <a href="index.php?src=admin/product/add_product" style="color: #fff;">
                                             <i class="bx bx-plus me-0 me-sm-1"></i>
-                                            <span class="d-none d-sm-inline-block">Add Product</span>
+                                            <span class="d-none d-sm-inline-block">Thêm sách</span>
                                         </a>
                                     </button>
                                 </div>
@@ -60,13 +53,13 @@ $lst_product= Product::getProductBySL($offset, $items_per_page);
                     <thead>
                         <tr style="background-color: aqua;">
                             <th>STT</th>
-                            <th>product</th>
-                            <th>category</th>
-                            <th>Author</th>
-                            <th>price</th>
-                            <th>qty</th>
-                            <th>status</th>
-                            <th>actions</th>
+                            <th>Sách</th>
+                            <th>Thể loại</th>
+                            <th>Tác giả</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Trạng thái</th>
+                            <th>Đối tượng</th>
                         </tr>
                     </thead>
                     <tbody>

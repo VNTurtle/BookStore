@@ -2,7 +2,7 @@
 require_once('db.php'); 
 class Voucher {
     public static function getVoucherById($id) {
-        $query = "SELECT * FROM `voucher` WHERE Id = :id";
+        $query = "SELECT * FROM `voucher` WHERE Code = :id";
         $parameters = [
             ':id' => $id
         ];
@@ -15,30 +15,28 @@ class Voucher {
         $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
     }
-    public static function updateVoucher($id, $code, $userId, $des, $date, $enddate, $maxtotal, $percent, $status){
+    public static function updateVoucher($code, $stock, $des, $date, $enddate, $maxtotal, $percent, $status){
         $query = "
     UPDATE `voucher` 
-    SET 
-        Code = :code,
-        UserId = :userId,
+    SET       
+        stock = :stock,
         Des = :des,
         Date = :date,
         EndDate = :enddate,
         MaxTotal = :maxtotal,
         Percent = :percent,
         Status = :status
-    WHERE Id = :id
+    WHERE code = :code
 ";
         $parameters = [
             ':code' => $code,
-            ':userId' => $userId,
+            ':stock' => $stock,
             ':des' => $des,
             ':date' => $date,
             ':enddate' => $enddate,
             ':maxtotal' => $maxtotal,
             ':percent' => $percent,
             ':status' => $status,
-            ':id' => $id
         ];
         return DP::run_query($query, $parameters, 0); // Thực thi không trả về kết quả
     }
@@ -52,14 +50,14 @@ class Voucher {
         $resultType = 2; // Trả về danh sách
         return DP::run_query($query, $parameters, $resultType);
     }
-    public static function addVoucher($code, $userId, $des, $date, $enddate, $maxtotal, $percent, $status) {
+    public static function addVoucher($code, $stock, $des, $date, $enddate, $maxtotal, $percent, $status) {
         $query = "
-            INSERT INTO `voucher` (Code, UserId, Des, Date, EndDate, MaxTotal, Percent, Status)
-            VALUES (:code, :userId, :des, :date, :enddate, :maxtotal, :percent, :status)
+            INSERT INTO `voucher` (Code, stock, Des, Date, EndDate, MaxTotal, Percent, Status)
+            VALUES (:code, :stock, :des, :date, :enddate, :maxtotal, :percent, :status)
         ";
         $parameters = [
             ':code' => $code,
-            ':userId' => $userId,
+            ':stock' => $stock,
             ':des' => $des,
             ':date' => $date,
             ':enddate' => $enddate,

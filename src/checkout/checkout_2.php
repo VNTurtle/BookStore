@@ -1,5 +1,6 @@
 <?php
 require_once('API/User.php');
+require_once('API/Voucher.php');
 session_start();
 if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
@@ -7,6 +8,7 @@ if (isset($_SESSION['Id'])) {
     $userId =null;
 }
 $LstUser=User::getUserById($userId);
+// $userVouchers = Voucher::getVouchersByUserId($userId);
 $User=$LstUser[0];
 ?>
 
@@ -62,7 +64,7 @@ $User=$LstUser[0];
                                 <div class="feed-item-list">
                                     <div>
                                         <h5 class="font-size-16 mb-1">Địa chỉ giao hàng</h5>
-                                        <p class="text-muted text-truncate mb-4">Sed ut perspiciatis unde omnis iste</p>
+                                        <p class="text-muted text-truncate mb-4">Vui lòng nhập đúng địa chỉ giao hàng</p>
                                         <div class="mb-3">
                                             <form id="check_out" method="POST">
                                                 <div>
@@ -75,14 +77,14 @@ $User=$LstUser[0];
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="mb-3">
-                                                                <label class="form-label" for="billing-email-address">Email Address</label>
+                                                                <label class="form-label" for="billing-email-address">Email </label>
                                                                 <input type="email" class="form-control" name="email" id="billing-email-address" value="<?= $User["Email"] ?>" placeholder="Enter email">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="mb-3">
-                                                                <label class="form-label" for="billing-phone">Phone</label>
-                                                                <input type="text" class="form-control" id="billing-phone" maxlength="10" pattern="\d{10}" placeholder="Enter Phone no." title="Vui lòng nhập đủ 10 số.">
+                                                                <label class="form-label" for="billing-phone">Số điện thoại</label>
+                                                                <input type="text" class="form-control" id="billing-phone" maxlength="10" pattern="\d{10}" placeholder="Nhập số điện thoại." title="Vui lòng nhập đủ 10 số.">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -94,7 +96,7 @@ $User=$LstUser[0];
                                                             <div class="mb-4 mb-lg-0">
                                                                 <label class="form-label" for="province-select">Tỉnh / Thành phố</label>
                                                                 <select id="province-select" class="form-control form-select" title="Province">
-                                                                    <option value="0">Select Province</option>
+                                                                    <option value="0">Tỉnh/ Thành phố</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -103,7 +105,7 @@ $User=$LstUser[0];
                                                             <div class="mb-4 mb-lg-0">
                                                                 <label class="form-label" for="district-select">Quận / Huyện</label>
                                                                 <select id="district-select" class="form-control form-select" title="District" disabled>
-                                                                    <option value="0">Select District</option>
+                                                                    <option value="0">Quận/ Huyện</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -112,18 +114,37 @@ $User=$LstUser[0];
                                                             <div class="mb-0">
                                                                 <label class="form-label" for="ward-select">Phường / Xã</label>
                                                                 <select id="ward-select" class="form-control form-select" title="Ward" disabled>
-                                                                    <option value="0">Select Ward</option>
+                                                                    <option value="0">Phường/ Xã</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label" for="billing-address">Địa chỉ nhận hàng</label>
-                                                        <textarea class="form-control" id="billing-address" rows="3" placeholder="Enter full address"></textarea>
+                                                        <textarea class="form-control" id="billing-address" rows="3" placeholder="Nhập đầy đủ giao hàng"></textarea>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="sort-product">
+                                    <h5 class="sort-heading">
+                                        Mã giảm giá
+                                    </h5>
+                                    <div class="d-flex">
+                                        <select class="sort-arrange" name="voucher-code" id="voucher-select">
+                                            <option value="" disabled selected>Chọn mã giảm giá</option>
+                                            <?php
+                                            if (!empty($userVouchers)) {
+                                                foreach ($userVouchers as $voucher) {
+                                                    echo '<option class="sort-item" value="' . $voucher['Code'] . '">' . $voucher['Des'] . '</option>';
+                                                }
+                                            } else {
+                                                echo '<option value="">Không có mã giảm giá khả dụng</option>';
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                             </li>
@@ -135,11 +156,11 @@ $User=$LstUser[0];
                                 </div>
                                 <div class="feed-item-list">
                                     <div>
-                                        <h5 class="font-size-16 mb-1">Payment Info</h5>
-                                        <p class="text-muted text-truncate mb-4">Duis arcu tortor, suscipit eget</p>
+                                        <h5 class="font-size-16 mb-1">Phương thức thanh toán</h5>
+                                        <p class="text-muted text-truncate mb-4">Thanh toán bằng nhiều hình thức</p>
                                     </div>
                                     <div>
-                                        <h5 class="font-size-14 mb-3">Payment method :</h5>
+                                        <h5 class="font-size-14 mb-3">Thanh toán qua :</h5>
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-6">
                                                 <div data-bs-toggle="collapse">
@@ -202,15 +223,15 @@ $User=$LstUser[0];
                 <div class="card checkout-order-summary">
                     <div class="card-body">
                         <div class="p-3 bg-light mb-3">
-                            <h5 class="font-size-16 mb-0">Order Summary <span class="float-end ms-2">#MN0124</span></h5>
+                            <h5 class="font-size-16 mb-0">Sản phẩm mua <span class="float-end ms-2"></span></h5>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-centered mb-0 table-nowrap">
                                 <thead>
                                     <tr>
-                                        <th class="border-top-0" style="width: 110px;" scope="col">Product</th>
-                                        <th class="border-top-0" style="width: 270px;" scope="col">Product Desc</th>
-                                        <th class="border-top-0" scope="col">Price</th>
+                                        <th class="border-top-0" style="width: 110px;" scope="col">Sách</th>
+                                        <th class="border-top-0" style="width: 270px;" scope="col">Tên Sách</th>
+                                        <th class="border-top-0" scope="col"> Giá</th>
                                     </tr>
                                 </thead>
                                 <tbody id="product-table">
@@ -219,8 +240,9 @@ $User=$LstUser[0];
                                 <tfoot>
                                     <tr class="bg-light">
                                         <td colspan="2">
-                                            <h5 class="font-size-14 m-0">Total:</h5>
+                                            <h5 class="font-size-14 m-0">Tổng tiền:</h5>
                                         </td>
+                                        <td id="old-total" style="text-decoration: line-through"></td>
                                         <td id="total"></td>
                                     </tr>
                                 </tfoot>
@@ -265,6 +287,59 @@ $User=$LstUser[0];
                                 // Cập nhật tổng giá trị
                                 document.getElementById('total').innerText = `${total}.000 đ`;
                                 console.log(count);
+                            </script>
+                            <script>
+                                const vouchers = <?php echo json_encode($userVouchers); ?>;
+                                let totalElement = document.getElementById('total');
+                                let oldPriceElement = document.getElementById('old-total');
+                                const originalTotal = parseFloat(totalElement.innerText);
+
+                                document.getElementById('voucher-select').addEventListener('change', function() {
+                                    const selectedCode = this.value;
+
+                                    fetch('controller/update_voucher_status.php', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({
+                                                voucherCode: selectedCode
+                                            })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                console.log('Voucher save section');
+                                            } else {
+                                                console.error('Failed to voucher');
+                                            }
+                                        })
+                                        .catch(error => console.error('Error:', error));
+
+                                    total = originalTotal;
+
+                                    let discountedTotal = 0;
+                                    const voucher = vouchers.find(v => v.Code === selectedCode);
+
+                                    if (voucher) {
+
+                                        const discount = Math.min(total * voucher.Percent /100, voucher.MaxTotal);
+
+
+                                        discountedTotal = total - discount;
+
+                                        discountedTotal = Math.max(discountedTotal, 0);
+
+
+                                        oldPriceElement.innerText = total.toFixed(3) + `đ`;
+
+                                        totalElement.innerText = discountedTotal.toFixed(3) + `đ`;
+                                        totalElement.innerText = discountedTotal.toFixed(3) + ` ` + `đ`;
+
+                                        total = discountedTotal;
+                                        console.log(total);
+                                    }
+                                });
                             </script>
                         </div>
                     </div>

@@ -43,7 +43,7 @@ $lst_size = Size::getSize();
                                     <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
                                         <span>
                                             <i class="bx bx-plus me-0 me-sm-1"></i>
-                                            <span class="d-none d-sm-inline-block">Add Kích thước</span>
+                                            <span class="d-none d-sm-inline-block">Thêm kích thước</span>
                                         </span>
                                     </button>
                                 </div>
@@ -53,7 +53,7 @@ $lst_size = Size::getSize();
                     <thead>
                         <tr style="background-color: aqua;">
                             <th>STT</th>
-                            <th>Name</th>
+                            <th>Tên kích thước</th>
                             <th>status</th>
                         </tr>
                     </thead>

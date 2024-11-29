@@ -4,20 +4,10 @@
 require_once('API/Type.php');
 require_once('API/db.php');
 require_once('API/User.php');
-require_once('API/User.php');
 require_once('API/Cancel_requests.php');
-$bookTypeIds = Type::getType();
-
-$typedetailList = array();
+$bookTypeIds = Type::getTypeBySL(1,30);
 $parameters = [];
 $resultType = 2;
-foreach ($bookTypeIds as $bookType) {
-    $typeId = $bookType['Id'];
-    $queryTypeDetail = "SELECT * FROM typedetail WHERE TypeId = $typeId LIMIT 4";
-    $typeDetails = DP::run_query($queryTypeDetail, $parameters, $resultType);
-    // Hợp nhất kết quả truy vấn vào danh sách
-    $typedetailList = array_merge($typedetailList, $typeDetails);
-}
 session_start();
 if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
@@ -90,36 +80,37 @@ if (isset($_GET['logout'])) {
                                         <p style="display: inline-block;"><strong>Đơn hàng:</strong> <?= $complete['order_id'] ?></p>
                                         <p>
                                             <strong>Đã hoàn tiền cho bạn.</strong>
-                                            <button class="end_status float-end btn  btn-secondary btn-sm" 
-                                            data-order-status="5" data-order-id="<?= $complete['order_id'] ?>" data-status="end_request">
-                                            Xóa</button>
+                                            <button class="end_status float-end btn  btn-secondary btn-sm"
+                                                data-order-status="5" data-order-id="<?= $complete['order_id'] ?>" data-status="end_request">
+                                                Xóa</button>
                                         </p>
                                         <p><strong>Mọi thắc mắc xin liên hệ qua số điện thoại: 0962548301.</strong> </p>
                                     </a>
                                     <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
                                 </div>
-                                <?php
+                            <?php
                             }
                             foreach ($Lst_mess2 as $key => $mess2) {
                             ?>
-                            <div class="mess-content">
-                                        <a id="mess-item-<?= $key ?>" data-key="<?= $key ?>" href="index.php?src=invoice/invoice">
-                                            <p style="display: inline-block;"><strong>Đơn hàng:</strong> <?= $mess2['order_id'] ?></p>
-                                            <p>
-                                                <strong>Yêu cầu hủy không chấp nhận.</strong>
-                                                <p><strong>Lý do:</strong> <?= $mess2['Content2'] ?>
-                                                <button class="end_status float-end btn  btn-secondary btn-sm" 
-                                                data-order-status="5" data-order-id="<?= $mess2['order_id'] ?>" data-status="end_request">
-                                                Xóa</button></p>
-                                                
+                                <div class="mess-content">
+                                    <a id="mess-item-<?= $key ?>" data-key="<?= $key ?>" href="index.php?src=invoice/invoice">
+                                        <p style="display: inline-block;"><strong>Đơn hàng:</strong> <?= $mess2['order_id'] ?></p>
+                                        <p>
+                                            <strong>Yêu cầu hủy không chấp nhận.</strong>
+                                            <p><strong>Lý do:</strong> <?= $mess2['Content2'] ?>
+                                                <button class="end_status float-end btn  btn-secondary btn-sm"
+                                                    data-order-status="5" data-order-id="<?= $mess2['order_id'] ?>" data-status="end_request">
+                                                    Xóa</button>
                                             </p>
 
-                                        </a>
-                                        <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
-                                    </div>
-                            <?php
+                                        </p>
+
+                                    </a>
+                                    <div style="border-top: 5px solid #ccc; margin: 10px 0; width: 100%;"></div>
+                                </div>
+                                <?php
                             }
-                            
+
                             foreach ($Lst_mess as $key => $mess) {
                                 if ($mess['PaymethodId'] == 1) {
                                 ?>
@@ -128,9 +119,9 @@ if (isset($_GET['logout'])) {
                                             <p style="display: inline-block;"><strong>Đơn hàng:</strong> <?= $mess['order_id'] ?></p>
                                             <p>
                                                 <strong>Đã hủy thành công</strong>
-                                                <button class="end_status float-end btn  btn-secondary btn-sm" 
-                                                data-order-status="5" data-order-id="<?= $mess['order_id'] ?>" data-status="end_request">
-                                                Xóa</button>
+                                                <button class="end_status float-end btn  btn-secondary btn-sm"
+                                                    data-order-status="5" data-order-id="<?= $mess['order_id'] ?>" data-status="end_request">
+                                                    Xóa</button>
                                             </p>
 
                                         </a>
@@ -154,8 +145,8 @@ if (isset($_GET['logout'])) {
                         </div>
                     </li>
                     <li class="header-favourite d-n">
-                    <a href="index.php?src=favourite/favourite" id="favouriteLink">
-                            <i style="width: 25px; height: 25px; color: #000; "class="fa-solid fa-heart"></i>
+                        <a href="index.php?src=favourite/favourite" id="favouriteLink">
+                            <i style="width: 25px; height: 25px; color: #000; " class="fa-solid fa-heart"></i>
                         </a>
                     </li>
                     <li class="header-cart ">
@@ -325,32 +316,13 @@ if (isset($_GET['logout'])) {
                                 <div class="lst-Type-main">
                                     <ul class="level0">
                                         <?php
-                                        foreach ($bookTypeIds as $key => $lst_type) {
+                                        foreach ($bookTypeIds as $key  => $lst_type) {
                                         ?>
                                             <li class="level1 item parent">
                                                 <!-- Đường dẫn với lst_id để lọc sản phẩm theo loại sách -->
-                                                <a href="index.php?src=product/lst_product&lst_id=<?= urlencode($lst_type['Id']) ?>" class="hmega">
+                                                <a href="index.php?src=product/lst_product&lst_id=<?= $lst_type['Id'] ?>">
                                                     <?php echo htmlspecialchars($lst_type['Name']) ?>
-                                                </a>
-                                                <ul class="level1">
-                                                    <?php
-                                                    foreach ($typedetailList as $key => $lst_typedetail) {
-                                                        if ($lst_typedetail['TypeId'] == $lst_type['Id']) {
-                                                    ?>
-                                                            <!-- Đường dẫn với lst_id2 để lọc sản phẩm theo chi tiết loại sách -->
-                                                            <li class="level2">
-                                                                <a href="index.php?src=product/lst_product&lst_id=<?= urlencode($lst_type['Id']) ?>&lst_id2=<?= urlencode($lst_typedetail['Id']) ?>">
-                                                                    <?php echo htmlspecialchars($lst_typedetail['Name']) ?>
-                                                                </a>
-                                                            </li>
-                                                    <?php
-                                                        }
-                                                    }
-                                                    ?>
-                                                    <li class="level2">
-                                                        <a href="index.php?src=product/lst_product" style="color: #09bfff;">Xem thêm</a>
-                                                    </li>
-                                                </ul>
+                                                </a>         
                                             </li>
                                         <?php
                                         }

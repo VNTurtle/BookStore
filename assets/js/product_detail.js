@@ -413,7 +413,56 @@ if(binName!=null){
         }
     });    
     
+    $('.remove-to-favourite').on('click', function () {
+        var product_id = $(this).data('product-id');
+       
+        var formData = new FormData();
+        formData.append('product_id', product_id);
+        console.log(formData);
+        var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'controller/remove_favourite.php', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        try {
+                            document.querySelector('.thongbao').classList.add('show');
+                            var response = JSON.parse(xhr.responseText); 
+                            
+                            document.querySelector('.thongbao').innerText = response.message;
+
+                            // Nếu sản phẩm được thêm thành công
+                            if (response.status === 'success') {
+                                setTimeout(function() {
+                                    document.querySelector('.thongbao').classList.remove('show');
+                                }, 2000);
+                                $state.reload(state);
+                            } else {
+                                setTimeout(function() {
+                                    document.querySelector('.thongbao').classList.remove('show');
+                                }, 2000);
+                            }
+                        } catch (e) {
+                            console.error('Lỗi khi phân tích JSON:', e);
+                        }
     
+                        // Ẩn thông báo sau khi xử lý xong
+                        setTimeout(function() {
+                            document.querySelector('.thongbao').classList.remove('show');
+                        }, 2000);
+                    } else {
+                        // Xảy ra lỗi khi gửi yêu cầu
+                        console.log('Lỗi khi gửi yêu cầu:', xhr.status, xhr.statusText);
+    
+                        // Ẩn thông báo nếu có lỗi
+                        setTimeout(function() {
+                            document.querySelector('.thongbao').classList.remove('show');
+                        }, 2000);
+                    }
+                }
+            };  
+            // Gửi yêu cầu AJAX
+            xhr.send(formData);
+    });
 
     document.addEventListener("DOMContentLoaded", function() {
         var decreaseButton = document.getElementById('btn-decrease');

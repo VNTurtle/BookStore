@@ -118,6 +118,11 @@ if (isset($_GET['logout'])) {
                 <div data-i18n="Without navbar">Kích thước sản phẩm</div>
               </a>
             </li>
+            <li class="menu-item">
+              <a href="index.php?src=admin/type/lst_type" class="menu-link">
+                <div data-i18n="Without navbar">Loại sản phẩm</div>
+              </a>
+            </li>
           </ul>
         </li>
 

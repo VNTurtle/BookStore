@@ -1,6 +1,7 @@
 <?php
 require 'src/layout/header.php';
 require_once('API/Product.php');
+require_once('API/Type.php');
 $lst_bv = Product::getProduct();
 $topProducts = Product::getTopSellingProducts(10);
 
@@ -106,7 +107,11 @@ $topProducts = Product::getTopSellingProducts(10);
         Đã thêm vào giỏ hàng
     </div>
     <?php
-    foreach ($bookTypeIds as $key => $BookType) {
+    $Type=Type::getType();
+    foreach ($Type as $key => $BookType) {
+        if (in_array($BookType['Id'], [5, 27, 43])) {
+            // Logic xử lý khi Id là 5, 27 hoặc 43
+        
     ?>
         <!-- <section class="section-1-banner">
                 <div class="container">
@@ -121,7 +126,7 @@ $topProducts = Product::getTopSellingProducts(10);
                     <div class="">
                         <div class="group-title-index">
                             <h3 class="title">
-                                <a class="title-name" href=""><?php echo $BookType['Name']  ?>
+                                <a class="title-name" href="index.php?src=product/lst_product&lst_id=<?= $BookType['Id'] ?>"><?php echo $BookType['Name']  ?>
                                     <img src="assets/img/book-icon.png" alt="">
                                 </a>
                                 <span class=""></span>
@@ -175,6 +180,7 @@ $topProducts = Product::getTopSellingProducts(10);
             </div>
         </section>
     <?php
+    }
     }
     ?>
 </div>

@@ -29,7 +29,7 @@ $CoverType = CoverType::getCoverType();
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light">Sản Phẩm /</span> Chỉnh sửa Sản Phẩm
+            <span class="text-muted fw-light">Sản Phẩm /</span> Thêm Sản Phẩm
         </h4>
         <div class="card">
             <h4 class="py-3 mb-4" style="color: #656cf9;">

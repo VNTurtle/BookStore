@@ -2,17 +2,17 @@
   <link rel="stylesheet" href="assets/css/login.css">
 
   <div class="container">
-    <div class="heading">Sign In</div>
+    <div class="heading">Đăng nhập</div>
     <form id="loginForm"  class="form">
       <input required="" class="input" type="email" name="email" id="email" placeholder="Email">
-      <input required="" class="input" type="password" name="password" id="password" placeholder="Password">
+      <input required="" class="input" type="password" name="password" id="password" placeholder="Mật khẩu">
       <span class="mms"></span>
-      <span class="forgot-password"><a href="#">Forgot Password ?</a></span>
+      <span class="forgot-password"><a href="#">Quên mật khẩu ?</a></span>
       <input class="login-button" name="btn_Login" type="submit" value="Sign In">
 
     </form>
     <div class="social-account-container">
-      <span class="title">Or Sign in with</span>
+      <span class="title">Đăng nhập MXH</span>
       <div class="social-accounts">
         <button class="social-button google">
           <svg class="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 488 512">
@@ -30,7 +30,7 @@
         </button>
       </div>
     </div>
-    <span class="agreement"><a href="#">Learn user licence agreement</a></span>
+    <span class="agreement"><a href="index.php?src=user/Register">Đăng Ký</a></span>
   </div>
   
   <script src="assets/js/login.js"></script>

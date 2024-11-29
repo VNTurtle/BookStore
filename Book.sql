@@ -17,14 +17,6 @@ CREATE TABLE Type (
     PRIMARY KEY (Id)
 );
 
-CREATE TABLE TypeDetail (
-    Id INT NOT NULL AUTO_INCREMENT,
-	TypeId INT NOT NULL,
-    Name NVARCHAR(200) NULL,
-    Status BIT NOT NULL,
-    PRIMARY KEY (Id),
-	FOREIGN KEY (TypeId) REFERENCES Type (Id)
-);
 
 CREATE TABLE ComBoBook (
     Id INT NOT NULL AUTO_INCREMENT,
@@ -76,19 +68,6 @@ CREATE TABLE Book (
     FOREIGN KEY (SizeId) REFERENCES Size (Id),
     FOREIGN KEY (PublisherId) REFERENCES Publisher (Id),
     FOREIGN KEY (CoverTypeId) REFERENCES CoverType (Id)	
-);
-
-
-
-
-
-CREATE TABLE BookType (
-	BookId INT NOT NULL,
-	TypeDetailId INT NOT NULL,
-    Status BIT NOT NULL,
-    PRIMARY KEY (BookId, TypeDetailId),
-	FOREIGN KEY (BookId) REFERENCES Book (Id),
-	FOREIGN KEY (TypeDetailId) REFERENCES TypeDetail (Id)
 );
 
 
@@ -244,13 +223,12 @@ CREATE TABLE Cancel_requests  (
 
 CREATE TABLE Voucher (
     Code NVARCHAR(10) NOT NULL,
-	UserId INT NOT NULL,
+	Stock INT NOT NULL,
     Des NVARCHAR(200) NOT NULL,
     Date DATETIME NULL,
     EndDate DATETIME NULL,
     MaxTotal DECIMAL(20, 3) NULL,
     Percent DECIMAL(5, 2) NOT NULL,
     Status BIT NOT NULL,
-    PRIMARY KEY (Code),
-	FOREIGN KEY (UserId) REFERENCES Account (Id)
+    PRIMARY KEY (Code)
 );
