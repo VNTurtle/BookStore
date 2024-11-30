@@ -11,7 +11,7 @@ require 'src/layout/header.php';
 </script>
 
 <?php
-require_once('API/Favourite.php');
+require_once('Function/Favourite.php');
 $Lst_Favourite = Favourite::getFavouritebyUserId($userId);
 $count = 0;
 foreach ($Lst_Favourite as $key => $favourite_item) {

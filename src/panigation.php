@@ -1,5 +1,5 @@
 <?php
-require_once('../API/Search.php');
+require_once('../Function/Search.php');
 header('Content-Type: application/json');
 
 // Lấy tham số `timkiem` và `page` từ URL

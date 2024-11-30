@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="assets/css/layout.css">
 
 <?php
-require_once('API/Type.php');
-require_once('API/db.php');
-require_once('API/User.php');
-require_once('API/Cancel_requests.php');
+require_once('Function/Type.php');
+require_once('Function/db.php');
+require_once('Function/User.php');
+require_once('Function/Cancel_requests.php');
 $bookTypeIds = Type::getTypeBySL(1,30);
 $parameters = [];
 $resultType = 2;
@@ -364,7 +364,7 @@ if (isset($_GET['logout'])) {
             <option value="JCB">JCB</option>
             <option value="UPI">UPI</option>
             <option value="VIB">VIB</option>
-            <option value="VIETCAPITALBANK">VIETCAPITALBANK</option>
+            <option value="VIETCFunctionTALBANK">VIETCFunctionTALBANK</option>
             <option value="SCB">Ngan hang SCB</option>
             <option value="NCB">Ngan hang NCB</option>
             <option value="SACOMBANK">Ngan hang SacomBank </option>

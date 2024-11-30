@@ -1,7 +1,7 @@
 <?php
-require_once('../API/db.php');
-require_once('../API/Product.php');
-require_once('../API/Model.php');
+require_once('../Function/db.php');
+require_once('../Function/Product.php');
+require_once('../Function/Model.php');
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

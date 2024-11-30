@@ -1,8 +1,8 @@
 <?php
     require 'src/admin/layout/menu.php';
     require 'src/admin/layout/header.php';
-    require_once('API/Invoice.php');
-    require_once('API/InvoiceDetail.php');
+    require_once('Function/Invoice.php');
+    require_once('Function/InvoiceDetail.php');
     if (isset($_GET['id_invoice'])) {
         $Code = $_GET['id_invoice'];
         $invoices=Invoice::getInvoiceByCode($Code);

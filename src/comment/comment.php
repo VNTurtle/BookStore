@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../../API/Comment.php');
+require_once(__DIR__ . '/../../Function/Comment.php');
 // Kiểm tra tham số id
 $productId = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : null;
 if (!$productId) {

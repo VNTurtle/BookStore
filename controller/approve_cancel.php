@@ -1,8 +1,8 @@
 <?php
-require_once('../API/Cancel_requests.php');
-require_once('../API/InvoiceDetail.php');
-require_once('../API/Product.php');
-require_once('../API/db.php');
+require_once('../Function/Cancel_requests.php');
+require_once('../Function/InvoiceDetail.php');
+require_once('../Function/Product.php');
+require_once('../Function/db.php');
 $response = array();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

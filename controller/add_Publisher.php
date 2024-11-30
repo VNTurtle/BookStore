@@ -1,10 +1,10 @@
 <?php
-require_once('../API/Publisher.php');
+require_once('../Function/Publisher.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Lấy giá trị của trường username từ form
     $PublisherName = $_POST['Publisher'];
-    $check=Publisher::putPublisher($PublisherName);
+    $check=Publisher::postPublisher($PublisherName);
     if($check){
         $Publisher=Publisher::getPublisher();
     }

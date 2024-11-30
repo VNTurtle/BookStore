@@ -1,5 +1,5 @@
 <?php
-    require_once('../API/User.php');
+    require_once('../Function/User.php');
     header('Content-Type: application/json'); // Đặt content type là JSON
 
         // Lấy giá trị email và password từ form

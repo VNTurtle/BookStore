@@ -8,7 +8,7 @@
       <input required="" class="input" type="password" name="password" id="password" placeholder="Mật khẩu">
       <span class="mms"></span>
       <span class="forgot-password"><a href="#">Quên mật khẩu ?</a></span>
-      <input class="login-button" name="btn_Login" type="submit" value="Sign In">
+      <input class="login-button" name="btn_Login" type="submit" value="Đăng nhập">
 
     </form>
     <div class="social-account-container">

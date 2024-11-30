@@ -1,9 +1,9 @@
 <?php
 require 'src/layout/header.php';
-require_once('API/OrderStatus.php');
-require_once('API/Invoice.php');
-require_once('API/InvoiceDetail.php');
-require_once('API/Cancel_requests.php');
+require_once('Function/OrderStatus.php');
+require_once('Function/Invoice.php');
+require_once('Function/InvoiceDetail.php');
+require_once('Function/Cancel_requests.php');
 $OrderStatus = OrderStatus::getOrderStatus();
 ?>
 

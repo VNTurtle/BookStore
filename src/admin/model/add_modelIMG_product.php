@@ -1,7 +1,7 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Product.php');
+require_once('Function/Product.php');
 if (isset($_GET['id'])) {
     $bookId = $_GET['id'];
 }

@@ -11,8 +11,8 @@ require 'src/layout/header.php';
 </script>
 
 <?php
-    require_once('API/Cart.php');
-    require_once('API/Product.php');
+    require_once('Function/Cart.php');
+    require_once('Function/Product.php');
     $Lst_Cart= Cart::getCartbyUserId($userId);
     
     $count=0;

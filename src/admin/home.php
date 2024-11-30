@@ -1,8 +1,8 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Invoice.php');
-require_once('API/Product.php');
+require_once('Function/Invoice.php');
+require_once('Function/Product.php');
 // Lấy ngày hiện tại
 $currentDate = date('Y-m-d');
 
@@ -21,19 +21,25 @@ $DoanhthuNam = 0.0;
 $DonHangNam = 0;
 $chartData = [];
 foreach ($revenue as $day) {
-    $DoanhthuTuan += $day['total_revenue'];
+    if($day['OrderStatusId']!=5){
+        $DoanhthuTuan += $day['Total'];
+    }   
     $DonHangTuan += $day['total_quantity_sold'];
 }
 foreach ($revenue1 as $day) {
-    $DoanhthuThang += $day['total_revenue'];
+    if($day['OrderStatusId']!=5){
+        $DoanhthuThang += $day['Total'];
+    }    
     $DonHangThang += $day['total_quantity_sold'];
     $chartData[] = [
         'date' => $day['date'], // Ngày
-        'revenue' => $day['total_revenue']
+        'revenue' => $day['Total']
     ];
 }
 foreach ($revenue2 as $day) {
-    $DoanhthuNam += $day['total_revenue'];
+    if($day['OrderStatusId']!=5){
+        $DoanhthuNam += $day['Total'];
+    }     
     $DonHangNam += $day['total_quantity_sold'];
 }
 $jsonData = json_encode($chartData);
@@ -101,7 +107,7 @@ $jsonData = json_encode($chartData);
                 <canvas id="revenueChart" width="300" height="200" style="max-width: 800px; max-height: 500px; background-color: #fff;"></canvas>
             </div>
             <div class="col-4 bg-light" >
-                <h2>Sản phẩm bán chạy</h2>
+                <h2>Sản phẩm bán chạy theo tháng</h2>
                 <ul>
                     <?php
                     $topProducts = Product::getTopSellingProducts(10);
@@ -117,6 +123,7 @@ $jsonData = json_encode($chartData);
                                         </div>
                                         <div class="name-product" style="width: 315px;">
                                             <h6 class="text-body text-nowrap mb-0" style="white-space: normal !important; overflow-wrap: break-word;"><?= $product['Name'] ?> </h6>
+                                            <h6>Đã bán <?= $product['TotalSold'] ?> cuốn sách</h6>
                                         </div>
 
                                     </div>

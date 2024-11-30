@@ -1,7 +1,7 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Size.php');
+require_once('Function/Size.php');
 $items_per_page = 10;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $parameters = [];
@@ -33,18 +33,11 @@ $lst_size = Size::getSize();
                         <div class="d-flex justify-content-start justify-content-md-end align-items-baseline">
                             <div class="add-product dt-action-buttons d-flex align-items-start align-items-md-center justify-content-sm-center mb-3 mb-sm-0">
                                 <div class="dt-buttons btn-group flex-wrap d-flex">
-                                    <div class="btn-group">
-                                        <button class="btn buttons-collection dropdown-toggle btn-label-secondary me-3" tabindex="0" aria-controls="DataTables_Table_0" type="button" aria-haspopup="dialog" aria-expanded="false">
-                                            <span>
-                                                <i class="bx bx-export me-1"></i>Export
-                                            </span>
-                                        </button>
-                                    </div>
                                     <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                                        <span>
+                                        <a href="index.php?src=admin/size/add_size" style="color: #fff;">
                                             <i class="bx bx-plus me-0 me-sm-1"></i>
                                             <span class="d-none d-sm-inline-block">Thêm kích thước</span>
-                                        </span>
+                                        </a>
                                     </button>
                                 </div>
                             </div>

@@ -1,7 +1,7 @@
 <?php
 ob_start();
 require 'src/admin/layout/menu.php';
-require_once('API/Account.php');
+require_once('Function/Account.php');
 
 // Xử lý khi người dùng gửi form thêm tài khoản
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

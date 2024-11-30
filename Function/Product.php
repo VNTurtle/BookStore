@@ -135,8 +135,7 @@ class Product{
         if (!$startDate) {
             $startDate = date('Y-m-d', strtotime('-30 days'));  // Ngày 30 ngày trước
         }
-        $query = "
-            SELECT b.*, i.Path,
+        $query = " SELECT b.*, i.Path,
             SUM(d.Quantity) AS TotalSold
         FROM 
             InvoiceDetail d
@@ -149,7 +148,7 @@ class Product{
                 FROM `image` i2
                 WHERE i2.BookId = b.Id
             )
-            AND iv.IssuedDate >= ?  -- Lọc theo ngày truyền vào
+            AND iv.IssuedDate >= ? AND iv.OrderStatusId=4 -- Lọc theo ngày truyền vào
         GROUP BY 
             d.BookId, b.Name
         ORDER BY 

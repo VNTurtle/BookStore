@@ -1,8 +1,8 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Img.php');
-require_once('API/Product.php');
+require_once('Function/Img.php');
+require_once('Function/Product.php');
 
 $items_per_page = 10;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -45,11 +45,6 @@ $lst_IMG = Img::getImg();
                             <div class="add-product dt-action-buttons d-flex align-items-start align-items-md-center justify-content-sm-center mb-3 mb-sm-0">
                                 <div class="dt-buttons btn-group flex-wrap d-flex">
                                     <div class="btn-group">
-                                        <button class="btn buttons-collection dropdown-toggle btn-label-secondary me-3" tabindex="0" aria-controls="DataTables_Table_0" type="button" aria-haspopup="dialog" aria-expanded="false">
-                                            <span>
-                                                <i class="bx bx-export me-1"></i>Export
-                                            </span>
-                                        </button>
                                     </div>
                                 </div>
                             </div>

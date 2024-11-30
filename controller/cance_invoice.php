@@ -1,5 +1,5 @@
 <?php
-require_once('../API/Cancel_requests.php');
+require_once('../Function/Cancel_requests.php');
 $response = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

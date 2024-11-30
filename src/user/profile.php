@@ -1,6 +1,6 @@
 <?php
 require 'src/layout/header.php';
-require_once('API/Account.php');
+require_once('Function/Account.php');
 
 $User = Account::getAccountById($userId);
 ?>

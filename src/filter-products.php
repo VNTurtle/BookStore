@@ -1,5 +1,5 @@
 <?php
-require_once('../API/LstProduct_.php');
+require_once('../Function/LstProduct_.php');
 
 // Thiết lập tiêu đề JSON
 header('Content-Type: application/json');

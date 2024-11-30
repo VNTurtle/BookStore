@@ -1,5 +1,5 @@
 <?php
-require_once('../API/User.php');
+require_once('../Function/User.php');
 
 if (isset($_POST['email'])) {
     $email = $_POST['email'];

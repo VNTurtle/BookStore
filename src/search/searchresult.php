@@ -8,9 +8,9 @@
 chdir(__DIR__ . '/../../');
 
 // Gọi các tệp cần thiết
-require_once('API/db.php');
-require_once('API/Img.php');
-require_once('API/Type.php');
+require_once('Function/db.php');
+require_once('Function/Img.php');
+require_once('Function/Type.php');
 require_once('src/layout/header.php');
 ?>
 <link rel="stylesheet" href="../../assets/css/lst_product.css">

@@ -1,5 +1,5 @@
 <?php
-require_once('../API/db.php');
+require_once('../Function/db.php');
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

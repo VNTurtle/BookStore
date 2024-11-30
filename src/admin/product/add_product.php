@@ -1,12 +1,12 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Product.php');
-require_once('API/ComboBook.php');
-require_once('API/Type.php');
-require_once('API/Size.php');
-require_once('API/Publisher.php');
-require_once('API/CoverType.php');
+require_once('Function/Product.php');
+require_once('Function/ComboBook.php');
+require_once('Function/Type.php');
+require_once('Function/Size.php');
+require_once('Function/Publisher.php');
+require_once('Function/CoverType.php');
 
 $joinedTables = [
     'cb' => 'Combo',

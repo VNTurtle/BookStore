@@ -1,6 +1,6 @@
 <?php
-require_once('../API/User.php');
-require_once('../API/Cart.php');
+require_once('../Function/User.php');
+require_once('../Function/Cart.php');
 $data = json_decode(file_get_contents("php://input"), true);
 session_start();
 $userId = $_SESSION['Id'];

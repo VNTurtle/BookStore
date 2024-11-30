@@ -130,7 +130,7 @@ if (isset($_GET['logout'])) {
         <li class="menu-item">
           <a href="javascript:void(0);" class="menu-link menu-toggle" data-toggle="submenu">
             <i class="menu-icon tf-icons bx bx-store"></i>
-            <div data-i18n="Invoice">Invoice</div>
+            <div data-i18n="Invoice">Hóa đơn</div>
           </a>
           <ul class="menu-sub">
             <li class="menu-item">
@@ -188,6 +188,24 @@ if (isset($_GET['logout'])) {
             <i class='bx bxs-institution' ></i>
             <div data-i18n="Without navbar">Nhà xuất bản</div>
           </a>
+        </li>
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle" data-toggle="submenu">
+          <i class='bx bxs-objects-vertical-bottom'></i>
+            <div data-i18n="Without navbar">Thống kê</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="index.php?src=admin/statistic/statisticbydate" class="menu-link">
+                <div data-i18n="Without menu">Thống kê theo ngày</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="index.php?src=admin/statistic/statisticbyProduct" class="menu-link">
+                <div data-i18n="Without menu">Thống kê theo sản phẩm</div>
+              </a>
+            </li>
+          </ul>
         </li>
       </ul>
     </aside>

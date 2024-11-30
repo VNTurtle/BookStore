@@ -1,8 +1,8 @@
 <?php
 require 'src/layout/header.php';
-require_once('API/Product.php');
-require_once('API/Img.php');
-require_once('API/Favourite.php');
+require_once('Function/Product.php');
+require_once('Function/Img.php');
+require_once('Function/Favourite.php');
 if (isset($_GET['id'])) {
     $bookId = htmlspecialchars($_GET['id']);
 }

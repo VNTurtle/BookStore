@@ -1,5 +1,5 @@
 <?php
-require_once('../API/Cart.php');
+require_once('../Function/Cart.php');
 session_start();
 $userId = $_SESSION['Id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -1,6 +1,6 @@
 <?php
-require_once('API/User.php');
-require_once('API/Voucher.php');
+require_once('Function/User.php');
+require_once('Function/Voucher.php');
 session_start();
 if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
@@ -612,7 +612,7 @@ $User = $LstUser[0];
     var wardSelect = document.getElementById('ward-select');
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'API/data.php', true);
+    xhr.open('GET', 'Function/data.php', true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var responseData = JSON.parse(xhr.responseText);

@@ -2,7 +2,7 @@
 ob_start();
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Voucher.php');
+require_once('Function/Voucher.php');
 if (isset($_GET['id'])) {
     $id = htmlspecialchars($_GET['id']);
 }

@@ -1,5 +1,5 @@
 <?php
-require_once('../API/ComboBook.php');
+require_once('../Function/ComboBook.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Lấy giá trị của trường username từ form
     $comboName = $_POST['Combo'];

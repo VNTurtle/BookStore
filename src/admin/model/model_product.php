@@ -1,7 +1,7 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Product.php');
+require_once('Function/Product.php');
 
 $items_per_page = 10; // Số sản phẩm mỗi trang
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

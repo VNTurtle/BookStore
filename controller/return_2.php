@@ -1,8 +1,8 @@
 <?php
-require_once('../API/db.php');
-require_once('../API/User.php');
-require_once('../API/Cart.php');
-require_once('../API/Voucher.php');
+require_once('../Function/db.php');
+require_once('../Function/User.php');
+require_once('../Function/Cart.php');
+require_once('../Function/Voucher.php');
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
@@ -63,7 +63,7 @@ if ($secureHash == $vnp_SecureHash && $_GET['vnp_ResponseCode'] == '00') {
         unset($_SESSION['voucherCode']);
     }
 
-    header("Location: ../index.php");
+    header("Location: ../index.php?src=invoice/invoice");
 } else {
     echo "Payment failed or secure hash mismatch.";
 }

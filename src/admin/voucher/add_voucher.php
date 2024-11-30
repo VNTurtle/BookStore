@@ -1,7 +1,7 @@
 <?php
 ob_start();
 require 'src/admin/layout/menu.php';
-require_once('API/Voucher.php');
+require_once('Function/Voucher.php');
 
 // Xử lý khi người dùng gửi form thêm voucher
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

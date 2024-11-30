@@ -1,5 +1,5 @@
 <?php
-    require_once('API/User.php');
+    require_once('Function/User.php');
     $parameters = []; // Các tham số truy vấn (nếu có)
     $resultType = 2; // Loại kết quả truy vấn (2: Fetch All)
 

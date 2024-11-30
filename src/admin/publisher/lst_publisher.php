@@ -1,7 +1,7 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Publisher.php');
+require_once('Function/Publisher.php');
 $items_per_page = 10;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $parameters = [];
@@ -18,7 +18,7 @@ $parameters = []; // Các tham số truy vấn (nếu có)
 $resultType = 2; // Loại kết quả truy vấn (2: Fetch All)
 $query_lstpls = "SELECT * FROM `publisher` LIMIT 10";
 
-$lst_publisher = Publisher::getPublisher();
+$lst_publisher = Publisher::getPublisherBySL($offset, $items_per_page);
 ?>
 
 <link rel="stylesheet" href="admin/css/model_product.css">
@@ -36,18 +36,12 @@ $lst_publisher = Publisher::getPublisher();
                         <div class="d-flex justify-content-start justify-content-md-end align-items-baseline">
                             <div class="add-product dt-action-buttons d-flex align-items-start align-items-md-center justify-content-sm-center mb-3 mb-sm-0">
                                 <div class="dt-buttons btn-group flex-wrap d-flex">
-                                    <div class="btn-group">
-                                        <button class="btn buttons-collection dropdown-toggle btn-label-secondary me-3" tabindex="0" aria-controls="DataTables_Table_0" type="button" aria-haspopup="dialog" aria-expanded="false">
-                                            <span>
-                                                <i class="bx bx-export me-1"></i>Export
-                                            </span>
-                                        </button>
-                                    </div>
+
                                     <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                                        <span>
+                                        <a href="index.php?src=admin/publisher/add_publisher" style="color: #fff;">
                                             <i class="bx bx-plus me-0 me-sm-1"></i>
-                                            <span class="d-none d-sm-inline-block">Add Publisher</span>
-                                        </span>
+                                            <span class="d-none d-sm-inline-block">Thêm nhà xuất bản</span>
+                                        </a>
                                     </button>
                                 </div>
                             </div>
@@ -102,7 +96,7 @@ $lst_publisher = Publisher::getPublisher();
                             <ul class="pagination">
                                 <?php if ($current_page > 1) : ?>
                                     <li class="page-item">
-                                        <a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=<?php echo $current_page - 1 ?>" aria-label="Previous">
+                                        <a class="page-link" href="index.php?src=admin/publisher/lst_publisher&page=<?php echo $current_page - 1 ?>" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
@@ -111,7 +105,7 @@ $lst_publisher = Publisher::getPublisher();
                                 <?php
                                 // Hiển thị trang đầu
                                 if ($current_page > ($adjacents + 1)) {
-                                    echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=1">1</a></li>';
+                                    echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/publisher/lst_publisher&page=1">1</a></li>';
                                     if ($current_page > ($adjacents + 2)) {
                                         echo '<li class="page-item"><span class="page-link">...</span></li>';
                                     }
@@ -124,7 +118,7 @@ $lst_publisher = Publisher::getPublisher();
                                     if ($i == $current_page) {
                                         echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
                                     } else {
-                                        echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=' . $i . '">' . $i . '</a></li>';
+                                        echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/publisher/lst_publisher&page=' . $i . '">' . $i . '</a></li>';
                                     }
                                 }
 
@@ -133,12 +127,12 @@ $lst_publisher = Publisher::getPublisher();
                                     if ($current_page < ($total_pages - $adjacents - 1)) {
                                         echo '<li class="page-item"><span class="page-link">...</span></li>';
                                     }
-                                    echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=' . $total_pages . '">' . $total_pages . '</a></li>';
+                                    echo '<li class="page-item"><a class="page-link" href="index.php?src=admin/publisher/lst_publisher&page=' . $total_pages . '">' . $total_pages . '</a></li>';
                                 }
 
                                 if ($current_page < $total_pages) : ?>
                                     <li class="page-item">
-                                        <a class="page-link" href="index.php?src=admin/invoice/cancelled_invoice&page=<?php echo $current_page + 1 ?>" aria-label="Next">
+                                        <a class="page-link" href="index.php?src=admin/publisher/lst_publisher&page=<?php echo $current_page + 1 ?>" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>

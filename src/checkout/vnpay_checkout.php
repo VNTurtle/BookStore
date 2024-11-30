@@ -31,7 +31,7 @@
                 <option value="JCB">JCB</option>
                 <option value="UPI">UPI</option>
                 <option value="VIB">VIB</option>
-                <option value="VIETCAPITALBANK">VIETCAPITALBANK</option>
+                <option value="VIETCFunctionTALBANK">VIETCFunctionTALBANK</option>
                 <option value="SCB">Ngan hang SCB</option>
                 <option value="NCB">Ngan hang NCB</option>
                 <option value="SACOMBANK">Ngan hang SacomBank </option>

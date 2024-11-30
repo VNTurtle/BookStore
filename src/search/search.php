@@ -1,6 +1,6 @@
 <?php
 // Bao gồm file kết nối cơ sở dữ liệu
-include_once '../../API/db.php'; // Đảm bảo đường dẫn đúng
+include_once '../../Function/db.php'; // Đảm bảo đường dẫn đúng
 
 // Kiểm tra kết nối cơ sở dữ liệu
 if (!$conn) {

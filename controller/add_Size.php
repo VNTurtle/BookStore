@@ -1,10 +1,10 @@
 <?php
-require_once('../API/Size.php');
+require_once('../Function/Size.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Lấy giá trị của trường username từ form
     $SizeName = $_POST['Size'];
-    $check=Size::putSize($SizeName);
+    $check=Size::postSize($SizeName);
     if($check){
         $Size=Size::getSize();
     }

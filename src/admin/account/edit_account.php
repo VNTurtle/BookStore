@@ -1,7 +1,7 @@
 <?php
 ob_start();
 require 'src/admin/layout/menu.php';
-require_once('API/Account.php');
+require_once('Function/Account.php');
 
 // Lấy ID tài khoản từ URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;

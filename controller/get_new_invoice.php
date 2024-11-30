@@ -1,5 +1,5 @@
 <?php
-require_once('../API/db.php');
+require_once('../Function/db.php');
 
 
 $query = "SELECT iv.Code as invoice_id, iv.IssuedDate, iv.Code, iv.Total, COUNT(ivd.Id) AS ivd_count

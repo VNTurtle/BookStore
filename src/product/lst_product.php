@@ -1,8 +1,8 @@
 <?php
-require_once('API/LstProduct_.php');
-require_once('API/Type.php');
+require_once('Function/LstProduct_.php');
+require_once('Function/Type.php');
 
-require_once('API/Img.php');
+require_once('Function/Img.php');
 // Lấy danh sách loại sách, chi tiết loại, loại bìa, và nhà xuất bản
 $Type = Type::getType();
 $Lst_CoverType = LstProduct::getCoverTypes();

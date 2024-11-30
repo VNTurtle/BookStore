@@ -19,10 +19,10 @@
       <ul class="navbar-nav flex-row align-items-center ms-auto">
         <!-- Place this tag where you want the button to render. -->
         <?php
-        require_once('API/db.php');
-        require_once('API/Cancel_requests.php');
-        require_once('API/Invoice.php');
-        require_once('API/Account.php');
+        require_once('Function/db.php');
+        require_once('Function/Cancel_requests.php');
+        require_once('Function/Invoice.php');
+        require_once('Function/Account.php');
 
         $Lst_cancelinvoice = Cancel_requests::getCancel_requestsByStatus('pending');
         $bankPay = Cancel_requests::getCancel_requestsByStatus('bankpay');

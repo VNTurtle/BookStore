@@ -1,5 +1,5 @@
 <?php
-require_once('../API/db.php');
+require_once('../Function/db.php');
 $response = array();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the selected order status and order ID from the AJAX request

@@ -1,7 +1,7 @@
 <?php
 require 'src/layout/header.php';
-require_once('API/Product.php');
-require_once('API/Type.php');
+require_once('Function/Product.php');
+require_once('Function/Type.php');
 $lst_bv = Product::getProduct();
 $topProducts = Product::getTopSellingProducts(10);
 

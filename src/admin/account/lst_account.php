@@ -1,8 +1,8 @@
 <?php
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
-require_once('API/Account.php');
-require_once('API/OrderStatus.php');
+require_once('Function/Account.php');
+require_once('Function/OrderStatus.php');
 
 $items_per_page = 10;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

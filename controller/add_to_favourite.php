@@ -1,5 +1,5 @@
 <?php
-require_once('../API/Favourite.php');
+require_once('../Function/Favourite.php');
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

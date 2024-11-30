@@ -1,5 +1,5 @@
 <?php
-require_once('../API/Search.php');
+require_once('../Function/Search.php');
 
 // Thiết lập tiêu đề JSON
 header('Content-Type: application/json');

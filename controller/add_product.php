@@ -1,5 +1,5 @@
 <?php
-require_once('../API/db.php');
+require_once('../Function/db.php');
 
 function generateRandomString($length = 12) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

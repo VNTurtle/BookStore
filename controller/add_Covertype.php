@@ -1,5 +1,5 @@
 <?php
-require_once('../API/CoverType.php');
+require_once('../Function/CoverType.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Lấy giá trị của trường username từ form

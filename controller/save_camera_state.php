@@ -1,5 +1,5 @@
 <?php
-require_once('../API/db.php'); // Kết nối CSDL và định nghĩa lớp DP::run_query
+require_once('../Function/db.php'); // Kết nối CSDL và định nghĩa lớp DP::run_query
 
 // Lấy dữ liệu từ frontend (giả sử dữ liệu được gửi dưới dạng JSON)
 $data = json_decode(file_get_contents('php://input'), true);
