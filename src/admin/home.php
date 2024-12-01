@@ -21,13 +21,13 @@ $DoanhthuNam = 0.0;
 $DonHangNam = 0;
 $chartData = [];
 foreach ($revenue as $day) {
-    if($day['OrderStatusId']!=5){
+    if($day['OrderStatusId']==4){
         $DoanhthuTuan += $day['Total'];
     }   
     $DonHangTuan += $day['total_quantity_sold'];
 }
 foreach ($revenue1 as $day) {
-    if($day['OrderStatusId']!=5){
+    if($day['OrderStatusId']==4){
         $DoanhthuThang += $day['Total'];
     }    
     $DonHangThang += $day['total_quantity_sold'];
@@ -37,7 +37,7 @@ foreach ($revenue1 as $day) {
     ];
 }
 foreach ($revenue2 as $day) {
-    if($day['OrderStatusId']!=5){
+    if($day['OrderStatusId']==4){
         $DoanhthuNam += $day['Total'];
     }     
     $DonHangNam += $day['total_quantity_sold'];
@@ -107,7 +107,7 @@ $jsonData = json_encode($chartData);
                 <canvas id="revenueChart" width="300" height="200" style="max-width: 800px; max-height: 500px; background-color: #fff;"></canvas>
             </div>
             <div class="col-4 bg-light" >
-                <h2>Sản phẩm bán chạy theo tháng</h2>
+                <h3>Sản phẩm bán chạy theo tháng</h3>
                 <ul>
                     <?php
                     $topProducts = Product::getTopSellingProducts(10);

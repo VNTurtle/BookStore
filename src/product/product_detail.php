@@ -213,8 +213,16 @@ if ($stock <= 0) {
                                                     data-product-id="<?= isset($bookId) ? htmlspecialchars($bookId) : '' ?>">
                                                     <i class="fa-solid fa-heart"></i>Yêu thích
                                                 </button>
+                                                <button class="btn-action remove-to-favourite hidden" type="button" style="background-color: #3d6aff; color: #fff;"
+                                                    data-product-id="<?= isset($bookId) ? htmlspecialchars($bookId) : '' ?>">
+                                                    <i class="fa-solid fa-heart"></i>Bỏ Yêu thích
+                                                </button>
                                             <?php } else {
-                                            ?><button class="btn-action remove-to-favourite" type="button" style="background-color: #3d6aff; color: #fff;"
+                                            ?><button class="btn-action add-to-favourite hidden" type="button"
+                                                    data-product-id="<?= isset($bookId) ? htmlspecialchars($bookId) : '' ?>">
+                                                    <i class="fa-solid fa-heart"></i>Yêu thích
+                                                </button>
+                                                <button class="btn-action remove-to-favourite" type="button" style="background-color: #3d6aff; color: #fff;"
                                                     data-product-id="<?= isset($bookId) ? htmlspecialchars($bookId) : '' ?>">
                                                     <i class="fa-solid fa-heart"></i>Bỏ Yêu thích
                                                 </button>

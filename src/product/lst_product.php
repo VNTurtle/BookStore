@@ -81,15 +81,19 @@ require 'src/layout/header.php';
                             <ul class="product-category-list">
                                 <?php
                                 foreach ($Type as $key => $lst_type) {
+                                    // Thêm lớp "hidden" nếu vượt quá 10 mục
+                                    $hidden_class = $key >= 10 ? 'hidden' : '';
                                 ?>
-                                    <li class="product-category-item">
-                                        <a class="nav-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_type['Id']; ?>"><?php echo $lst_type['Name'] ?></a>
-                                        <i id=" category-code-<?php echo $lst_type['Id'] ?>" class="open-menu category-code icon-menu" onclick="ShowMenu(this)" data-target="Menu-detail-<?php echo $lst_type['Id'] ?>"></i>
+                                    <li class="product-category-item <?php echo $hidden_class; ?>">
+                                        <a class="nav-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_type['Id']; ?>">
+                                            <?php echo $lst_type['Name'] ?>
+                                        </a>
                                     </li>
                                 <?php
                                 }
                                 ?>
                             </ul>
+                            <button class="btn-see-more btn btn-success d-flex justify-content-center m-auto" onclick="ShowMore()">Xem thêm</button>
                         </div>
                         <div class="aside-item">
                             <div class="aside-heading">
@@ -221,10 +225,6 @@ require 'src/layout/header.php';
         </div>
     </div>
 </body>
-<script src="assets/js/lst-book.js"></script>
-<script src="assets/babylon/babylon.js"></script>
-<script src="assets/babylon/babylonjs.loaders.min.js"></script>
-
 <?php
 require 'src/layout/footer.php';
 ?>
