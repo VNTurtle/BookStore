@@ -142,7 +142,7 @@
             <li>
               <div class="dropdown-divider"></div>
             </li>
-            <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i> My Profile</a></li>
+            <li><a class="dropdown-item" href="index.php?src=user/profile"><i class="bx bx-user me-2"></i> My Profile</a></li>
             <li>
               <div class="dropdown-divider"></div>
             </li>

@@ -4,12 +4,12 @@ require_once('Function/Voucher.php');
 session_start();
 if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
-}else{
-    $userId =null;
+} else {
+    $userId = null;
 }
-$LstUser=User::getUserById($userId);
-// $userVouchers = Voucher::getVouchersByUserId($userId);
-$User=$LstUser[0];
+$LstUser = User::getUserById($userId);
+$Vouchers = Voucher::getVouchers();
+$User = $LstUser[0];
 ?>
 
 <link rel="stylesheet" href="assets/css/checkout.css">
@@ -52,7 +52,7 @@ $User=$LstUser[0];
         <div class="row">
             <div class="col-xl-7">
 
-                <div class="card">
+            <div class="card">
                     <div class="card-body">
                         <ol class="activity-checkout mb-0 px-4 mt-3">
                             <li class="checkout-item">
@@ -136,8 +136,8 @@ $User=$LstUser[0];
                                         <select class="sort-arrange" name="voucher-code" id="voucher-select">
                                             <option value="" disabled selected>Chọn mã giảm giá</option>
                                             <?php
-                                            if (!empty($userVouchers)) {
-                                                foreach ($userVouchers as $voucher) {
+                                            if (!empty($Vouchers)) {
+                                                foreach ($Vouchers as $voucher) {
                                                     echo '<option class="sort-item" value="' . $voucher['Code'] . '">' . $voucher['Des'] . '</option>';
                                                 }
                                             } else {
@@ -226,7 +226,7 @@ $User=$LstUser[0];
                             <h5 class="font-size-16 mb-0">Sản phẩm mua <span class="float-end ms-2"></span></h5>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-centered mb-0 table-nowrap">
+                        <table class="table table-centered mb-0 table-nowrap">
                                 <thead>
                                     <tr>
                                         <th class="border-top-0" style="width: 110px;" scope="col">Sách</th>
@@ -285,11 +285,11 @@ $User=$LstUser[0];
                                 console.log(total);
 
                                 // Cập nhật tổng giá trị
-                                document.getElementById('total').innerText = `${total}.000 đ`;
+                                document.getElementById('total').innerText = `${total}.000đ`;
                                 console.log(count);
                             </script>
                             <script>
-                                const vouchers = <?php echo json_encode($userVouchers); ?>;
+                                const vouchers = <?php echo json_encode($Vouchers); ?>;
                                 let totalElement = document.getElementById('total');
                                 let oldPriceElement = document.getElementById('old-total');
                                 const originalTotal = parseFloat(totalElement.innerText);
@@ -635,7 +635,7 @@ $User=$LstUser[0];
                 var selectedProvince = provinceSelect.value;
 
                 // Xóa tất cả các tùy chọn quận/huyện hiện có
-                districtSelect.innerHTML = '<option value="0">Select District</option>';
+                districtSelect.innerHTML = '<option value="0">Quận/ Huyện</option>';
 
                 if (selectedProvince !== '0') {
                     // Tạo các tùy chọn quận/huyện mới dựa trên danh sách quận/huyện của tỉnh/thành phố được chọn
@@ -658,7 +658,7 @@ $User=$LstUser[0];
                 var selectedDistrict = districtSelect.value;
 
                 // Xóa tất cả các tùy chọn phường/xã hiện có
-                wardSelect.innerHTML = '<option value="0">Select Ward</option>';
+                wardSelect.innerHTML = '<option value="0">Phường / Xã</option>';
 
                 if (selectedDistrict !== '0') {
                     // Lấy danh sách phường/xã của quận/huyện được chọn

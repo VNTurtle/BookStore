@@ -33,7 +33,9 @@ header.header {
     width: 186px;
     height: 68px;
 }
-
+.hidden {
+  display: none;
+}
 .InputContainer {
     width: 410px;
     height: 50px;

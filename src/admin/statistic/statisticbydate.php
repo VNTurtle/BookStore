@@ -25,7 +25,7 @@ if ($startDate && $endDate) {
         foreach ($invoice as $data) {
             if($data['OrderStatusId']==5){
                 $canceledOrders+=1;
-            }else{
+            }else if($data['OrderStatusId']==4){
                 $totalRevenue += $data['Total'];
             }
             $completedOrders += 1;

@@ -15,14 +15,13 @@ class LstProduct
         "SELECT b.Id AS BookId,
                        b.Name AS BookName,
                        b.Price,
-                       b.TypeId,
+                       b.TypeDetailId,
                        t.Name AS BookTypeName,
                        i.Path
                 FROM book b
-                JOIN booktype bt ON b.Id = bt.BookId
                 JOIN type t ON t.Id = b.TypeId
                 LEFT JOIN image i ON b.Id = i.BookId
-                LEFT JOIN typedetail td ON td.  Id = bt.TypedetailId
+                LEFT JOIN typedetail td ON td.Id = b.TypedetailId
                 WHERE i.Id = (SELECT MIN(i2.Id) FROM image i2 WHERE i2.BookId = b.Id)";
         if (!is_null($lst_id)) {
             $query .= " AND b.TypeId = :lst_id";
@@ -63,7 +62,7 @@ class LstProduct
         return false;
     }
 }
-public static function getLstProduct($lst_id = null, $limit = null, $offset = null, $countOnly = false)
+public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = null, $offset = null, $countOnly = false)
 {
     $parameters = []; // Các tham số truy vấn
     $resultType = $countOnly ? PDO::FETCH_ASSOC : 2; // Định dạng kết quả
@@ -75,15 +74,16 @@ public static function getLstProduct($lst_id = null, $limit = null, $offset = nu
             b.Id AS BookId,
             b.Name AS BookName, 
             b.Price, 
-            b.TypeId, 
+            b.TypeDetailId, 
             bt.Name AS BookTypeName,
             i.Path
         FROM book b";
 
     // Các JOIN không thay đổi
     $query .= " 
-        JOIN Type bt ON b.TypeId = bt.Id
+        JOIN TypeDetail bt ON b.TypeDetailId = bt.Id
         LEFT JOIN image i ON b.Id = i.BookId
+        LEFT JOIN Type t ON bt.TypeId = t.Id
     WHERE 
         i.Id = (
             SELECT MIN(i2.Id)
@@ -93,8 +93,13 @@ public static function getLstProduct($lst_id = null, $limit = null, $offset = nu
 
     // Điều kiện lọc
     if ($lst_id !== null) {
-        $query .= " AND b.TypeId = :lst_Id";
+        $query .= " AND t.Id = :lst_Id";
         $parameters[':lst_Id'] = $lst_id;
+    }
+
+    if ($lst_id2 !== null) {
+        $query .= " AND b.TypeDetailId = :lst_Id2";
+        $parameters[':lst_Id2'] = $lst_id2;
     }
 
     // Nếu không phải đếm, thêm LIMIT và OFFSET
@@ -117,6 +122,14 @@ public static function getLstProduct($lst_id = null, $limit = null, $offset = nu
     return DP::run_query($query, $parameters, $resultType);
   }
 
+  // Phương thức lấy danh sách các chi tiết loại sách
+  public static function getTypeDetails()
+  {
+    $query = "SELECT * FROM `typedetail` WHERE 1";
+    $parameters = [];
+    $resultType = 2;
+    return DP::run_query($query, $parameters, $resultType);
+  }
 
   // Phương thức lấy danh sách các loại bìa
   public static function getCoverTypes()
@@ -136,6 +149,14 @@ public static function getLstProduct($lst_id = null, $limit = null, $offset = nu
     return DP::run_query($query, $parameters, $resultType);
   }
 
+  // Phương thức lấy 4 chi tiết loại sách theo loại sách
+  public static function getTop4TypeDetailsByTypeId($typeId)
+  {
+    $query = "SELECT * FROM typedetail WHERE TypeId = :typeId LIMIT 4";
+    $parameters = [':typeId' => $typeId];
+    $resultType = 2;
+    return DP::run_query($query, $parameters, $resultType);
+  }
 
   // Phương thức lấy tất cả các chi tiết loại sách cho mỗi loại sách
   public static function getAllTypeDetailsForBookTypes()
@@ -145,7 +166,8 @@ public static function getLstProduct($lst_id = null, $limit = null, $offset = nu
 
     foreach ($bookTypes as $bookType) {
       $typeId = $bookType['Id'];
-      $typedetailList = array_merge($typedetailList);
+      $Top4typeDetails = self::getTop4TypeDetailsByTypeId($typeId);
+      $typedetailList = array_merge($typedetailList, $Top4typeDetails);
     }
 
     return $typedetailList;

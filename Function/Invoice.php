@@ -15,8 +15,9 @@ class Invoice{
     }
    
     public static function getInvoiceByuserId($id){
-        $query = "SELECT i.* 
+        $query = "SELECT i.* , pay.name
                 FROM `invoice` AS i
+                LEFT JOIN paymethod pay ON i.PaymethodId= pay.Id
                 WHERE i.userId = $id
                 ORDER BY i.IssuedDate DESC";
         $parameters = [];
@@ -74,7 +75,7 @@ class Invoice{
             $query .= " WHERE DATE(IssuedDate) <= ?";
             $parameters = [$endDate];
         }        
-        $query .= " GROUP BY DATE(IssuedDate)
+        $query .= " GROUP BY DATE(IssuedDate), iv.Code, iv.OrderStatusId, ord.Name
                     ORDER BY DATE(IssuedDate) ASC";
         
         $resultType = 2; // Fetch all rows as an associative array
@@ -121,7 +122,7 @@ class Invoice{
                   FROM Invoice iv
                   INNER JOIN InvoiceDetail ivd ON iv.Code = ivd.Parent_code
                   INNER JOIN book b ON ivd.BookId = b.Id
-                  INNER JOIN type t ON b.TypeId = t.Id";
+                  INNER JOIN typedetail t ON b.TypedetailId = t.Id";
     
         $parameters = [];
         if ($startDate && $endDate) {

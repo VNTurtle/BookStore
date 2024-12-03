@@ -4,7 +4,7 @@ class Product{
     public static function getProduct(){
         $query ="SELECT b.*, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName, i.Path
                         FROM book b
-                        LEFT JOIN Type bt ON b.TypeId = bt.Id
+                        LEFT JOIN TypeDetail bt ON b.TypeDetailId = bt.Id
                         JOIN Size s ON b.SizeId = s.Id
                         JOIN Publisher p ON b.PublisherId = p.Id
                         JOIN covertype cv ON b.CoverTypeId = cv.Id
@@ -23,7 +23,7 @@ class Product{
     public static function getProductBySL($offset, $slsp){
         $query ="SELECT b.*, bt.Name AS BookTypeName, m.Model, m.ModelBin, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName, i.Path
                         FROM book b
-                        LEFT JOIN Type bt ON b.TypeId = bt.Id
+                        LEFT JOIN TypeDetail bt ON b.TypeDetailId = bt.Id
                         LEFT JOIN model m ON b.Id = m.BookId
                         JOIN Size s ON b.SizeId = s.Id
                         JOIN Publisher p ON b.PublisherId = p.Id
@@ -40,11 +40,32 @@ class Product{
         $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);
     }
+    public static function getProductByTypeId($TypeId){
+        $query ="SELECT b.*, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName, i.Path, t.Name AS TypeName
+                        FROM book b
+                        LEFT JOIN TypeDetail bt ON b.TypeDetailId = bt.Id
+                        LEFT JOIN type t ON bt.TypeId=t.Id
+                        JOIN Size s ON b.SizeId = s.Id
+                        JOIN Publisher p ON b.PublisherId = p.Id
+                        JOIN covertype cv ON b.CoverTypeId = cv.Id
+                        JOIN `image` i ON b.Id = i.BookId
+                        
+                        WHERE 
+                            i.Id = (
+                                SELECT MIN(i2.Id)
+                                FROM `image` i2
+                                WHERE i2.BookId = b.Id
+                            ) AND t.Id=?";
+        $parameters = [$TypeId]; 
+        $resultType = 2; 
+        return DP::run_query($query, $parameters, $resultType);
+    }
     public static function getProductById($id){
-        $query = "SELECT b.*,m.Id AS IdModel, m.Model, m.ModelBin,m.Alpha,m.Beta,m.Radius,m.Target_x,m.Target_y,m.Target_z, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName,cb.Name AS NameCombo
+        $query = "SELECT b.*,m.Id AS IdModel, m.Model, m.ModelBin,m.Alpha,m.Beta,m.Radius,m.Target_x,m.Target_y,m.Target_z, bt.Name AS BookTypeName, s.Name AS SizeName, p.Name AS PublisherName, cv.Name AS CovertypeName,cb.Name AS NameCombo, t.Name AS TypeName, t.Id AS TypeId
         FROM book b
         LEFT JOIN model m ON b.Id = m.BookId
-        JOIN Type bt ON b.TypeId = bt.Id
+        LEFT JOIN TypeDetail bt ON b.TypeDetailId = bt.Id
+        LEFT JOIN type t ON bt.TypeId=t.Id
         JOIN Size s ON b.SizeId = s.Id
         LEFT JOIN combobook cb ON b.ComboBookId=cb.Id
         JOIN Publisher p ON b.PublisherId = p.Id
@@ -57,7 +78,7 @@ class Product{
     public static function putProductById($id, $comboId, $name, $author, $description, $typeId, $numberPage, $sizeId, $stock, $price, $date, $publisherId, $coverTypeId){
         $query = "UPDATE `book` 
                   SET `ComboBookId` = ?, `Name` = ?, `Author` = ?, `Description` = ?, 
-                      `TypeId` = ?, `NumberPage` = ?, `SizeId` = ?, `Stock` = ?, 
+                      `TypeDetailId` = ?, `NumberPage` = ?, `SizeId` = ?, `Stock` = ?, 
                       `Price` = ?, `Date` = ?, `PublisherId` = ?, `CoverTypeId` = ? 
                   WHERE `Id` = ?";
         
@@ -96,12 +117,13 @@ class Product{
                 FROM `book` b
                 JOIN 
                 `image` i ON b.Id = i.BookId
+                LEFT JOIN Type t ON b.TypeDetailId=t.id
                 WHERE 
                 i.Id = (
                     SELECT MIN(i2.Id)
                     FROM `image` i2
                     WHERE i2.BookId = b.Id
-                )AND TypeId = $id";
+                )AND b.TypeDetailId = $id";
         $parameters = []; 
         $resultType = 2; 
         return DP::run_query($query, $parameters, $resultType);

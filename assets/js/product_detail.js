@@ -377,9 +377,11 @@ if(binName!=null){
 
                             // Nếu sản phẩm được thêm thành công
                             if (response.status === 'success') {
-                                setTimeout(function() {
-                                    document.querySelector('.thongbao').classList.remove('show');
-                                }, 2000);
+                               // Ẩn nút "Add to Favourite"
+                               document.querySelector('.add-to-favourite').classList.add('hidden');
+
+                                // Hiển thị thẻ "Đã thêm"
+                                document.querySelector('.remove-to-favourite').classList.remove('hidden');
                             } else {
                                 setTimeout(function() {
                                     document.querySelector('.thongbao').classList.remove('show');
@@ -432,9 +434,10 @@ if(binName!=null){
 
                             // Nếu sản phẩm được thêm thành công
                             if (response.status === 'success') {
-                                setTimeout(function() {
-                                    document.querySelector('.thongbao').classList.remove('show');
-                                }, 2000);
+                                document.querySelector('.remove-to-favourite').classList.add('hidden');
+
+                                // Hiển thị thẻ "Đã thêm"
+                                document.querySelector('.add-to-favourite').classList.remove('hidden');
                                 $state.reload(state);
                             } else {
                                 setTimeout(function() {

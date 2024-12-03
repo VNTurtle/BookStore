@@ -28,7 +28,23 @@
     transform: translate(0, -50%);
     cursor: pointer;
 }
+.product-category-item .icon-menu::before{
+    content: "";
+    position: relative;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 14px 10px 0 10px;
+    border-color: #007bff transparent transparent transparent;
+    display: inline-block;
+    margin-left: 2px;
+    margin-top: -6px;
+    transition: 0.5s;
 
+}
+.product-category-item .icon-menu.show::before{
+    transform: rotate(180deg);
+}
 .product-category-item .nav-link{
     display: block;
     padding: 8px;

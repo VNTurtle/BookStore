@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ComboId = null;
     }
     $Author = $_POST['Author'];   
-    $TypeId = $_POST['TypeId'];
+    $TypeDetailId = $_POST['TypeDetailId'];
     $NumberPage = $_POST['NumberPage'];
     $SizeId = $_POST['Size'];
     $Stock = $_POST['Stock'];
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Description = $_POST['Description'];
     $query="UPDATE `book` 
     SET `ComboBookId`=$ComboId,`Name`='$Name',`Author`='$Author',`Description`= '$Description',
-    `TypeId`=$TypeId,`NumberPage`=$NumberPage,`SizeId`=$SizeId,`Stock`=$Stock,`Price`=$Price,`Date`='$Date',
+    `TypeDetailId`=$TypeDetailId,`NumberPage`=$NumberPage,`SizeId`=$SizeId,`Stock`=$Stock,`Price`=$Price,`Date`='$Date',
     `PublisherId`=$PublisherId,`CoverTypeId`=$CoverTypeId WHERE `Id`=$BookId";
     $parameters=[];
     $resultType=2;

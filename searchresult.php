@@ -27,7 +27,7 @@ $keywords = explode(' ', $searchKeyword);
 
 // Tạo câu truy vấn để lấy sản phẩm với các điều kiện tìm kiếm và phân trang
 $sql = "
-    SELECT b.Name, b.Price, i.Path 
+    SELECT b.Id, b.Name, b.Price, i.Path 
     FROM book b
     JOIN image i ON b.ID = i.BookID 
     WHERE i.Id = (
@@ -211,40 +211,41 @@ if (isset($_GET['ajax'])) {
                 </div>
                 <div class="product-container">
                     <div class="row">
-                        <?php   
-                            echo "<h6>KẾT QUẢ TÌM KIẾM CHO: " . htmlspecialchars($noidung) . " (" . $totalProducts . " Kết quả)</h6>";
+                        <?php
+                        echo "<h6>KẾT QUẢ TÌM KIẾM CHO: " . htmlspecialchars($noidung) . " (" . $totalProducts . " Kết quả)</h6>";
 
-                            foreach ($products as $product) {
-                                ?>
-                                <div class="product__panel-item col-lg-3 col-md-4 col-sm-6">
-                                    <div class="product__panel-item-wrap">
-                                        <div class="product__panel-img-wrap">
-                                            <img src="assets/img/products/<?php echo htmlspecialchars($product['Path']); ?>" alt="" class="product__panel-img">
-                                        </div>
-                                        <div class="product__panel-heading">
-                                            <a href="product.html" class="product__panel-link"><?php echo htmlspecialchars($product['Name']); ?></a>
-                                        </div>
-                                        <div class="product__panel-rate-wrap">
-                                            <!-- Hiển thị 5 sao cho sản phẩm -->
-                                            <?php
+                        foreach ($products as $product) {
+                        ?>
+                            <div class="product__panel-item col-lg-3 col-md-4 col-sm-6">
+                                <div class="product__panel-item-wrap">
+                                    <div class="product__panel-img-wrap">
+                                        <a href="index.php?src=product/product_detail&id=<?php echo $product['Id']; ?>">
+                                            <img src="assets/img/products/<?php echo $product['Path']; ?>" alt="<?php echo $bv['Name']; ?>" class="product__panel-img">
+                                        </a>
+                                    </div>
+                                    <div class="product__panel-heading">
+                                        <a href="index.php?src=product/product_detail&id=<?php echo $product['Id']; ?>" class="product__panel-link"><?php echo htmlspecialchars($product['Name']); ?></a>
+                                    </div>
+                                    <div class="product__panel-rate-wrap">
+                                        <!-- Hiển thị 5 sao cho sản phẩm -->
+                                        <?php
+                                        $rating = 5;
 
-                                            $rating = 5;
-                                            
-                                            for ($i = 0; $i < $rating; $i++) {
-                                                echo '<i class="fas fa-star product__panel-rate"></i>';
-                                            }
-                                            ?>
-                                        </div>
-                                        <div class="product__panel-price">
-                                            <span class="product__panel-price-current">
-                                                <?php echo htmlspecialchars($product['Price']); ?> đ
-                                            </span>
-                                        </div>
+                                        for ($i = 0; $i < $rating; $i++) {
+                                            echo '<i class="fas fa-star product__panel-rate"></i>';
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="product__panel-price">
+                                        <span class="product__panel-price-current">
+                                            <?php echo htmlspecialchars($product['Price']); ?> đ
+                                        </span>
                                     </div>
                                 </div>
-                                <?php
+                            </div>
+                        <?php
 
-                            }
+                        }
                         ?>
                         <nav class="page-book" aria-label="Page navigation example">
                             <ul class="pagination" id="pagination-container">

@@ -4,6 +4,7 @@ if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
 } else {
     $userId = null;
+    echo '<script> window.location.href = "index.php?src=user/Login"; </script>';
 }
 
 if (isset($_GET['logout'])) {
@@ -73,9 +74,9 @@ if (isset($_GET['logout'])) {
       <ul class="menu-inner py-1">
         <!-- Dashboards -->
         <li class="menu-item active open">
-          <a  class="menu-link ">
+          <a href="index.php?src=admin/home" class="menu-link ">
             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-            <div data-i18n="Dashboards">Dashboards</div>
+            <div data-i18n="Dashboards">Trang chủ</div>
           </a>
         </li>
         <li class="menu-item">

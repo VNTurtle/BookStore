@@ -2,7 +2,7 @@
 require 'src/layout/header.php';
 require_once('Function/Product.php');
 require_once('Function/Type.php');
-$lst_bv = Product::getProduct();
+
 $topProducts = Product::getTopSellingProducts(10);
 
 ?>
@@ -109,9 +109,6 @@ $topProducts = Product::getTopSellingProducts(10);
     <?php
     $Type=Type::getType();
     foreach ($Type as $key => $BookType) {
-        if (in_array($BookType['Id'], [5, 27, 43])) {
-            // Logic xử lý khi Id là 5, 27 hoặc 43
-        
     ?>
         <!-- <section class="section-1-banner">
                 <div class="container">
@@ -136,8 +133,8 @@ $topProducts = Product::getTopSellingProducts(10);
                             <button class="btn-pre btn-pre-slider<?php echo $BookType['Id'] ?>"><i class='fa fa-angle-left' aria-hidden='true'></i></button>
                             <div class="swiper-wrapper  slick-slider<?php echo $BookType['Id'] ?>">
                                 <?php
+                                $lst_bv = Product::getProductByTypeId($BookType['Id']);
                                 foreach ($lst_bv as $key => $bv) {
-                                    if ($bv['TypeId'] == $BookType['Id'] && $bv['Stock'] > 0) {
                                 ?>
                                         <div class="swiper-slider">
                                             <div class="card">
@@ -166,7 +163,7 @@ $topProducts = Product::getTopSellingProducts(10);
                                             </div>
                                         </div>
                                 <?php
-                                    }
+                                    
                                 }
                                 ?>
                             </div>
@@ -180,7 +177,6 @@ $topProducts = Product::getTopSellingProducts(10);
             </div>
         </section>
     <?php
-    }
     }
     ?>
 </div>

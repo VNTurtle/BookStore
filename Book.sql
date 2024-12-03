@@ -53,7 +53,7 @@ CREATE TABLE Book (
     Name NVARCHAR(200) NULL,
 	Author NVARCHAR(200) NULL,
 	Description NVARCHAR(5000) NULL,
-    TypeId INT NOT NULL,
+    TypeDetailId INT NOT NULL,
     NumberPage INT NULL,
     SizeId INT NOT NULL,
     Stock INT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE Book (
     Status BIT NOT NULL,
     PRIMARY KEY (Id),
     FOREIGN KEY (ComboBookId) REFERENCES ComBoBook (Id),
-	FOREIGN KEY (TypeId) REFERENCES Type (Id),
+	FOREIGN KEY (TypeDetailId) REFERENCES TypeDetail (Id),
     FOREIGN KEY (SizeId) REFERENCES Size (Id),
     FOREIGN KEY (PublisherId) REFERENCES Publisher (Id),
     FOREIGN KEY (CoverTypeId) REFERENCES CoverType (Id)	
@@ -151,12 +151,10 @@ CREATE TABLE InvoiceDetail (
 	Id INT NOT NULL AUTO_INCREMENT,
     Parent_code NVARCHAR(20) NOT NULL,
     BookId INT NOT NULL,
-    UserId INT NOT NULL,
     UnitPrice DECIMAL(20, 3) NULL,
     Quantity INT NULL,
     PRIMARY KEY (Id),
     FOREIGN KEY (Parent_code) REFERENCES Invoice (Code),
-    FOREIGN KEY (UserId) REFERENCES Account (Id),
     FOREIGN KEY (BookId) REFERENCES Book (Id) 
 );
 

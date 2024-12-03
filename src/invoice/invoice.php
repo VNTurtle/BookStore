@@ -60,6 +60,8 @@ $OrderStatus = OrderStatus::getOrderStatus();
                                                 <div>Mã hóa đơn</div>
                                                 <div>Ngày mua</div>
                                                 <div>Số Lượng</div>
+                                                <div>Thanh toán</div>
+                                                <div>Tổng tiền</div>
                                                 <div>Option</div>
                                             </div>
                                             <div class="invoice-body">
@@ -68,6 +70,8 @@ $OrderStatus = OrderStatus::getOrderStatus();
                                                         <div class="grid-item invoice-code" id="invoice-code-' . $lst_invoice['Code'] . '">' . $lst_invoice['Code'] . '</div>
                                                         <div class="grid-item invoice-date">' . $lst_invoice['IssuedDate'] . '</div>
                                                         <div class="grid-item invoice-stock">' . $lst_invoice['Quantity'] . '</div>
+                                                        <div class="grid-item invoice-stock">' . $lst_invoice['name'] . '</div>
+                                                        <div class="grid-item invoice-stock">' . $lst_invoice['Total'] . '</div>
                                                         <div class="grid-item invoice-stock">';
                                                             if ($isCanceled) {
                                                                 echo '<button class="processing-button" disabled>Đang xử lý</button>';

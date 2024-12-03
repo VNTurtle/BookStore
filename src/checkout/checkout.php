@@ -8,7 +8,7 @@ if (isset($_SESSION['Id'])) {
     $userId = null;
 }
 $LstUser = User::getUserById($userId);
-$Vouchers = Voucher::getAllVouchers(0,100);
+$Vouchers = Voucher::getVouchers();
 $User = $LstUser[0];
 ?>
 
@@ -289,7 +289,7 @@ $User = $LstUser[0];
                                 console.log(count);
                             </script>
                             <script>
-                                const vouchers = <?php echo json_encode($userVouchers); ?>;
+                                const vouchers = <?php echo json_encode($Vouchers); ?>;
                                 let totalElement = document.getElementById('total');
                                 let oldPriceElement = document.getElementById('old-total');
                                 const originalTotal = parseFloat(totalElement.innerText);
@@ -635,7 +635,7 @@ $User = $LstUser[0];
                 var selectedProvince = provinceSelect.value;
 
                 // Xóa tất cả các tùy chọn quận/huyện hiện có
-                districtSelect.innerHTML = '<option value="0">Select District</option>';
+                districtSelect.innerHTML = '<option value="0">Quận/ Huyện</option>';
 
                 if (selectedProvince !== '0') {
                     // Tạo các tùy chọn quận/huyện mới dựa trên danh sách quận/huyện của tỉnh/thành phố được chọn
@@ -658,7 +658,7 @@ $User = $LstUser[0];
                 var selectedDistrict = districtSelect.value;
 
                 // Xóa tất cả các tùy chọn phường/xã hiện có
-                wardSelect.innerHTML = '<option value="0">Select Ward</option>';
+                wardSelect.innerHTML = '<option value="0">Phường / Xã</option>';
 
                 if (selectedDistrict !== '0') {
                     // Lấy danh sách phường/xã của quận/huyện được chọn

@@ -2,6 +2,7 @@
 require 'src/admin/layout/menu.php';
 require 'src/admin/layout/header.php';
 require_once('Function/Type.php');
+require_once('Function/TypeDetail.php');
 $items_per_page = 10;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $parameters = [];
@@ -33,13 +34,7 @@ $Type = Type::getTypeBySL($offset, $items_per_page);
                         <div class="d-flex justify-content-start justify-content-md-end align-items-baseline">
                             <div class="add-product dt-action-buttons d-flex align-items-start align-items-md-center justify-content-sm-center mb-3 mb-sm-0">
                                 <div class="dt-buttons btn-group flex-wrap d-flex">
-                                    <div class="btn-group">
-                                        <button class="btn buttons-collection dropdown-toggle btn-label-secondary me-3" tabindex="0" aria-controls="DataTables_Table_0" type="button" aria-haspopup="dialog" aria-expanded="false">
-                                            <span>
-                                                <i class="bx bx-export me-1"></i>Export
-                                            </span>
-                                        </button>
-                                    </div>
+
                                     <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
                                         <a href="index.php?src=admin/type/add_type" style="color: #fff;">
                                             <i class="bx bx-plus me-0 me-sm-1"></i>
@@ -58,16 +53,12 @@ $Type = Type::getTypeBySL($offset, $items_per_page);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        foreach ($Type as $key => $lst) {
-                        ?>
-                            <tr class="odd">
+                        <?php foreach ($Type as $key => $lst) { ?>
+                            <tr class="odd toggle-row" data-type-id="<?php echo $lst['Id']; ?>">
+                                <td ><?php echo $key + 1; ?></td>
                                 <td>
-                                    <?php echo $key + 1 ?>
-                                </td>
-                                <td>
-                                    <span class="text-truncate d-flex align-items-center">
-                                        <?php echo $lst['Name'] ?>
+                                    <span class="text-truncate d-flex align-items-center toggle-row" data-type-id="<?php echo $lst['Id']; ?>">
+                                        <?php echo $lst['Name']; ?>
                                     </span>
                                 </td>
                                 <td>
@@ -85,14 +76,46 @@ $Type = Type::getTypeBySL($offset, $items_per_page);
                                     </label>
                                 </td>
                             </tr>
-                        <?php
-                        }
-                        ?>
+                            <tr class="child-rows" data-parent-id="<?php echo $lst['Id']; ?>" style="display: none;">
+                                <td colspan="3">
+                                    <ul id="child-list-<?php echo $lst['Id']; ?>">
+                                        <?php
+                                        $Lst_TD = TypeDetail::getTypeDetailByTypeId($lst['Id']);
+                                        foreach ($Lst_TD as $key => $TypeDetail) {
+                                            echo '<li>' . $TypeDetail['Name'] . '</li>';
+                                        }
+
+                                        ?>
+                                    </ul>
+                                </td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
+
                 </table>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Lắng nghe sự kiện click vào các loại sản phẩm
+                        const toggleRows = document.querySelectorAll('.toggle-row');
+                        toggleRows.forEach(row => {
+                            row.addEventListener('click', function() {
+                                const typeId = this.getAttribute('data-type-id');
+                                const childRow = document.querySelector(`.child-rows[data-parent-id="${typeId}"]`);
+                                const childList = document.getElementById(`child-list-${typeId}`);
+
+                                // Toggle hiển thị hàng loại con
+                                if (childRow.style.display === 'none') {
+                                    childRow.style.display = 'table-row';
+                                } else {
+                                    childRow.style.display = 'none';
+                                }
+                            });
+                        });
+                    });
+                </script>
                 <div class="row mx-2">
                     <div class="col-sm-12 col-md-6 shows-stt">
-                        <div class="data-info">Hiển thị từ <?php echo $offset + 1 ?> đến <?php echo $offset + count($Type) ?> của <?php echo $total_items ?> hóa đơn</div>
+                        <div class="data-info">Hiển thị từ <?php echo $offset + 1 ?> đến <?php echo $offset + count($Type) ?> của <?php echo $total_items ?> loại sản phẩm</div>
                     </div>
                     <div class="col-sm-12 col-md-6 show-page">
                         <nav class="page-book" aria-label="Page navigation example" style="margin-top: 12px;">

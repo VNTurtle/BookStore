@@ -5,9 +5,17 @@ require_once('Function/Type.php');
 require_once('Function/db.php');
 require_once('Function/User.php');
 require_once('Function/Cancel_requests.php');
-$bookTypeIds = Type::getTypeBySL(1,30);
+$bookTypeIds = Type::getType();
+$typedetailList = array();
 $parameters = [];
 $resultType = 2;
+foreach ($bookTypeIds as $bookType) {
+    $typeId = $bookType['Id'];
+    $queryTypeDetail = "SELECT * FROM typedetail WHERE TypeId = $typeId LIMIT 4";
+    $typeDetails = DP::run_query($queryTypeDetail, $parameters, $resultType);
+    // Hợp nhất kết quả truy vấn vào danh sách
+    $typedetailList = array_merge($typedetailList, $typeDetails);
+}
 session_start();
 if (isset($_SESSION['Id'])) {
     $userId = $_SESSION['Id'];
@@ -316,13 +324,26 @@ if (isset($_GET['logout'])) {
                                 <div class="lst-Type-main">
                                     <ul class="level0">
                                         <?php
-                                        foreach ($bookTypeIds as $key  => $lst_type) {
+                                        foreach ($bookTypeIds as $key => $lst_type) {
                                         ?>
                                             <li class="level1 item parent">
-                                                <!-- Đường dẫn với lst_id để lọc sản phẩm theo loại sách -->
-                                                <a href="index.php?src=product/lst_product&lst_id=<?= $lst_type['Id'] ?>">
-                                                    <?php echo htmlspecialchars($lst_type['Name']) ?>
-                                                </a>         
+                                                <a href="index.php?template=product/lst_product&lst_id=<?= $lst_type['Id'] ?>" class="hmega"><?php echo $lst_type['Name'] ?></a>
+                                                <ul class="level1">
+                                                    <?php
+                                                    foreach ($typedetailList as $key => $lst_typedetail) {
+                                                        if ($lst_typedetail['TypeId'] == $lst_type['Id']) {
+                                                    ?>
+                                                            <li class="level2">
+                                                                <a href="index.php?template=product/lst_product&lst_id2=<?php echo $lst_typedetail['Id'] ?>"><?php echo $lst_typedetail['Name'] ?></a>
+                                                            </li>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                    <li class="level2">
+                                                        <a href="index.php?template=product/lst_product" style="color: #09bfff;">Xem thêm</a>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         <?php
                                         }
