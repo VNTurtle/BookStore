@@ -179,6 +179,14 @@
     width: 20%;
     text-align: center;
 }
+.invoice-page .invoice-header-info div:nth-child(5) {
+    width: 20%;
+    text-align: center;
+}
+.invoice-page .invoice-header-info div:nth-child(6) {
+    width: 20%;
+    text-align: center;
+}
 
 .invoice-page .invoice-body {
     border: solid 1px #ebebeb;
@@ -194,7 +202,7 @@
     margin-top: 2px;
 }
 .invoice-page .invoice-body .invoice-body-info .invoice-code{
-    width: 60%;
+    width: 45%;
     color: #007bff;
     font-weight: 600;  
 }

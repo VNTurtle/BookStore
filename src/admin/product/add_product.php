@@ -7,6 +7,7 @@ require_once('Function/Type.php');
 require_once('Function/Size.php');
 require_once('Function/Publisher.php');
 require_once('Function/CoverType.php');
+require_once('Function/TypeDetail.php');
 
 $joinedTables = [
     'cb' => 'Combo',
@@ -20,6 +21,8 @@ $Type = Type::getType();
 $Size = Size::getSize();
 $Publisher = Publisher::getPublisher();
 $CoverType = CoverType::getCoverType();
+$CoverType = CoverType::getCoverType();
+$TypeDetail = TypeDetail::getType();
 ?>
 
 
@@ -65,16 +68,59 @@ $CoverType = CoverType::getCoverType();
                                 <input type="text" name="Author" value="">
                             </div>
                             <div class="form-group">
-                                <label for="">Loại sản phẩm</label>
-                                <select name="TypeId">
+                                <label for="type-select">Loại sản phẩm</label>
+                                <select id="type-select" name="TypeId">
+                                    <option value="">Chọn loại sản phẩm</option>
                                     <?php
-                                    foreach ($Type as $key => $lst_type) {
+                                    foreach ($Type as $lst_type) {
                                         echo '<option value="' . $lst_type['Id'] . '">' . $lst_type['Name'] . '</option>';
                                     }
                                     ?>
                                 </select>
-
                             </div>
+                            <div class="form-group">
+                                <label for="type-detail-select">Loại con sản phẩm</label>
+                                <select id="type-detail-select" name="TypeDetailId" disabled>
+                                    <option value="">Chọn loại con sản phẩm</option>
+                                </select>
+                            </div>
+                            <?php
+                            $TypeDetailGrouped = [];
+                            foreach ($TypeDetail as $lst_td) {
+                                $TypeDetailGrouped[$lst_td['TypeId']][] = $lst_td;
+                            }
+                            ?>
+                            <script>
+                                // Chuyển dữ liệu PHP sang JavaScript
+                                const typeDetails = <?php echo json_encode($TypeDetailGrouped); ?>;
+                                const typeSelect = document.getElementById('type-select');
+                                const typeDetailSelect = document.getElementById('type-detail-select');
+
+                                // Lắng nghe sự kiện thay đổi của loại sản phẩm
+                                typeSelect.addEventListener('change', function() {
+                                    const selectedTypeId = this.value;
+
+                                    // Xóa tất cả các tùy chọn hiện có trong Loại con sản phẩm
+                                    typeDetailSelect.innerHTML = '<option value="">Chọn loại con sản phẩm</option>';
+
+                                    // Nếu có loại sản phẩm được chọn
+                                    if (selectedTypeId && typeDetails[selectedTypeId]) {
+                                        // Kích hoạt ô select và thêm các tùy chọn tương ứng
+                                        typeDetailSelect.disabled = false;
+
+                                        typeDetails[selectedTypeId].forEach(detail => {
+                                            const option = document.createElement('option');
+                                            option.value = detail.Id;
+                                            option.textContent = detail.Name;
+                                            typeDetailSelect.appendChild(option);
+                                        });
+                                    } else {
+                                        // Vô hiệu hóa ô select nếu không có loại con sản phẩm
+                                        typeDetailSelect.disabled = true;
+                                    }
+                                });
+                            </script>
+
                         </div>
                         <div class="col-sm">
                             <div class="form-group">

@@ -111,10 +111,10 @@ class User{
             $ISInvoice = DP::run_query($queryInvoice, $parameters, 1);
           
             if ($ISInvoice > 0) {
-                $queryInvoiceDetail = "INSERT INTO `invoicedetail` (`Parent_code`, `BookId`, `UserId`, `UnitPrice`, `Quantity`) VALUES (?, ?, ?, ?, ?)";
+                $queryInvoiceDetail = "INSERT INTO `invoicedetail` (`Parent_code`, `BookId`, `UnitPrice`, `Quantity`) VALUES (?, ?, ?, ?)";
 
                 foreach ($invoiceDetails as $invoiceDetail) {
-                    $parameters = [$invoiceDetail['parent_code'], $invoiceDetail['bookId'], $invoiceDetail['userId'], $invoiceDetail['price'], $invoiceDetail['quantity']];
+                    $parameters = [$invoiceDetail['parent_code'], $invoiceDetail['bookId'], $invoiceDetail['price'], $invoiceDetail['quantity']];
                     DP::run_query($queryInvoiceDetail, $parameters, 1);
                     //Giam sl sp
                     $QuantityBook=Product::getProductById($invoiceDetail['bookId']);

@@ -13,7 +13,7 @@ if (count($book) > 0) {
     $model = $book[0]['Model'];
     $modelBin = $book[0]['ModelBin'];
     $comboBookId = $book[0]['ComboBookId'];
-    $typeId = $book[0]['TypeId'];
+    $typeId = $book[0]['TypeDetailId'];
     $cameraState = [
         'alpha' => $book[0]['Alpha'],
         'beta' => $book[0]['Beta'],

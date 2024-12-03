@@ -8,13 +8,18 @@ if (isset($_GET['id'])) {
 }
 
 $book = Product::getProductById($bookId);
-$FVR = Favourite::getFavouritebyUserId($userId);
-$check = false;
-foreach ($FVR as $key => $lst) {
-    if ($lst['Id'] == $bookId) {
-        $check = true;
+if($userId==null){
+    $check = false;
+}else{
+    $FVR = Favourite::getFavouritebyUserId($userId);
+    $check = false;
+    foreach ($FVR as $key => $lst) {
+        if ($lst['Id'] == $bookId) {
+            $check = true;
+        }
     }
 }
+
 if (count($book) > 0) {
     $NameBook = $book[0]['Name'];
     $model = $book[0]['Model'];

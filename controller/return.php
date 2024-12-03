@@ -52,7 +52,7 @@ if ($secureHash == $vnp_SecureHash && $_GET['vnp_ResponseCode'] == '00') {
     if (isset($_SESSION['voucherCode'])) {
         $voucherCode = $_SESSION['voucherCode'];
     
-        $result = Voucher::updateVoucherStatus($voucherCode, 0);
+        $result = Voucher::updateStockVoucher($voucherCode);
     
         if ($result) {
             echo "Voucher đã được sử dụng.";

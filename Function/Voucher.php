@@ -38,15 +38,27 @@ class Voucher {
             ':percent' => $percent,
             ':status' => $status,
         ];
-        return DP::run_query($query, $parameters, 0); // Thực thi không trả về kết quả
+        return DP::run_query($query, $parameters, 2); 
+    }    
+    public static function updateStockVoucher($code){
+        $VC=self::getVoucherById($code);
+        $newStock=$VC[0]['Stock']-1;
+        $query = "
+        UPDATE `voucher`
+        SET stock = ?
+        WHERE code = ?
+    ";    
+        $parameters = [   
+            $newStock, $code
+        ];
+        return DP::run_query($query, $parameters, 1); 
     }
-    public static function getVouchersByUserId($userId) {
+    public static function getVouchers() {
         $query = "SELECT * FROM `voucher` 
-                  WHERE UserId = ? 
-                  AND Date <= NOW() 
+                  WHERE Date <= NOW() 
                   AND (EndDate IS NULL OR EndDate >= NOW()) 
                   AND Status = 1";  // Giả sử Status = 1 là mã giảm giá còn hiệu lực
-        $parameters = [$userId]; // Tham số đầu vào là UserId
+        $parameters = []; // Tham số đầu vào là UserId
         $resultType = 2; // Trả về danh sách
         return DP::run_query($query, $parameters, $resultType);
     }
@@ -65,7 +77,7 @@ class Voucher {
             ':percent' => $percent,
             ':status' => $status,
         ];
-        return DP::run_query($query, $parameters, 0);
+        return DP::run_query($query, $parameters, 1);
     }
     public static function updateVoucherStatus($voucherCode, $status) {
         $query = "UPDATE `voucher` 

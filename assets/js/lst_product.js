@@ -1,14 +1,13 @@
 
-function ShowMore() {
-    // Hiển thị tất cả các mục bị ẩn
-    document.querySelectorAll('.product-category-item.hidden').forEach(function(item) {
-        item.classList.remove('hidden');
-    });
+function ShowMenu(element) {
+    var target = element.dataset.target;
+    var detail = document.getElementById(target);
 
-    // Ẩn nút "Xem thêm"
-    document.querySelector('.btn-see-more').style.display = 'none';
+    var codeElement = element.parentNode.querySelector('.category-code');
+    console.log(codeElement);
+    detail.classList.toggle("show");
+    codeElement.classList.toggle("show");
 }
-
 const checkboxes = document.querySelectorAll('.aside-item-input');
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener('click', function () {

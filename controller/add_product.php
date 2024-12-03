@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $Author = $_POST['Author'];   
     $TypeId = $_POST['TypeId'];
+    $TypeDetailId = $_POST['TypeDetailId'];
     $NumberPage = $_POST['NumberPage'];
     $SizeId = $_POST['Size'];
     $Stock = $_POST['Stock'];
@@ -53,12 +54,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Description = $_POST['Description'];
 
     $query="INSERT INTO `book`
-    (`Id`, `ComboBookId`, `SKU`, `Name`, `Author`, `Description`, `TypeId`, `NumberPage`, `SizeId`, `Stock`, `Price`, `Date`, `PublisherId`, `CoverTypeId`, `Status`) 
+    (`Id`, `ComboBookId`, `SKU`, `Name`, `Author`, `Description`, `TypeDetailId`, `NumberPage`, `SizeId`, `Stock`, `Price`, `Date`, `PublisherId`, `CoverTypeId`, `Status`) 
     VALUES (?,?,'$SKU','$Name','$Author','$Description',?,?,?,?,?,'$Date',?,?,?)";
     $parameters=[
         $Id,
         $ComboId,  
-        $TypeId,
+        $TypeDetailId,
         $NumberPage,
         $SizeId,
         $Stock,
