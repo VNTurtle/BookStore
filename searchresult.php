@@ -6,10 +6,10 @@
 <?php
 // Đặt thư mục làm việc hiện tại là gốc dự án (thay đổi đường dẫn nếu cần)
 // Gọi các tệp cần thiết
-require_once('API/db.php');
-require_once('API/Img.php');
-require_once('API/Type.php');
-require_once('API/LstProduct_.php');
+require_once('Function/db.php');
+require_once('Function/Img.php');
+require_once('Function/Type.php');
+require_once('Function/LstProduct_.php');
 $Lst_Type = LstProduct::getAllTypeDetailsForBookTypes();
 
 require_once('src/layout/header.php');
