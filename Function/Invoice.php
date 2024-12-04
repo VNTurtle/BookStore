@@ -53,6 +53,34 @@ class Invoice{
          $resultType = 2;
          return DP::run_query($query, $parameters, $resultType);
     }
+    public static function getRevenueByDate2($startDate = null, $endDate = null) {
+        $query = "SELECT DATE(IssuedDate) as date, 
+                         iv.*, ord.Name,
+                         SUM(ivd.Quantity) AS total_quantity_sold
+                  FROM Invoice iv
+                  LEFT JOIN invoicedetail ivd ON iv.Code = ivd.Parent_code
+                  LEFT JOIN OrderStatus ord ON iv.OrderStatusId = ord.Id
+                  ";
+    
+        $parameters = [];
+    
+         // Thêm điều kiện ngày nếu có
+         if ($startDate && $endDate) {
+            $query .= " WHERE DATE(IssuedDate) BETWEEN ? AND ?";
+            $parameters = [$startDate, $endDate];
+        } elseif ($startDate) {
+            $query .= " WHERE DATE(IssuedDate) >= ?";
+            $parameters = [$startDate];
+        } elseif ($endDate) {
+            $query .= " WHERE DATE(IssuedDate) <= ?";
+            $parameters = [$endDate];
+        }        
+        $query .= " GROUP BY DATE(IssuedDate)
+                    ORDER BY DATE(IssuedDate) ASC";
+        
+        $resultType = 2; // Fetch all rows as an associative array
+        return DP::run_query($query, $parameters, $resultType);
+    }
     public static function getRevenueByDate($startDate = null, $endDate = null) {
         $query = "SELECT DATE(IssuedDate) as date, 
                          iv.*, ord.Name,

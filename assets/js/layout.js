@@ -1,3 +1,19 @@
+function isTokenExpired(token) {
+    const payload = JSON.parse(atob(token.split('.')[1])); // Decode phần payload của JWT
+    const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại tính theo giây
+    return payload.exp < currentTime; // Kiểm tra nếu đã hết hạn
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('jwt_token');
+    if (token && isTokenExpired(token)) {
+        // Xóa token nếu hết hạn
+        localStorage.removeItem('jwt_token');
+        alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+        window.location.href = 'index.php?src=user/Login';
+    }
+});
+
 function toggeleMenu() {
     var menuBar = document.querySelector('.opacity-menu');
     var headerNav = document.querySelector('.header-nav');

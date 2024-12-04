@@ -1,5 +1,6 @@
 <?php
 require_once('../Function/Cart.php');
+require_once('../Function/Product.php');
 session_start();
 $userId = $_SESSION['Id'] ?? null;
 
@@ -23,9 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Kiểm tra sản phẩm trong giỏ hàng
     $checkCart = Cart::checkCart($userId, $bookId);
+    $checkQuantity = Product::getProductById($bookId);
+    $Stock = $checkQuantity[0]['Stock'];
     if (!empty($checkCart)) {
         $newQuantity = $checkCart[0]['Quantity'] + $quantity;
-        Cart::updateCart($newQuantity, $userId, $bookId);
+        if($newQuantity > $Stock)
+        {
+            Cart::updateCart($Stock, $userId, $bookId);
+        }else{
+            Cart::updateCart($newQuantity, $userId, $bookId);
+        }
+       
     } else {
         Cart::putCart($userId, $bookId, $quantity);
     }

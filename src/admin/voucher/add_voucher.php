@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $result = Voucher::addVoucher($code, $stock, $des, $date, $enddate, $maxtotal, $percent, $status);
 
-    if (!$result) {
+    if ($result) {
         header("Location: index.php?src=admin/voucher/lst_voucher");
         exit;
     } else {

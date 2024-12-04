@@ -19,12 +19,12 @@ class LstProduct
                        t.Name AS BookTypeName,
                        i.Path
                 FROM book b
-                JOIN type t ON t.Id = b.TypeId
                 LEFT JOIN image i ON b.Id = i.BookId
                 LEFT JOIN typedetail td ON td.Id = b.TypedetailId
+                JOIN type t ON t.Id = td.TypeId
                 WHERE i.Id = (SELECT MIN(i2.Id) FROM image i2 WHERE i2.BookId = b.Id)";
         if (!is_null($lst_id)) {
-            $query .= " AND b.TypeId = :lst_id";
+            $query .= " AND td.TypeId = :lst_id";
             $parameters[':lst_id'] = $lst_id;
         }
         if (!is_null($lst_id2)) {
@@ -78,8 +78,6 @@ public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = n
             bt.Name AS BookTypeName,
             i.Path
         FROM book b";
-
-    // Các JOIN không thay đổi
     $query .= " 
         JOIN TypeDetail bt ON b.TypeDetailId = bt.Id
         LEFT JOIN image i ON b.Id = i.BookId
@@ -152,7 +150,7 @@ public static function getLstProduct($lst_id = null, $lst_id2 = null, $limit = n
   // Phương thức lấy 4 chi tiết loại sách theo loại sách
   public static function getTop4TypeDetailsByTypeId($typeId)
   {
-    $query = "SELECT * FROM typedetail WHERE TypeId = :typeId LIMIT 4";
+    $query = "SELECT * FROM typedetail WHERE TypeId = :typeId";
     $parameters = [':typeId' => $typeId];
     $resultType = 2;
     return DP::run_query($query, $parameters, $resultType);

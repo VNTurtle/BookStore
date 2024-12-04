@@ -44,7 +44,7 @@ $TypeDetail = TypeDetail::getType();
                         <div class="col-sm">
                             <div class="form-group">
                                 <label for="">Tên sản phẩm</label>
-                                <input type="text" name="Name" value="">
+                                <input type="text" name="Name" value="" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Theo Bộ</label>
@@ -65,11 +65,11 @@ $TypeDetail = TypeDetail::getType();
                             </div>
                             <div class="form-group">
                                 <label for="">Tác giả</label>
-                                <input type="text" name="Author" value="">
+                                <input type="text" name="Author" value="" required>
                             </div>
                             <div class="form-group">
                                 <label for="type-select">Loại sản phẩm</label>
-                                <select id="type-select" name="TypeId">
+                                <select id="type-select" name="TypeId" required>
                                     <option value="">Chọn loại sản phẩm</option>
                                     <?php
                                     foreach ($Type as $lst_type) {
@@ -80,7 +80,7 @@ $TypeDetail = TypeDetail::getType();
                             </div>
                             <div class="form-group">
                                 <label for="type-detail-select">Loại con sản phẩm</label>
-                                <select id="type-detail-select" name="TypeDetailId" disabled>
+                                <select id="type-detail-select" name="TypeDetailId" disabled required>
                                     <option value="">Chọn loại con sản phẩm</option>
                                 </select>
                             </div>
@@ -119,13 +119,30 @@ $TypeDetail = TypeDetail::getType();
                                         typeDetailSelect.disabled = true;
                                     }
                                 });
+
+                                // Hàm kiểm tra trước khi submit form
+                                function validateForm(event) {
+                                    // Kiểm tra "Loại sản phẩm"
+                                    if (typeSelect.value === "") {
+                                        alert("Vui lòng chọn Loại sản phẩm.");
+                                        return false; // Ngăn gửi form
+                                    }
+
+                                    // Kiểm tra "Loại con sản phẩm"
+                                    if (typeDetailSelect.disabled || typeDetailSelect.value === "") {
+                                        alert("Vui lòng chọn Loại con sản phẩm.");
+                                        return false; // Ngăn gửi form
+                                    }
+
+                                    return true; // Cho phép gửi form
+                                }
                             </script>
 
                         </div>
                         <div class="col-sm">
                             <div class="form-group">
                                 <label for="">Số trang</label>
-                                <input type="number" name="NumberPage" value="">
+                                <input type="number" name="NumberPage" value="" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Kích thước</label>
@@ -145,15 +162,15 @@ $TypeDetail = TypeDetail::getType();
                             </div>
                             <div class="form-group">
                                 <label for="">Tồn kho</label>
-                                <input type="number" name="Stock" value="">
+                                <input type="number" name="Stock" value="" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Giá sản phẩm</label>
-                                <input type="number" name="Price" value="">
+                                <input type="number" name="Price" value="" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Ngày sản xuất</label>
-                                <input type="date" name="Date" value="">
+                                <input type="date" name="Date" value="" required>
                             </div>
                         </div>
                         <div class="col-sm">
@@ -192,7 +209,7 @@ $TypeDetail = TypeDetail::getType();
                             </div>
                             <div class="form-group">
                                 <label for="">Nội dung</label>
-                                <textarea name="Description" id="Description"></textarea>
+                                <textarea name="Description" id="Description" required></textarea>
                             </div>
                         </div>
                         <div class="col-sm">
@@ -202,7 +219,7 @@ $TypeDetail = TypeDetail::getType();
                             </div>
                             <div class="form-group">
                                 <label for="additionalImages">Các Hình Phụ:</label>
-                                <input type="file" id="additionalImages" name="additionalImages[]" accept="image/*" multiple>
+                                <input type="file" id="additionalImages" name="additionalImages[]" accept="image/*" multiple required>
                             </div>
                             <div class="form-group">
                                 <label for="imagePreview">Xem Trước Hình:</label>

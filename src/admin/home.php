@@ -11,7 +11,9 @@ $startDate = date('Y-m-d', strtotime('-7 days'));
 $startDate1 = date('Y-m-d', strtotime('-30 days'));
 $startDate2 = date('Y-m-d', strtotime('-365 days'));
 $revenue = Invoice::getRevenueByDate($startDate, $currentDate);
+$revenue = Invoice::getRevenueByDate($startDate, $currentDate);
 $revenue1 = Invoice::getRevenueByDate($startDate1, $currentDate);
+$revenue1_1 = Invoice::getRevenueByDate2($startDate1, $currentDate);
 $revenue2 = Invoice::getRevenueByDate($startDate2, $currentDate);
 $DoanhthuTuan = 0.0;
 $DonHangTuan = 0;
@@ -21,26 +23,28 @@ $DoanhthuNam = 0.0;
 $DonHangNam = 0;
 $chartData = [];
 foreach ($revenue as $day) {
-    if($day['OrderStatusId']==4){
+    if ($day['OrderStatusId'] == 4) {
         $DoanhthuTuan += $day['Total'];
-    }   
-    $DonHangTuan += $day['total_quantity_sold'];
+        $DonHangTuan += $day['total_quantity_sold'];
+    }
 }
 foreach ($revenue1 as $day) {
-    if($day['OrderStatusId']==4){
+    if ($day['OrderStatusId'] == 4) {
         $DoanhthuThang += $day['Total'];
-    }    
-    $DonHangThang += $day['total_quantity_sold'];
+        $DonHangThang += $day['total_quantity_sold'];
+    }
+}
+foreach ($revenue2 as $day) {
+    if ($day['OrderStatusId'] == 4) {
+        $DoanhthuNam += $day['Total'];
+        $DonHangNam += $day['total_quantity_sold'];
+    }
+}
+foreach ($revenue1_1 as $day) {
     $chartData[] = [
         'date' => $day['date'], // Ngày
         'revenue' => $day['Total']
     ];
-}
-foreach ($revenue2 as $day) {
-    if($day['OrderStatusId']==4){
-        $DoanhthuNam += $day['Total'];
-    }     
-    $DonHangNam += $day['total_quantity_sold'];
 }
 $jsonData = json_encode($chartData);
 
@@ -103,35 +107,44 @@ $jsonData = json_encode($chartData);
             </div>
         </div>
         <div class="row">
-            <div class="col-8">
+            <div class="col-7">
                 <canvas id="revenueChart" width="300" height="200" style="max-width: 800px; max-height: 500px; background-color: #fff;"></canvas>
             </div>
-            <div class="col-4 bg-light" >
-                <h3>Sản phẩm bán chạy theo tháng</h3>
+            <div class="col-5 bg-light">
+                <h3>Sản phẩm bán chạy trong 30 ngày</h3>
                 <ul>
-                    <?php
-                    $topProducts = Product::getTopSellingProducts(10);
-                    foreach ($topProducts as $product): ?>
-                        <table class="table table-top-countries">
+                    <table class="table table-top-countries">
+                        <thead>
+                            <tr style="background-color: aqua;">
+                                <th>Sách</th>
+                                <th>Đã bán</th>
+                            </tr>
+                        </thead>
+                        <?php
+                        $topProducts = Product::getTopSellingProducts(10);
+                        foreach ($topProducts as $product): ?>
                             <tbody>
                                 <tr>
-                                <div class="d-flex justify-content-start align-items-center product-name">
+                                    <td>
                                         <div class="avatar-wrapper">
                                             <div class="avatar me-2 rounded-2 bg-label-secondary">
                                                 <img class="rounded-2" src="assets/img/products/<?= $product['Path'] ?>" alt="">
                                             </div>
-                                        </div>
-                                        <div class="name-product" style="width: 315px;">
-                                            <h6 class="text-body text-nowrap mb-0" style="white-space: normal !important; overflow-wrap: break-word;"><?= $product['Name'] ?> </h6>
-                                            <h6>Đã bán <?= $product['TotalSold'] ?> cuốn sách</h6>
-                                        </div>
+                                            <div class="name-product" style="width: 315px;">
+                                                <h6 class="text-body text-nowrap mb-0" style="white-space: normal !important; overflow-wrap: break-word;"><?= $product['Name'] ?> </h6>
 
-                                    </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h6><?= $product['TotalSold'] ?> Sách</h6>
+                                    </td>
                                 </tr>
-                                
+
                             </tbody>
-                        </table>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </table>
+
                 </ul>
             </div>
         </div>

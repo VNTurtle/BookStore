@@ -40,7 +40,7 @@ if (isset($_GET['logout'])) {
                 <i style="color: #fff; margin-top: 3px; margin-left: -2px;" class="fa-solid fa-bars"></i>
             </div>
             <div class="col-lg-3">
-                <a href="/" class="logo" title="Logo">
+                <a href="index.php" class="logo" title="Logo">
                     <img class="Logo-header" src="assets/img/logo-bookstore-header.jpg" alt="Logo">
                 </a>
             </div>
@@ -89,7 +89,7 @@ if (isset($_GET['logout'])) {
                                         <p>
                                             <strong>Đã hoàn tiền cho bạn.</strong>
                                             <button class="end_status float-end btn  btn-secondary btn-sm"
-                                                data-order-status="5" data-order-id="<?= $complete['order_id'] ?>" data-status="end_request">
+                                                data-order-status="<?= $complete['OrderId'] ?>" data-order-id="<?= $complete['order_id'] ?>" data-status="end_request">
                                                 Xóa</button>
                                         </p>
                                         <p><strong>Mọi thắc mắc xin liên hệ qua số điện thoại: 0962548301.</strong> </p>
@@ -107,7 +107,7 @@ if (isset($_GET['logout'])) {
                                             <strong>Yêu cầu hủy không chấp nhận.</strong>
                                             <p><strong>Lý do:</strong> <?= $mess2['Content2'] ?>
                                                 <button class="end_status float-end btn  btn-secondary btn-sm"
-                                                    data-order-status="5" data-order-id="<?= $mess2['order_id'] ?>" data-status="end_request">
+                                                    data-order-status="<?= $mess2['OrderId'] ?>" data-order-id="<?= $mess2['order_id'] ?>" data-status="end_request">
                                                     Xóa</button>
                                             </p>
 
@@ -128,7 +128,7 @@ if (isset($_GET['logout'])) {
                                             <p>
                                                 <strong>Đã hủy thành công</strong>
                                                 <button class="end_status float-end btn  btn-secondary btn-sm"
-                                                    data-order-status="5" data-order-id="<?= $mess['order_id'] ?>" data-status="end_request">
+                                                    data-order-status="<?= $mess['OrderId'] ?>" data-order-id="<?= $mess['order_id'] ?>" data-status="end_request">
                                                     Xóa</button>
                                             </p>
 
@@ -258,10 +258,10 @@ if (isset($_GET['logout'])) {
 
                                     if (token == null) {
                                         authLinks.innerHTML = `<li>
-                                                <a href="index.php?src=user/login">Login</a>
+                                                <a href="index.php?src=user/login">Đăng nhập</a>
                                             </li>
                                             <li>
-                                                <a href="index.php?src=user/register">Register</a>
+                                                <a href="index.php?src=user/register">Đăng ký</a>
                                             </li>`;
                                     } else {
                                         const base64Url = token.split('.')[1];
@@ -287,7 +287,7 @@ if (isset($_GET['logout'])) {
                                                 <a href="index.php?src=admin/home">Admin</a>
                                             </li>
                                             <li>
-                                                <a href="index.php?logout=true" id="logoutLink">Logout</a>
+                                                <a href="index.php?logout=true" id="logoutLink">Đăng xuất</a>
                                             </li>
                                             `;
                                         } else {
@@ -299,7 +299,7 @@ if (isset($_GET['logout'])) {
                                                 <a href="index.php?src=invoice/invoice">Đơn hàng</a>
                                             </li>
                                             <li>
-                                                <a href="index.php?logout=true" id="logoutLink">Logout</a>
+                                                <a href="index.php?logout=true" id="logoutLink">Đăng xuất</a>
                                             </li>
                                             `;
                                         }
@@ -327,21 +327,21 @@ if (isset($_GET['logout'])) {
                                         foreach ($bookTypeIds as $key => $lst_type) {
                                         ?>
                                             <li class="level1 item parent">
-                                                <a href="index.php?template=product/lst_product&lst_id=<?= $lst_type['Id'] ?>" class="hmega"><?php echo $lst_type['Name'] ?></a>
+                                                <a href="index.php?src=product/lst_product&lst_id=<?= $lst_type['Id'] ?>" class="hmega"><?php echo $lst_type['Name'] ?></a>
                                                 <ul class="level1">
                                                     <?php
                                                     foreach ($typedetailList as $key => $lst_typedetail) {
                                                         if ($lst_typedetail['TypeId'] == $lst_type['Id']) {
                                                     ?>
                                                             <li class="level2">
-                                                                <a href="index.php?template=product/lst_product&lst_id2=<?php echo $lst_typedetail['Id'] ?>"><?php echo $lst_typedetail['Name'] ?></a>
+                                                                <a href="index.php?src=product/lst_product&lst_id2=<?php echo $lst_typedetail['Id'] ?>"><?php echo $lst_typedetail['Name'] ?></a>
                                                             </li>
                                                     <?php
                                                         }
                                                     }
                                                     ?>
                                                     <li class="level2">
-                                                        <a href="index.php?template=product/lst_product" style="color: #09bfff;">Xem thêm</a>
+                                                        <a href="index.php?src=product/lst_product" style="color: #09bfff;">Xem thêm</a>
                                                     </li>
                                                 </ul>
                                             </li>

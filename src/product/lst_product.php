@@ -22,7 +22,7 @@ if (!$Lst_CoverType) {
 }
 if (!$Lst_Publisher) {
     echo "Không có dữ liệu nhà xuất bản hoặc xảy ra lỗi.";
-    }
+}
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
@@ -43,13 +43,15 @@ $offset = ($page - 1) * $limit;
 $totalProducts = LstProduct::getLstProduct($lst_id, $lst_id2, null, null, true);
 $totalPages = ceil($totalProducts / $limit);
 
-// Truy vấn sản phẩm với phân trang
 $lst_bv = LstProduct::getLstProduct($lst_id, $lst_id2, $limit, $offset);
 
 ?>
 <script>
-    console.log($totalProducts)
+    // Truyền giá trị của biến PHP vào JavaScript
+    const totalProducts = <?php echo json_encode($totalProducts); ?>;
+    console.log(totalProducts);
 </script>
+
 <body>
     <link rel="stylesheet" href="assets/css/lst_product.css">
     <div class="bodywrap">
@@ -200,31 +202,39 @@ $lst_bv = LstProduct::getLstProduct($lst_id, $lst_id2, $limit, $offset);
                             }
                             ?>
                             <nav class="page-book" aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <!-- Nút Previous -->
-                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                                    <a class="page-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?>&lst_id2=<?php echo $lst_id2; ?>&page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-
-                                <!-- Hiển thị các số trang -->
-                                <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                        <a class="page-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?>&lst_id2=<?php echo $lst_id2; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                <ul class="pagination">
+                                    <!-- Nút Previous -->
+                                    <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                                        <a class="page-link"
+                                            href="index.php?src=product/lst_product&<?php echo $lst_id ?'&lst_id=' . $lst_id : ''; ?><?php echo $lst_id2 ? '&lst_id2=' . $lst_id2 : ''; ?>&page=<?php echo $page - 1; ?>"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
                                     </li>
-                                <?php } ?>
 
-                                <!-- Nút Next -->
-                                <li class="page-item <?php if ($page >= $totalPages) echo 'disabled'; ?>">
-                                    <a class="page-link" href="index.php?src=product/lst_product&lst_id=<?php echo $lst_id; ?>&lst_id2=<?php echo $lst_id2; ?>&page=<?php echo $page + 1; ?>" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                                    <!-- Hiển thị các số trang -->
+                                    <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
+                                        <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                            <a class="page-link"
+                                                href="index.php?src=product/lst_product&<?php echo $lst_id ?'&lst_id=' . $lst_id : '';?><?php echo $lst_id2 ? '&lst_id2=' . $lst_id2 : ''; ?>&page=<?php echo $i; ?>">
+                                                <?php echo $i; ?>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+
+                                    <!-- Nút Next -->
+                                    <li class="page-item <?php if ($page >= $totalPages) echo 'disabled'; ?>">
+                                        <a class="page-link"
+                                        href="index.php?src=product/lst_product&<?php echo $lst_id ?'&lst_id=' . $lst_id : '';?><?php echo $lst_id2 ? '&lst_id2=' . $lst_id2 : ''; ?>&page=<?php echo $page + 1; ?>"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+
                         </div>
                     </div>
                 </div>
@@ -232,7 +242,6 @@ $lst_bv = LstProduct::getLstProduct($lst_id, $lst_id2, $limit, $offset);
         </div>
     </div>
 </body>
-<script src="assets"></script>
 <?php
 require 'src/layout/footer.php';
 ?>

@@ -123,6 +123,26 @@ $TypeDetail=TypeDetail::getType();
                                         typeDetailSelect.disabled = true;
                                     }
                                 });
+                                window.addEventListener('DOMContentLoaded', function() {
+    const selectedTypeId = typeSelect.value;
+
+    if (selectedTypeId && typeDetails[selectedTypeId]) {
+        // Kích hoạt ô select và thêm các tùy chọn tương ứng
+        typeDetailSelect.disabled = false;
+
+        typeDetails[selectedTypeId].forEach(detail => {
+            const option = document.createElement('option');
+            option.value = detail.Id;
+            option.textContent = detail.Name;
+            // Đặt tùy chọn được chọn nếu phù hợp
+            if (detail.Id === "<?php echo $book[0]['TypeDetailId']; ?>") {
+                option.selected = true;
+            }
+            typeDetailSelect.appendChild(option);
+        });
+    }
+});
+
                             </script>
                             
                         </div>

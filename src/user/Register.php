@@ -21,7 +21,7 @@ if(isset($_POST['register'])){
     {
         $notemail="Email đã tồn tại !";
     }else if($check==2){
-        $notpassword="ConfirmPasswords không đúng";
+        $notpassword="Nhập lại không đúng";
     }else{
         header("Location: index.php?src=user/Login");
         exit;

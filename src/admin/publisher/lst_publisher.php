@@ -50,8 +50,8 @@ $lst_publisher = Publisher::getPublisherBySL($offset, $items_per_page);
                     <thead>
                         <tr style="background-color: aqua;">
                             <th>STT</th>
-                            <th>Name</th>
-                            <th>status</th>
+                            <th>Tên NXB</th>
+                            <th>Trạng thái</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,7 +89,7 @@ $lst_publisher = Publisher::getPublisherBySL($offset, $items_per_page);
                 </table>
                 <div class="row mx-2">
                     <div class="col-sm-12 col-md-6 shows-stt">
-                        <div class="data-info">Hiển thị từ <?php echo $offset + 1 ?> đến <?php echo $offset + count($lst_publisher) ?> của <?php echo $total_items ?> hóa đơn</div>
+                        <div class="data-info">Hiển thị từ <?php echo $offset + 1 ?> đến <?php echo $offset + count($lst_publisher) ?> của <?php echo $total_items ?> NXB</div>
                     </div>
                     <div class="col-sm-12 col-md-6 show-page">
                         <nav class="page-book" aria-label="Page navigation example" style="margin-top: 12px;">

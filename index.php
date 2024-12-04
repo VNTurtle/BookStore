@@ -38,7 +38,7 @@
     <script src="assets/sclick/js/slick.min.js"></script>
     <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
     <script src="assets/fontawesome/js/all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+    <script src="assets/js/js.cookie.min.js"></script>
     
     
     <script src="assets/js/layout.js"></script>

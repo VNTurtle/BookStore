@@ -18,9 +18,20 @@ if ($startDate && $endDate) {
     $productRevenue = Invoice::getInvoiceAndSL(1, 0);
     $categoryRevenue = Invoice::getInvoiceAndSL(1, 0);
 }
+// Chuyển dữ liệu categoryRevenue thành định dạng JSON
+$categoryLabels = array_column($categoryRevenue, 'CategoryName');
+$categoryData = array_column($categoryRevenue, 'TotalRevenue');
 ?>
+<script>
+    const categoryLabels = <?= json_encode($categoryLabels) ?>;
+    const categoryData = <?= json_encode($categoryData) ?>;
+</script>
+
 
 <link rel="stylesheet" href="assets/css/lst_statistic.css">
+<script src="assets/Chart/chart.js"></script>
+<script src="assets/Chart/chartjs-plugin.js"></script>
+
 <div class="container mt-4">
     <h1 class="mb-4">Chọn ngày thống kê</h1>
     <div class="mb-4">
@@ -36,6 +47,11 @@ if ($startDate && $endDate) {
             <div class="col-auto align-self-end">
                 <button id="filterButton" class="btn btn-primary">Lọc</button>
             </div>
+
+        </div>
+        <div class="col-5 mt-4">
+            <h2>Biểu đồ doanh thu theo danh mục</h2>
+            <canvas id="categoryChart" width="300" height="200" style="max-width: 800px; max-height: 500px; background-color: #fff;"></canvas>
         </div>
     </div>
     <script>
@@ -116,7 +132,62 @@ if ($startDate && $endDate) {
             </table>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
 
+            // Chuyển tất cả các giá trị trong categoryData thành số thực trước khi tính tổng
+            const totalRevenue = categoryData
+                .map(value => parseFloat(value)) // Chuyển giá trị sang số thực
+                .reduce((sum, value) => sum + value, 0); // Tính tổng
+
+            console.log(totalRevenue);
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: categoryLabels,
+                    datasets: [{
+                        label: 'Doanh thu',
+                        data: categoryData,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let value = context.raw;
+                                    let percentage = ((value / totalRevenue) * 100).toFixed(2);
+                                    return `${context.label}: ${percentage}% (${value.toLocaleString()} VNĐ)`;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            formatter: (value, context) => {
+                                let percentage = ((value / totalRevenue) * 100).toFixed(2);
+                                return `${percentage}%`;
+                            },
+                            color: '#fff',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+        });
+    </script>
 </div>
 <?php
 require 'src/admin/layout/footer.php';
